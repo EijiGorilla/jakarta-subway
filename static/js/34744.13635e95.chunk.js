@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkjakarta_subway=self.webpackChunkjakarta_subway||[]).push([[34744],{11583(e,t,r){r.d(t,{O:()=>u});var a=r(56175);class u extends a.I{getOperatorType(){return 9}execute(e,t,r,u){return(0,a.J)(e,t,r,32,u)}}},34744(e,t,r){r.r(t),r.d(t,{execute:()=>s});var a=r(11583),u=r(48045);const n=new a.O;function s(e,t){const r=(0,u.fromGeometry)(e);return n.execute(r.getGeometry(),(0,u.fromGeometryToGXGeometry)(t),r.getSpatialReference(),null)}}}]);
-//# sourceMappingURL=34744.13635e95.chunk.js.map
