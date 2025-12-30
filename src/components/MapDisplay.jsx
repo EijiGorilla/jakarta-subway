@@ -1,69 +1,51 @@
-import { use, useEffect, useState, useRef } from 'react';
-import '../index.css';
-import '../App.css';
-import '@arcgis/map-components/dist/components/arcgis-map';
-import '@arcgis/map-components/dist/components/arcgis-scene';
-import '@arcgis/map-components/dist/components/arcgis-zoom';
-import '@arcgis/map-components/dist/components/arcgis-legend';
-import '@arcgis/map-components/dist/components/arcgis-basemap-gallery';
-import '@arcgis/map-components/dist/components/arcgis-layer-list';
-import '@arcgis/map-components/dist/components/arcgis-expand';
-import '@arcgis/map-components/dist/components/arcgis-placement';
-import '@arcgis/map-components/dist/components/arcgis-search';
-import '@arcgis/map-components/dist/components/arcgis-compass';
+import { use, useEffect, useState } from "react";
+import "../index.css";
+import "../App.css";
+import "@arcgis/map-components/dist/components/arcgis-map";
+import "@arcgis/map-components/dist/components/arcgis-scene";
+import "@arcgis/map-components/dist/components/arcgis-zoom";
+import "@arcgis/map-components/dist/components/arcgis-legend";
+import "@arcgis/map-components/dist/components/arcgis-basemap-gallery";
+import "@arcgis/map-components/dist/components/arcgis-layer-list";
+import "@arcgis/map-components/dist/components/arcgis-expand";
+import "@arcgis/map-components/dist/components/arcgis-placement";
+import "@arcgis/map-components/dist/components/arcgis-search";
+import "@arcgis/map-components/dist/components/arcgis-compass";
 import {
   admin_boundary_groupLayer,
   alingment_line_layer,
-  admin_boundary_kabupaten,
   overview_alingment_line_layer,
   sar_points_layer_tile,
   displacement_groupLayer,
   sar_elevation_layer,
-} from '../layers';
-import '@esri/calcite-components/dist/components/calcite-button';
-import { initialViewpoint, object_id } from '../uniqueValues';
-import { MyContext } from '../contexts/MyContext';
-import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
-import * as promiseUtils from '@arcgis/core/core/promiseUtils';
-import Extent from '@arcgis/core/geometry/Extent';
-import '@esri/calcite-components/dist/components/calcite-button';
-import { CalciteButton } from '@esri/calcite-components-react';
-import Viewpoint from '@arcgis/core/Viewpoint';
-import { disableZooming, OverviewExtentsetup } from '../Query';
-import * as intersectionOperator from '@arcgis/core/geometry/operators/intersectionOperator';
-import SpatialReference from '@arcgis/core/geometry/SpatialReference';
-import Graphic from '@arcgis/core/Graphic';
-import { SimpleFillSymbol } from '@arcgis/core/symbols';
-import Ground from '@arcgis/core/Ground';
-import '@arcgis/map-components/dist/components/arcgis-elevation-profile';
+} from "../layers";
+import "@esri/calcite-components/dist/components/calcite-button";
+import { MyContext } from "../contexts/MyContext";
+import "@esri/calcite-components/dist/components/calcite-button";
+import { disableZooming, OverviewExtentsetup } from "../Query";
+import ElevationProfile from "./ElevationProfile";
 
 // 2 D <-> 3D
 // https://developers.arcgis.com/javascript/latest/sample-code/views-switch-2d-3d/
 
 export default function MapDisplay() {
-  const { updateViewchange, viewpoint, is3D } = use(MyContext);
+  const { activewidget, viewpoint, is3D } = use(MyContext);
   const [mapView, setMapView] = useState();
-  const [mapOverview, setMapOverview] = useState();
-
-  const arcgisMap = document.querySelector(is3D === false ? 'arcgis-map' : 'arcgis-scene');
-  const arcgisOverviewMap = document.querySelector(
-    is3D === false ? '#arcgis-overview-map' : '#arcgis-overview-scene',
-  );
-  const arcgisElevationProfile = document.querySelector('arcgis-elevation-profile');
 
   useEffect(() => {
-    const arcgisMap = document.querySelector(is3D === false ? 'arcgis-map' : 'arcgis-scene');
-    const arcgisOverviewMap = document.querySelector(
-      is3D === false ? '#arcgis-overview-map' : '#arcgis-overview-scene',
+    const arcgisMap = document.querySelector(
+      is3D === false ? "arcgis-map" : "arcgis-scene"
     );
-    const arcgisElevationProfile = document.querySelector('arcgis-elevation-profile');
+    const arcgisOverviewMap = document.querySelector(
+      is3D === false ? "#arcgis-overview-map" : "#arcgis-overview-scene"
+    );
     if (mapView) {
       arcgisMap.map.add(sar_points_layer_tile);
       arcgisMap.map.add(admin_boundary_groupLayer);
       arcgisMap.map.add(displacement_groupLayer);
       arcgisMap.map.add(alingment_line_layer);
       arcgisMap.view.ui.components = [];
-      arcgisMap.map.ground.navigationConstraint = 'none';
+      arcgisMap.map.ground.navigationConstraint = "none";
       arcgisMap.map.ground.opacity = 0.7;
 
       arcgisMap?.viewOnReady(async () => {
@@ -93,19 +75,19 @@ export default function MapDisplay() {
             setMapView(event.target);
           }}
         >
-          <arcgis-elevation-profile slot="bottom-right"></arcgis-elevation-profile>
+          {activewidget === "elevation-profile" && <ElevationProfile />}
           <arcgis-map
             style={{
-              position: 'fixed',
-              zIndex: '1',
-              width: '135px',
-              height: '160px',
-              borderStyle: 'solid',
-              borderColor: 'grey',
-              borderWidth: '1px',
-              overflow: 'hidden',
-              top: '10px',
-              right: '10px',
+              position: "fixed",
+              zIndex: "1",
+              width: "135px",
+              height: "160px",
+              borderStyle: "solid",
+              borderColor: "grey",
+              borderWidth: "1px",
+              overflow: "hidden",
+              top: "10px",
+              right: "10px",
             }}
             id="arcgis-overview-scene"
             basemap="dark-gray-vector" //{customBasemap}
@@ -126,16 +108,16 @@ export default function MapDisplay() {
           {/* Overview Map */}
           <arcgis-map
             style={{
-              position: 'fixed',
-              zIndex: '1',
-              width: '135px',
-              height: '160px',
-              borderStyle: 'solid',
-              borderColor: 'grey',
-              borderWidth: '1px',
-              overflow: 'hidden',
-              top: '10px',
-              right: '10px',
+              position: "fixed",
+              zIndex: "1",
+              width: "135px",
+              height: "160px",
+              borderStyle: "solid",
+              borderColor: "grey",
+              borderWidth: "1px",
+              overflow: "hidden",
+              top: "10px",
+              right: "10px",
             }}
             id="arcgis-overview-map"
             basemap="dark-gray-vector" //{customBasemap}

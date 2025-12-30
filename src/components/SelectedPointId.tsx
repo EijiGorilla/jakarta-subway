@@ -1,15 +1,15 @@
-import { useEffect, use, useState } from 'react';
-import FeatureFilter from '@arcgis/core/layers/support/FeatureFilter';
+import { useEffect, use, useState } from "react";
+import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter";
 import {
   admin_boundary_kabupaten,
   hot_spot_analysis_layer_title,
   hot_spot_layer,
   sar_point_layer_title,
   sar_points_layer,
-} from '../layers';
-import { object_id } from '../uniqueValues';
-import { MyContext } from '../contexts/MyContext';
-import type FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+} from "../layers";
+import { object_id } from "../uniqueValues";
+import type FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import { MyContext } from "../contexts/MyContext";
 
 export default function SelectedPointId() {
   const {
@@ -20,13 +20,14 @@ export default function SelectedPointId() {
     viewchange,
   } = use(MyContext);
 
-  const [layerViewFeaturLayer, setLayerViewFeatureLayer] = useState<FeatureLayer>();
+  const [layerViewFeaturLayer, setLayerViewFeatureLayer] =
+    useState<FeatureLayer>();
 
   useEffect(() => {
     const arcgisMap = document.querySelector(viewchange);
     sar_points_layer.when(() => {
       admin_boundary_kabupaten.when(() => {
-        arcgisMap?.view.on('click', (event: any) => {
+        arcgisMap?.view.on("click", (event: any) => {
           arcgisMap?.view.hitTest(event).then((response: any) => {
             const result: any = response.results[0];
             const title = result?.graphic?.layer?.title;
@@ -34,14 +35,17 @@ export default function SelectedPointId() {
             if (!title) {
               updateSelectedid(null);
               updateSelectedareforscenario(null);
-            } else if (title === 'Kabupaten') {
+            } else if (title === "Kabupaten") {
               updateSelectedid(null);
               console.log(result.graphic.layer.title);
-              updateSelectedareforscenario(result.graphic.attributes['namobj']);
+              updateSelectedareforscenario(result.graphic.attributes["namobj"]);
 
               // Highlight boundary
               updateSelectedkabupaten(result.graphic.attributes[object_id]);
-            } else if (title === sar_point_layer_title || hot_spot_analysis_layer_title) {
+            } else if (
+              title === sar_point_layer_title ||
+              hot_spot_analysis_layer_title
+            ) {
               updateSelectedid(result.graphic.attributes[object_id]);
               updateSelectedareforscenario(null);
 
@@ -67,7 +71,7 @@ export default function SelectedPointId() {
       selectedid &&
         arcgisMap?.whenLayerView(sar_points_layer).then((layerView: any) => {
           highlight = layerView.highlight(selectedid);
-          arcgisMap?.view.on('click', function () {
+          arcgisMap?.view.on("click", function () {
             layerView.filter = new FeatureFilter({
               where: undefined,
             });
@@ -80,7 +84,7 @@ export default function SelectedPointId() {
       selectedid &&
         arcgisMap?.whenLayerView(hot_spot_layer).then((layerView: any) => {
           highlight = layerView.highlight(selectedid);
-          arcgisMap?.view.on('click', function () {
+          arcgisMap?.view.on("click", function () {
             layerView.filter = new FeatureFilter({
               where: undefined,
             });

@@ -12,6 +12,7 @@ type MyActionEventContextType = {
   viewchange: any;
   is3D: any;
   viewpoint: any;
+  activewidget: any;
   updateStartyear: any;
   updateEndyear: any;
   updateNewdates: any;
@@ -23,6 +24,7 @@ type MyActionEventContextType = {
   updateViewchange: any;
   updateIs3D: any;
   updateViewpoint: any;
+  updateActivewidget: any;
 };
 
 const initialState = {
@@ -37,6 +39,7 @@ const initialState = {
   viewchange: undefined,
   is3D: undefined,
   viewpoint: undefined,
+  activewidget: undefined,
   updateStartyear: undefined,
   updateEndyear: undefined,
   updateNewdates: undefined,
@@ -48,6 +51,7 @@ const initialState = {
   updateViewchange: undefined,
   updateIs3D: undefined,
   updateViewpoint: undefined,
+  updateActivewidget: undefined,
 };
 
 export const MyContext = createContext<MyActionEventContextType>({

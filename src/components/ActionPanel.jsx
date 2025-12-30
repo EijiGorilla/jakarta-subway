@@ -1,37 +1,38 @@
-import { use, useEffect, useState } from 'react';
-import '../App.css';
-import '@esri/calcite-components/dist/components/calcite-panel';
-import '@esri/calcite-components/dist/components/calcite-list-item';
-import '@esri/calcite-components/dist/components/calcite-shell-panel';
-import '@esri/calcite-components/dist/components/calcite-action';
-import '@esri/calcite-components/dist/components/calcite-action-bar';
-import '@arcgis/map-components/components/arcgis-legend';
+import { use, useEffect, useState } from "react";
+import "../App.css";
+import "@esri/calcite-components/dist/components/calcite-panel";
+import "@esri/calcite-components/dist/components/calcite-list-item";
+import "@esri/calcite-components/dist/components/calcite-shell-panel";
+import "@esri/calcite-components/dist/components/calcite-action";
+import "@esri/calcite-components/dist/components/calcite-action-bar";
+import "@arcgis/map-components/components/arcgis-legend";
 import {
   CalciteShellPanel,
   CalciteActionBar,
   CalciteAction,
   CalcitePanel,
-} from '@esri/calcite-components-react';
+} from "@esri/calcite-components-react";
 import {
   secondary_color,
   action_pane_title_font_size,
   margin_left_pane_title,
   margin_bottom_title_item,
   defineActions,
-} from '../uniqueValues';
-import DatePicker from './DatePicker';
-import MinMaxRecord from './MinMaxRecord';
-import { layerInfos_sar_hotspot } from '../layers';
-import { MyContext } from '../contexts/MyContext';
+} from "../uniqueValues";
+import DatePicker from "./DatePicker";
+import MinMaxRecord from "./MinMaxRecord";
+import { layerInfos_sar_hotspot } from "../layers";
+import { MyContext } from "../contexts/MyContext";
+import ElevationProfile from "./ElevationProfile";
 
 function ActionPanel() {
-  const { viewchange } = use(MyContext);
-  const arcgisMapLegend = document.querySelector('arcgis-legend');
+  const { updateActivewidget, viewchange, is3D } = use(MyContext);
+  const arcgisMapLegend = document.querySelector("arcgis-legend");
   const [activeWidget, setActiveWidget] = useState(null);
   const [nextWidget, setNextWidget] = useState(null);
 
   useEffect(() => {
-    setNextWidget('mainq');
+    setNextWidget("mainq");
   }, []);
 
   useEffect(() => {
@@ -44,13 +45,18 @@ function ActionPanel() {
   });
 
   useEffect(() => {
+    updateActivewidget(nextWidget);
     if (activeWidget) {
-      const actionActiveWidget = document.querySelector(`[data-panel-id=${activeWidget}]`);
+      const actionActiveWidget = document.querySelector(
+        `[data-panel-id=${activeWidget}]`
+      );
       actionActiveWidget.hidden = true;
     }
 
     if (nextWidget !== activeWidget) {
-      const actionNextWidget = document.querySelector(`[data-panel-id=${nextWidget}]`);
+      const actionNextWidget = document.querySelector(
+        `[data-panel-id=${nextWidget}]`
+      );
       actionNextWidget.hidden = false;
     }
   });
@@ -87,6 +93,19 @@ function ActionPanel() {
           }}
         ></CalciteAction>
 
+        {is3D && (
+          <CalciteAction
+            data-action-id="elevation-profile"
+            icon="graph-time-series"
+            text="Elevation profile"
+            id="elevation-profile"
+            onClick={(event) => {
+              setNextWidget(event.target.id);
+              setActiveWidget(nextWidget === activeWidget ? null : nextWidget);
+            }}
+          ></CalciteAction>
+        )}
+
         <CalciteAction
           data-action-id="information"
           icon="information"
@@ -99,7 +118,12 @@ function ActionPanel() {
         ></CalciteAction>
       </CalciteActionBar>
 
-      <CalcitePanel heading="Main Pane" data-panel-id="mainq" style={{ width: '340px' }} hidden>
+      <CalcitePanel
+        heading="Main Pane"
+        data-panel-id="mainq"
+        style={{ width: "340px" }}
+        hidden
+      >
         <DatePicker />
 
         <div
@@ -108,7 +132,7 @@ function ActionPanel() {
             color: secondary_color,
             marginBottom: margin_bottom_title_item,
             marginLeft: margin_left_pane_title,
-            marginTop: '1.5vh',
+            marginTop: "1.5vh",
           }}
         >
           Visible Layers:
@@ -129,24 +153,41 @@ function ActionPanel() {
         {/* <ReferencePointSubtraction /> */}
 
         {/* Add Legend */}
-        <div style={{ marginLeft: '15px' }}>
-          <arcgis-legend referenceElement={viewchange} id="arcgis-map-legend"></arcgis-legend>
+        <div style={{ marginLeft: "15px" }}>
+          <arcgis-legend
+            referenceElement={viewchange}
+            id="arcgis-map-legend"
+          ></arcgis-legend>
         </div>
       </CalcitePanel>
 
-      <CalcitePanel heading="Basemaps" data-panel-id="basemaps" style={{ width: '20.8vw' }} hidden>
-        <arcgis-basemap-gallery referenceElement={viewchange}></arcgis-basemap-gallery>
+      <CalcitePanel
+        heading="Basemaps"
+        data-panel-id="basemaps"
+        style={{ width: "20.8vw" }}
+        hidden
+      >
+        <arcgis-basemap-gallery
+          referenceElement={viewchange}
+        ></arcgis-basemap-gallery>
       </CalcitePanel>
 
+      <CalcitePanel
+        class="elevation-profile-panel"
+        height="l"
+        data-panel-id="elevation-profile"
+        hidden
+      ></CalcitePanel>
+
       <CalcitePanel heading="Description" data-panel-id="information" hidden>
-        {nextWidget === 'information' && (
+        {nextWidget === "information" && (
           <div className="informationDiv">
             <div
               style={{
-                fontSize: '16px',
+                fontSize: "16px",
                 color: secondary_color,
-                marginTop: '10px',
-                marginLeft: '10px',
+                marginTop: "10px",
+                marginLeft: "10px",
               }}
             >
               Overview
@@ -155,18 +196,18 @@ function ActionPanel() {
               <img
                 src="https://EijiGorilla.github.io/Symbols/Land_Subsidence/Overview.svg"
                 alt="Overview"
-                height={'100%'}
-                width={'100%'}
-                style={{ marginBottom: 'auto' }}
+                height={"100%"}
+                width={"100%"}
+                style={{ marginBottom: "auto" }}
               />
             </div>
             <div>
               <div
                 style={{
-                  fontSize: '16px',
+                  fontSize: "16px",
                   color: secondary_color,
-                  marginTop: '10px',
-                  marginLeft: '10px',
+                  marginTop: "10px",
+                  marginLeft: "10px",
                 }}
               >
                 Chart:
@@ -174,36 +215,36 @@ function ActionPanel() {
               <img
                 src="https://EijiGorilla.github.io/Symbols/Land_Subsidence/Chart_displacement.svg"
                 alt="Overview"
-                height={'100%'}
-                width={'100%'}
-                style={{ marginBottom: 'auto', marginTop: 'auto' }}
+                height={"100%"}
+                width={"100%"}
+                style={{ marginBottom: "auto", marginTop: "auto" }}
               />
             </div>
             <div>
               <img
                 src="https://EijiGorilla.github.io/Symbols/Land_Subsidence/Chart_scenario_status_quo.svg"
                 alt="Overview"
-                height={'100%'}
-                width={'100%'}
-                style={{ marginBottom: 'auto', marginTop: 'auto' }}
+                height={"100%"}
+                width={"100%"}
+                style={{ marginBottom: "auto", marginTop: "auto" }}
               />
             </div>
             <div>
               <img
                 src="https://EijiGorilla.github.io/Symbols/Land_Subsidence/Chart_scenarios.svg"
                 alt="Overview"
-                height={'100%'}
-                width={'100%'}
-                style={{ marginBottom: 'auto', marginTop: 'auto' }}
+                height={"100%"}
+                width={"100%"}
+                style={{ marginBottom: "auto", marginTop: "auto" }}
               />
             </div>
             <div>
               <div
                 style={{
-                  fontSize: '16px',
+                  fontSize: "16px",
                   color: secondary_color,
-                  marginTop: '10px',
-                  marginLeft: '10px',
+                  marginTop: "10px",
+                  marginLeft: "10px",
                 }}
               >
                 Hot Spot Analysis:
@@ -211,14 +252,18 @@ function ActionPanel() {
               <img
                 src="https://EijiGorilla.github.io/Symbols/Land_Subsidence/Hot_spot_analysis.svg"
                 alt="Overview"
-                height={'100%'}
-                width={'100%'}
-                style={{ marginBottom: 'auto', marginTop: 'auto' }}
+                height={"100%"}
+                width={"100%"}
+                style={{ marginBottom: "auto", marginTop: "auto" }}
               />
             </div>
           </div>
         )}
       </CalcitePanel>
+
+      {nextWidget === "elevation-profile" && nextWidget !== activeWidget && (
+        <ElevationProfile />
+      )}
     </CalciteShellPanel>
   );
 }

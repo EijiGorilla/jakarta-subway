@@ -1,14 +1,17 @@
-import '@esri/calcite-components/dist/components/calcite-button';
-import { CalciteButton } from '@esri/calcite-components-react';
-import { use, useState, useEffect } from 'react';
-import { MyContext } from '../contexts/MyContext';
-import Viewpoint from '@arcgis/core/Viewpoint';
+import "@esri/calcite-components/dist/components/calcite-button";
+import { CalciteButton } from "@esri/calcite-components-react";
+import { use, useState, useEffect } from "react";
+import Viewpoint from "@arcgis/core/Viewpoint";
+import { MyContext } from "../contexts/MyContext";
 
 export default function ViewSwitch() {
-  const { updateViewchange, updateIs3D, updateViewpoint, is3D } = use(MyContext);
+  const { updateViewchange, updateIs3D, updateViewpoint, is3D } =
+    use(MyContext);
 
-  const [labelViewtype, setLabelViewtype] = useState('2D');
-  const arcgisMap = document.querySelector(is3D === false ? 'arcgis-map' : 'arcgis-scene');
+  const [labelViewtype, setLabelViewtype] = useState("2D");
+  const arcgisMap = document.querySelector(
+    is3D === false ? "arcgis-map" : "arcgis-scene"
+  );
 
   const switchView = () => {
     // current viewpoint
@@ -37,7 +40,7 @@ export default function ViewSwitch() {
         targetGeometry: newTargetGeometry,
       });
       updateViewpoint(newViewpoint);
-      setLabelViewtype('3D');
+      setLabelViewtype("3D");
     } else {
       activeViewpoint.scale *= scaleConversionFactor;
       const newScale = activeViewpoint.scale;
@@ -47,26 +50,26 @@ export default function ViewSwitch() {
         targetGeometry: newTargetGeometry,
       });
       updateViewpoint(newViewpoint);
-      setLabelViewtype('2D');
+      setLabelViewtype("2D");
     }
   };
 
   useEffect(() => {
-    updateViewchange(is3D === false ? 'arcgis-map' : 'arcgis-scene');
+    updateViewchange(is3D === false ? "arcgis-map" : "arcgis-scene");
   }, [is3D]);
 
   return (
     <div
       style={{
-        position: 'fixed',
+        position: "fixed",
         zIndex: 10,
-        backgroundColor: '#252525',
-        marginLeft: '5px',
-        marginTop: '5px',
+        backgroundColor: "#252525",
+        marginLeft: "5px",
+        marginTop: "5px",
       }}
     >
       <CalciteButton onClick={switchView} label="3D">
-        <span style={{ color: 'white' }}>{labelViewtype}</span>
+        <span style={{ color: "white" }}>{labelViewtype}</span>
       </CalciteButton>
     </div>
   );

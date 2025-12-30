@@ -63,7 +63,7 @@ function App() {
   const [viewchange, setViewchange] = useState<any>("arcgis-map");
   const [is3D, setIs3D] = useState(false);
   const [viewpoint, setViewpoint] = useState(initialViewpoint);
-
+  const [activewidget, setActivewidget] = useState("layers");
   const updateStartyear = (newStartyear: any) => {
     setStartYear(newStartyear);
   };
@@ -108,6 +108,10 @@ function App() {
     setViewpoint(newViewpoint);
   };
 
+  const updateActivewidget = (newWidget: any) => {
+    setActivewidget(newWidget);
+  };
+
   return (
     <>
       {loggedInState === true ? (
@@ -125,6 +129,7 @@ function App() {
               viewchange,
               is3D,
               viewpoint,
+              activewidget,
               updateStartyear,
               updateEndyear,
               updateNewdates,
@@ -136,6 +141,7 @@ function App() {
               updateViewchange,
               updateIs3D,
               updateViewpoint,
+              updateActivewidget,
             }}
           >
             <ViewSwitch />
