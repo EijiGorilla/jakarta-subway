@@ -1,38 +1,49 @@
-.App {
-  text-align: center;
+/*https://developers.arcgis.com/calcite-design-system/foundations/colors/ */
+calcite-list-item {
+  white-space: pre-line;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+calcite-button {
+  --calcite-button-background-color: #414141; /* Default color (e.g., blue) */
+  --calcite-button-icon-color: #ffffff;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+calcite-label {
+  --calcite-color-text-1: #9ca3af;
+  --calcite-font-size--1: 1.1rem;
+  /* margin-top: 1vh; */
+  margin-left: 15px;
+  margin-top: 5px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+calcite-action-bar {
+  --calcite-color-border-3: #555555;
+  --calcite-color-text-3: #bfbfbf;
 }
 
-.App-link {
-  color: #61dafb;
+calcite-shell {
+  --calcite-color-foreground-1: #2b2b2b;
+  --calcite-color-text-1: #ffffff;
+  --calcite-color-background: #2b2b2b;
+  --calcite-color-border-3: #555555;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+calcite-list {
+  overflow-y: auto;
+  /* --calcite-color-border-3: #555555; */
+}
+
+calcite-avatar {
+  margin-inline-end: 0.3rem;
+  margin-top: 0.15rem;
+}
+
+calcite-tabs {
+  --calcite-color-border-3: #555555;
+  --calcite-color-border-2: #555555;
+  --calcite-color-border-1: #555555;
+  border-style: solid;
+  border-width: 0.7;
+  border-top: rgb(0, 0, 0, 0);
+  width: 50vh;
 }
