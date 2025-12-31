@@ -18,12 +18,13 @@ import {
   sar_points_layer_tile,
   displacement_groupLayer,
   sar_elevation_layer,
+  fishnet_3d_layer,
 } from "../layers";
 import "@esri/calcite-components/dist/components/calcite-button";
 import { MyContext } from "../contexts/MyContext";
 import "@esri/calcite-components/dist/components/calcite-button";
 import { disableZooming, OverviewExtentsetup } from "../Query";
-import ElevationProfile from "./ElevationProfile";
+import "@arcgis/map-components/components/arcgis-elevation-profile";
 
 // 2 D <-> 3D
 // https://developers.arcgis.com/javascript/latest/sample-code/views-switch-2d-3d/
@@ -57,11 +58,31 @@ export default function MapDisplay() {
     }
 
     if (is3D) {
+      arcgisMap.map.remove(sar_points_layer_tile);
       arcgisMap?.map.ground.layers.add(sar_elevation_layer);
       arcgisMap.map.remove(displacement_groupLayer);
+      arcgisMap.map.add(fishnet_3d_layer);
       arcgisMap.map.add(alingment_line_layer);
     }
   }, [mapView]);
+
+  useEffect(() => {
+    const elevationProfileElement = document.querySelector(
+      "arcgis-elevation-profile"
+    );
+    if (activewidget === "elevation-profile") {
+      console.log(elevationProfileElement);
+      elevationProfileElement.profiles = [
+        {
+          type: "ground",
+          title: "Displacement",
+        },
+        // {
+        //   type: "view",
+        // },
+      ];
+    }
+  }, [activewidget]);
 
   return (
     <>
@@ -69,13 +90,17 @@ export default function MapDisplay() {
         <arcgis-scene
           basemap="dark-gray-vector"
           viewingMode="local"
-          //ground="world-elevation"  For elevation profile, remove this.
           viewpoint={viewpoint}
           onarcgisViewReadyChange={(event) => {
             setMapView(event.target);
           }}
         >
-          {activewidget === "elevation-profile" && <ElevationProfile />}
+          {activewidget === "elevation-profile" && (
+            <arcgis-elevation-profile
+              slot="bottom-right"
+              unit="millimeters"
+            ></arcgis-elevation-profile>
+          )}
           <arcgis-map
             style={{
               position: "fixed",

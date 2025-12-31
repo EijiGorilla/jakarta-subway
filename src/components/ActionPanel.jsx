@@ -23,7 +23,6 @@ import DatePicker from "./DatePicker";
 import MinMaxRecord from "./MinMaxRecord";
 import { layerInfos_sar_hotspot } from "../layers";
 import { MyContext } from "../contexts/MyContext";
-import ElevationProfile from "./ElevationProfile";
 
 function ActionPanel() {
   const { updateActivewidget, viewchange, is3D } = use(MyContext);
@@ -97,7 +96,7 @@ function ActionPanel() {
           <CalciteAction
             data-action-id="elevation-profile"
             icon="graph-time-series"
-            text="Elevation profile"
+            text="Displacement profile"
             id="elevation-profile"
             onClick={(event) => {
               setNextWidget(event.target.id);
@@ -260,10 +259,6 @@ function ActionPanel() {
           </div>
         )}
       </CalcitePanel>
-
-      {nextWidget === "elevation-profile" && nextWidget !== activeWidget && (
-        <ElevationProfile />
-      )}
     </CalciteShellPanel>
   );
 }
