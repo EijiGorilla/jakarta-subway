@@ -64,6 +64,8 @@ function App() {
   const [is3D, setIs3D] = useState(false);
   const [viewpoint, setViewpoint] = useState(initialViewpoint);
   const [activewidget, setActivewidget] = useState("layers");
+  const [elevprofileready, SetElevprofileready] = useState(undefined);
+
   const updateStartyear = (newStartyear: any) => {
     setStartYear(newStartyear);
   };
@@ -112,6 +114,10 @@ function App() {
     setActivewidget(newWidget);
   };
 
+  const updateElevprofileready = (newElev: any) => {
+    SetElevprofileready(newElev);
+  };
+
   return (
     <>
       {loggedInState === true ? (
@@ -130,6 +136,7 @@ function App() {
               is3D,
               viewpoint,
               activewidget,
+              elevprofileready,
               updateStartyear,
               updateEndyear,
               updateNewdates,
@@ -142,6 +149,7 @@ function App() {
               updateIs3D,
               updateViewpoint,
               updateActivewidget,
+              updateElevprofileready,
             }}
           >
             <ViewSwitch />

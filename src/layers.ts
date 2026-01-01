@@ -9,14 +9,11 @@ import {
 import {
   admin_boudnary_layer_title,
   color_hotspot,
-  date_sar_suffix,
-  dates_sar,
   iqr_date_field,
   iqr_max_field,
   kabupaten_name_field,
   label_hotspot,
   point_chart_y_variable,
-  point_color,
   values_hotspot,
   view_maxScale,
   view_maxScale_tile,
@@ -28,8 +25,6 @@ import Basemap from "@arcgis/core/Basemap";
 import BasemapStyle from "@arcgis/core/support/BasemapStyle";
 import TileLayer from "@arcgis/core/layers/TileLayer";
 import ElevationLayer from "@arcgis/core/layers/ElevationLayer";
-import ColorVariable from "@arcgis/core/renderers/visualVariables/ColorVariable";
-import OpacityVariable from "@arcgis/core/renderers/visualVariables/OpacityVariable";
 import { visualVariables_fishnet } from "./Query";
 
 // layer title

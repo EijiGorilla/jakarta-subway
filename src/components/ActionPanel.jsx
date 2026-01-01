@@ -25,7 +25,8 @@ import { layerInfos_sar_hotspot } from "../layers";
 import { MyContext } from "../contexts/MyContext";
 
 function ActionPanel() {
-  const { updateActivewidget, viewchange, is3D } = use(MyContext);
+  const { updateElevprofileready, updateActivewidget, viewchange, is3D } =
+    use(MyContext);
   const arcgisMapLegend = document.querySelector("arcgis-legend");
   const [activeWidget, setActiveWidget] = useState(null);
   const [nextWidget, setNextWidget] = useState(null);
@@ -58,6 +59,10 @@ function ActionPanel() {
       );
       actionNextWidget.hidden = false;
     }
+
+    updateElevprofileready(
+      nextWidget === "elevation-profile" ? "ready" : undefined
+    );
   });
 
   return (

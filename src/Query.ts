@@ -21,13 +21,10 @@ import {
   point_color,
   visualVariable_field,
 } from "./uniqueValues";
-import { ArcgisMap } from "@arcgis/map-components/dist/components/arcgis-map";
 import Graphic from "@arcgis/core/Graphic";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import * as promiseUtils from "@arcgis/core/core/promiseUtils";
 import OpacityVariable from "@arcgis/core/renderers/visualVariables/OpacityVariable";
-
-const arcgisMap = document.querySelector("arcgis-map") as ArcgisMap;
 
 // total records for checking
 // export async function totalRecords() {
@@ -337,21 +334,6 @@ export function zoomToMinMaxRecord(view: any, value: any, end_year_date: any) {
         highlightSelect.remove();
       });
     });
-  });
-}
-
-export function zoomToLayer(layer: any) {
-  return layer.queryExtent().then((response: any) => {
-    arcgisMap?.view
-      .goTo(response.extent, {
-        //response.extent
-        //speedFactor: 2,
-      })
-      .catch(function (error) {
-        if (error.name !== "AbortError") {
-          console.error(error);
-        }
-      });
   });
 }
 

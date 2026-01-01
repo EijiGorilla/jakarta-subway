@@ -5,8 +5,13 @@ import Viewpoint from "@arcgis/core/Viewpoint";
 import { MyContext } from "../contexts/MyContext";
 
 export default function ViewSwitch() {
-  const { updateViewchange, updateIs3D, updateViewpoint, is3D } =
-    use(MyContext);
+  const {
+    updateViewchange,
+    updateIs3D,
+    updateViewpoint,
+    is3D,
+    elevprofileready,
+  } = use(MyContext);
 
   const [labelViewtype, setLabelViewtype] = useState("2D");
   const arcgisMap = document.querySelector(
@@ -33,7 +38,7 @@ export default function ViewSwitch() {
     if (is3D === false ? true : false) {
       activeViewpoint.scale /= scaleConversionFactor;
       const newScale = activeViewpoint.scale;
-      console.log(newScale);
+
       const newTargetGeometry = activeViewpoint.targetGeometry;
       const newViewpoint = new Viewpoint({
         scale: newScale,
@@ -59,18 +64,26 @@ export default function ViewSwitch() {
   }, [is3D]);
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        zIndex: 10,
-        backgroundColor: "#252525",
-        marginLeft: "5px",
-        marginTop: "5px",
-      }}
-    >
-      <CalciteButton onClick={switchView} label="3D">
-        <span style={{ color: "white" }}>{labelViewtype}</span>
-      </CalciteButton>
-    </div>
+    <>
+      {/* Make sure that while elevation profile is on (displayed), 2D/3D switch is hidden.
+    This is to warrant the application of the elevation profile during the lifecycle. */}
+      {elevprofileready === "ready" ? (
+        <div></div>
+      ) : (
+        <div
+          style={{
+            position: "fixed",
+            zIndex: 10,
+            backgroundColor: "#252525",
+            marginLeft: "5px",
+            marginTop: "5px",
+          }}
+        >
+          <CalciteButton onClick={switchView} label="3D">
+            <span style={{ color: "white" }}>{labelViewtype}</span>
+          </CalciteButton>
+        </div>
+      )}
+    </>
   );
 }
