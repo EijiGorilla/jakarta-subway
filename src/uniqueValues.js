@@ -68,10 +68,15 @@ export const hotspot_field = "Gi_Bin";
 export const object_id = "OBJECTID";
 export const point_chart_y_variable = "DispR_mmyr";
 
+// Fishnet fields
+export const visualVariable_field = "height";
+
 // Boundary fields
 export const kabupaten_name_field = "NAMOBJ";
 
 // IQR field for symbology
+export const min_symbology = -7.9;
+export const max_symbology = 8.4;
 export const iqr_date_field = "dates";
 export const iqr_min_field = "min_";
 export const iqr_max_field = "max_";
@@ -149,37 +154,7 @@ export const view_maxScale_tile = 4540.19999912944;
 export const view_minScale = 5000;
 export const view_minScale_zoom = 7500;
 export const view_maxScale = 0;
-// export const point_color = ['#e04635', '#f9fecc', '#5f87c1'];
-export const point_color = [
-  [224, 70, 53, 0.7],
-  [249, 254, 204, 0.7],
-  [95, 135, 193, 0.7],
-];
-// export const point_default_renderer = new SimpleRenderer({
-//   symbol: new SimpleMarkerSymbol({
-//     style: 'circle',
-//     color: [0, 0, 0],
-//     outline: {
-//       color: [0, 0, 0, 0],
-//       width: 0.5,
-//     },
-//     size: '6.5px',
-//   }),
-//   visualVariables: [
-//     new ColorVariable({
-//       field: latest_date_field,
-//       stops: [
-//         { value: -200, color: '#d7191c', label: '< -200' }, // dark red
-//         { value: -120, color: '#fdae61' }, // orange
-//         { value: -15, color: '#ffffbf' }, // yellow
-//         { value: 0, color: '#ffffff', label: '0' },
-//         { value: 80, color: '#3C9BE6', label: '> 80' },
-//       ],
-//     }),
-//   ],
-
-//   // https://developers.arcgis.com/javascript/latest/visualization/symbols-color-ramps/esri-color-ramps/
-// });
+export const point_color = ["#e04635", "#f9fecc", "#5f87c1"];
 
 // Hot Spot renderer
 export const values_hotspot = [-3, -2, -1, 0, 1, 2, 3];

@@ -51,6 +51,7 @@ export default function MapDisplay() {
 
       arcgisMap?.viewOnReady(async () => {
         arcgisOverviewMap.map.add(overview_alingment_line_layer);
+
         await arcgisOverviewMap.viewOnReady();
         disableZooming(arcgisOverviewMap.view);
         OverviewExtentsetup(arcgisMap, arcgisOverviewMap);
@@ -59,8 +60,9 @@ export default function MapDisplay() {
 
     if (is3D) {
       arcgisMap.map.remove(sar_points_layer_tile);
-      arcgisMap?.map.ground.layers.add(sar_elevation_layer);
       arcgisMap.map.remove(displacement_groupLayer);
+
+      arcgisMap?.map.ground.layers.add(sar_elevation_layer);
       arcgisMap.map.add(fishnet_3d_layer);
       arcgisMap.map.add(alingment_line_layer);
     }
@@ -77,9 +79,12 @@ export default function MapDisplay() {
           type: "ground",
           title: "Displacement",
         },
-        // {
-        //   type: "view",
-        // },
+      ];
+      elevationProfileElement.unitOptions = [
+        {
+          elevation: "millimeters",
+          distance: "meters",
+        },
       ];
     }
   }, [activewidget]);

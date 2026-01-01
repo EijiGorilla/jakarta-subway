@@ -29,6 +29,8 @@ import BasemapStyle from "@arcgis/core/support/BasemapStyle";
 import TileLayer from "@arcgis/core/layers/TileLayer";
 import ElevationLayer from "@arcgis/core/layers/ElevationLayer";
 import ColorVariable from "@arcgis/core/renderers/visualVariables/ColorVariable";
+import OpacityVariable from "@arcgis/core/renderers/visualVariables/OpacityVariable";
+import { visualVariables_fishnet } from "./Query";
 
 // layer title
 export const sar_point_layer_title = "Land Displacement (mm)";
@@ -224,54 +226,15 @@ export const iqr_table = new FeatureLayer({
 });
 
 // Fishenet polygon in 3D
-
-const stops = [
-  {
-    value: -7.9,
-    color: point_color[0],
-    label: "< -7.9",
-  },
-  {
-    value: 0,
-    color: point_color[1],
-    label: "0",
-  },
-  {
-    value: 8.4,
-    color: point_color[2],
-    label: "> 8.4",
-  },
-];
-
-const new_visualVariable = [
-  new ColorVariable({
-    field: "height",
-    stops: stops,
-    legendOptions: {
-      title: dates_sar[dates_sar.length - 1].replace(date_sar_suffix, ""),
-    },
-  }),
-];
-
 const new_polygon_renderer = new SimpleRenderer({
   symbol: new SimpleFillSymbol({
     style: undefined,
     color: undefined,
     outline: undefined,
   }),
-  visualVariables: new_visualVariable,
+  visualVariables: visualVariables_fishnet,
 });
 
-// const fishnet_renderer = new SimpleRenderer({
-//   symbol: new SimpleFillSymbol({
-//     style: "solid",
-//     color: undefined,
-//     outline: {
-//       color: "black",
-//       width: "0.5px",
-//     },
-//   }),
-// });
 export const fishnet_3d_layer = new FeatureLayer({
   portalItem: {
     id: "498d45f2db7a4367b0c8c2d50d085595",
