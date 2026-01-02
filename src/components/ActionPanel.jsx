@@ -157,11 +157,22 @@ function ActionPanel() {
         {/* <ReferencePointSubtraction /> */}
 
         {/* Add Legend */}
-        <div style={{ marginLeft: "15px" }}>
-          <arcgis-legend
-            referenceElement={viewchange}
-            id="arcgis-map-legend"
-          ></arcgis-legend>
+        <div
+          style={{
+            fontSize: action_pane_title_font_size,
+            color: secondary_color,
+            marginBottom: margin_bottom_title_item,
+            marginLeft: margin_left_pane_title,
+            marginTop: "1.5vh",
+          }}
+        >
+          Legend:
+          <div style={{ marginLeft: "15px" }}>
+            <arcgis-legend
+              referenceElement={viewchange}
+              id="arcgis-map-legend"
+            ></arcgis-legend>
+          </div>
         </div>
       </CalcitePanel>
 

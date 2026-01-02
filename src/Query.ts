@@ -186,7 +186,7 @@ export async function updateRendererForSymbology(last_date: any) {
   const opacityVariable_stops = values.map((value: any, index: any) => {
     return Object.assign({
       value: value,
-      opacity: index === 1 ? 0.2 : 0.9,
+      opacity: index === 1 ? 0.1 : 0.9,
     });
   });
 
@@ -252,7 +252,7 @@ const opacityVariable_stops = [
   },
   {
     value: 0,
-    opacity: 0.2,
+    opacity: 0.1,
   },
   {
     value: max_symbology,

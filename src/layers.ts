@@ -98,7 +98,7 @@ export const sar_points_layer = new FeatureLayer({
 });
 
 export const sar_points_layer_tile = new TileLayer({
-  url: "https://gis.railway-sector.com/server/rest/services/Hosted/j_displacement/MapServer",
+  url: "https://gis.railway-sector.com/server/rest/services/Hosted/j_displacement_tile/MapServer",
   maxScale: view_maxScale_tile,
 });
 sar_points_layer_tile.listMode = "hide";
@@ -227,6 +227,7 @@ const new_polygon_renderer = new SimpleRenderer({
     color: undefined,
     outline: undefined,
   }),
+  label: "Displacement is exaggerated for improved visualization",
   visualVariables: visualVariables_fishnet,
 });
 
@@ -240,13 +241,14 @@ export const fishnet_3d_layer = new FeatureLayer({
   minScale: 150000,
   maxScale: 0,
   popupEnabled: false,
+  hasZ: true,
   // elevationInfo: {
   //   mode: "absolute-height",
   //   featureExpressionInfo: {
   //     expression: "(Geometry($feature).z) * -1",
   //   },
   // },
-  title: "Displacement (exaggerated x 1000)",
+  title: "Displacement (exaggerated)",
   renderer: new_polygon_renderer,
 });
 
@@ -299,6 +301,44 @@ export const sar_elevation_layer = new ElevationLayer({
     },
   },
 });
+
+/////////////////////////////
+// let colors = [
+//   new Color("#6b2600ff"),
+//   new Color("#b59273ff"),
+//   new Color("#fffee6ff"),
+//   new Color("#809298ff"),
+//   new Color("#002649ff"),
+// ];
+
+// // Create the color ramp
+// const colorRamp = rasterColorRamps.createColorRamp({ colors: colors });
+
+// // Instantiate the renderer
+// const renderer = new RasterStretchRenderer({
+//   colorRamp: colorRamp,
+//   stretchType: "min-max", // Example stretch type
+//   dynamicRangeAdjustment: true, // Enable DRA
+// });
+
+// export const sar_elevation_imagery = new ImageryLayer({
+//   portalItem: {
+//     id: "66a0f9e24c5a454a8c80a03d93c056aa",
+//     portal: {
+//       url: "https://gis.railway-sector.com/portal",
+//     },
+//   },
+//   format: "lerc",
+//   elevationInfo: {
+//     mode: "absolute-height",
+//     // featureExpressionInfo: {
+//     //   expression: "Geometry($feature).z * 100",
+//     // },
+//     unit: "meters",
+//   },
+//   // url: https://gis.railway-sector.com/server/rest/services/j_subway_20251006_m/ImageServer,
+//   renderer: renderer,
+// });
 
 // LayerInfos for SAR and Hot Spot layers
 export const layerInfos_sar_hotspot = [

@@ -44,13 +44,12 @@ export default function MapDisplay() {
 
   useEffect(() => {
     if (mapView) {
+      if (arcgisMap) {
+        arcgisMap.view.ui.components = [];
+        arcgisMap.map.ground.navigationConstraint = "none";
+        arcgisMap.map.ground.opacity = 0.7;
+      }
       if (mapView.id === "arcgis-map-id") {
-        if (arcgisMap) {
-          arcgisMap.view.ui.components = [];
-          arcgisMap.map.ground.navigationConstraint = "none";
-          arcgisMap.map.ground.opacity = 0.7;
-        }
-
         // Remove layers
         arcgisMap?.map?.remove(fishnet_3d_layer);
 
@@ -85,6 +84,8 @@ export default function MapDisplay() {
 
     // Ensure to use new Ground method
     if (activewidget === "elevation-profile" && elevationProfileElement) {
+      arcgisMap.map.ground.navigationConstraint = "none";
+      arcgisMap.map.ground.opacity = 0.7;
       // update ground in scene
       setNewGround(
         new Ground({
@@ -95,7 +96,7 @@ export default function MapDisplay() {
       elevationProfileElement.profiles = [
         {
           type: "ground",
-          title: "Displacement",
+          title: "Displacement (raw scale)",
         },
       ];
     }

@@ -154,7 +154,7 @@ export const view_maxScale_tile = 4540.19999912944;
 export const view_minScale = 5000;
 export const view_minScale_zoom = 7500;
 export const view_maxScale = 0;
-export const point_color = ["#e04635", "#f9fecc", "#5f87c1"];
+export const point_color = ["#e04635e6", "#f9fecc1a", "#5f87c1e6"];
 
 // Hot Spot renderer
 export const values_hotspot = [-3, -2, -1, 0, 1, 2, 3];
