@@ -33,7 +33,11 @@ import Ground from "@arcgis/core/Ground";
 export default function MapDisplay() {
   const { activewidget, viewpoint, is3D } = use(MyContext);
   const [mapView, setMapView] = useState();
-  const [newGround, setNewGround] = useState();
+  const [newGround, setNewGround] = useState(
+    new Ground({
+      layers: sar_elevation_layer,
+    })
+  );
 
   const arcgisMap = document.querySelector(
     is3D === false ? "arcgis-map" : "arcgis-scene"
@@ -42,13 +46,16 @@ export default function MapDisplay() {
     is3D === false ? "#arcgis-overview-map" : "#arcgis-overview-scene"
   );
 
+  function mapViewEnvironment() {
+    arcgisMap.view.ui.components = [];
+    arcgisMap.map.ground.navigationConstraint = "none";
+    arcgisMap.map.ground.opacity = 0.7;
+  }
+
   useEffect(() => {
     if (mapView) {
-      if (arcgisMap) {
-        arcgisMap.view.ui.components = [];
-        arcgisMap.map.ground.navigationConstraint = "none";
-        arcgisMap.map.ground.opacity = 0.7;
-      }
+      arcgisMap && mapViewEnvironment();
+
       if (mapView.id === "arcgis-map-id") {
         // Remove layers
         arcgisMap?.map?.remove(fishnet_3d_layer);
@@ -77,28 +84,21 @@ export default function MapDisplay() {
   }, [mapView, arcgisMap, arcgisOverviewMap]);
 
   useEffect(() => {
-    // Add elevationProfileElement inside useEffect
     const elevationProfileElement = document.querySelector(
       "arcgis-elevation-profile"
     );
 
     // Ensure to use new Ground method
     if (activewidget === "elevation-profile" && elevationProfileElement) {
-      arcgisMap.map.ground.navigationConstraint = "none";
-      arcgisMap.map.ground.opacity = 0.7;
-      // update ground in scene
-      setNewGround(
-        new Ground({
-          layers: sar_elevation_layer,
-        })
-      );
-
+      arcgisMap && mapViewEnvironment();
       elevationProfileElement.profiles = [
         {
           type: "ground",
           title: "Displacement (raw scale)",
         },
       ];
+    } else {
+      arcgisMap && mapViewEnvironment();
     }
   }, [activewidget]);
 
