@@ -231,7 +231,8 @@ const colorVariable_stops = [
   {
     value: min_symbology,
     color: point_color[0],
-    label: "< " + min_symbology.toString(),
+    // label: "< " + min_symbology.toString(),
+    label: "Higher",
   },
   {
     value: 0,
@@ -241,7 +242,8 @@ const colorVariable_stops = [
   {
     value: max_symbology,
     color: point_color[2],
-    label: "> " + max_symbology.toString(),
+    // label: "> " + max_symbology.toString(),
+    label: "Lower",
   },
 ];
 

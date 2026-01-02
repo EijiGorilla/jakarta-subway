@@ -227,7 +227,7 @@ const new_polygon_renderer = new SimpleRenderer({
     color: undefined,
     outline: undefined,
   }),
-  label: "Displacement is exaggerated for improved visualization",
+  // label: "Displays the area of land subsidence",
   visualVariables: visualVariables_fishnet,
 });
 
@@ -248,7 +248,7 @@ export const fishnet_3d_layer = new FeatureLayer({
   //     expression: "(Geometry($feature).z) * -1",
   //   },
   // },
-  title: "Displacement (exaggerated)",
+  title: "Magnitude of Land Subsidence",
   renderer: new_polygon_renderer,
 });
 
