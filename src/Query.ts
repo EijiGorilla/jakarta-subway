@@ -240,6 +240,11 @@ const colorVariable_stops_las = values_las.map((value: any, index: any) => {
 
 export const new_point_renderer_las = new PointCloudStretchRenderer({
   field: "ELEVATION",
+  colorModulation: {
+    field: "ELEVATION",
+    minValue: -35,
+    maxValue: 14,
+  },
   stops: colorVariable_stops_las,
   pointSizeAlgorithm: {
     type: "fixed-size",

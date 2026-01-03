@@ -37,7 +37,7 @@ export const hot_spot_analysis_layer_title = "Hot Spot Analysis";
 // subway alingment line
 const alignmentRenderer = new SimpleRenderer({
   symbol: new SimpleLineSymbol({
-    color: "#ff0000",
+    color: "orange",
     width: "2px",
   }),
 });

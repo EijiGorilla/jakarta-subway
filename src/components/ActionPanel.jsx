@@ -97,7 +97,7 @@ function ActionPanel() {
           }}
         ></CalciteAction>
 
-        {is3D && (
+        {!is3D && (
           <CalciteAction
             data-action-id="elevation-profile"
             icon="graph-time-series"
@@ -163,7 +163,7 @@ function ActionPanel() {
             color: secondary_color,
             marginBottom: margin_bottom_title_item,
             marginLeft: margin_left_pane_title,
-            marginTop: "1.5vh",
+            marginTop: "1vh",
           }}
         >
           Legend:

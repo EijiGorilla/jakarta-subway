@@ -47,3 +47,12 @@ calcite-tabs {
   border-top: rgb(0, 0, 0, 0);
   width: 50vh;
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background-color: #aaa;
+}
+::-webkit-scrollbar-thumb {
+  background: #000;
+}

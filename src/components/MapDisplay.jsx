@@ -95,7 +95,7 @@ export default function MapDisplay() {
       elevationProfileElement.profiles = [
         {
           type: "ground",
-          title: "Displacement (raw scale)",
+          title: "Subsidence (raw scale)",
         },
       ];
     } else {
@@ -118,12 +118,6 @@ export default function MapDisplay() {
             setMapView(event.target);
           }}
         >
-          {activewidget === "elevation-profile" && (
-            <arcgis-elevation-profile
-              slot="bottom-right"
-              unit="millimeters"
-            ></arcgis-elevation-profile>
-          )}
           <arcgis-map
             style={{
               position: "fixed",
@@ -147,13 +141,21 @@ export default function MapDisplay() {
       ) : (
         <arcgis-map
           basemap="dark-gray-vector"
-          ground="world-elevation"
+          ground={
+            activewidget === "elevation-profile" ? newGround : "world-elevation"
+          }
           viewpoint={viewpoint}
           id="arcgis-map-id"
           onarcgisViewReadyChange={(event) => {
             setMapView(event.target);
           }}
         >
+          {activewidget === "elevation-profile" && (
+            <arcgis-elevation-profile
+              slot="bottom-right"
+              unit="millimeters"
+            ></arcgis-elevation-profile>
+          )}
           {/* Overview Map */}
           <arcgis-map
             style={{
