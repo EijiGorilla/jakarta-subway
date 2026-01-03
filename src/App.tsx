@@ -64,7 +64,7 @@ function App() {
   const [is3D, setIs3D] = useState(false);
   const [viewpoint, setViewpoint] = useState(initialViewpoint);
   const [activewidget, setActivewidget] = useState("layers");
-  const [elevprofileready, SetElevprofileready] = useState(undefined);
+  const [elevprofileready, setElevprofileready] = useState(undefined);
 
   const updateStartyear = (newStartyear: any) => {
     setStartYear(newStartyear);
@@ -115,7 +115,7 @@ function App() {
   };
 
   const updateElevprofileready = (newElev: any) => {
-    SetElevprofileready(newElev);
+    setElevprofileready(newElev);
   };
 
   return (

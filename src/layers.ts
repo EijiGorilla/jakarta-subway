@@ -13,7 +13,6 @@ import {
   iqr_max_field,
   kabupaten_name_field,
   label_hotspot,
-  point_chart_y_variable,
   values_hotspot,
   view_maxScale,
   view_maxScale_tile,
@@ -25,10 +24,14 @@ import Basemap from "@arcgis/core/Basemap";
 import BasemapStyle from "@arcgis/core/support/BasemapStyle";
 import TileLayer from "@arcgis/core/layers/TileLayer";
 import ElevationLayer from "@arcgis/core/layers/ElevationLayer";
-import { visualVariables_fishnet } from "./Query";
+import { new_point_renderer_las, visualVariables_fishnet } from "./Query";
+
+import PointCloudLayer from "@arcgis/core/layers/PointCloudLayer";
 
 // layer title
-export const sar_point_layer_title = "Land Displacement (mm)";
+export const sar_point_layer_title = "Subsidence (mm)";
+export const sar_points_las_layer_title = "Points";
+export const sar_points_tile_layer_title = "Surface";
 export const hot_spot_analysis_layer_title = "Hot Spot Analysis";
 
 // subway alingment line
@@ -87,14 +90,25 @@ export const sar_points_layer = new FeatureLayer({
   maxScale: view_maxScale,
   popupEnabled: false,
   title: sar_point_layer_title,
-  elevationInfo: {
-    featureExpressionInfo: {
-      expression: "$feature." + point_chart_y_variable, // `$feature[${elevField}]`,
+  // elevationInfo: {
+  //   featureExpressionInfo: {
+  //     expression: "$feature." + point_chart_y_variable, // `$feature[${elevField}]`,
+  //   },
+  //   // mode: 'relative-to-scene',
+  //   mode: "relative-to-ground",
+  //   unit: "millimeters",
+  // },
+});
+
+export const sar_points_las = new PointCloudLayer({
+  portalItem: {
+    id: "e4f97b8fb7db4cafbd94c1dd9b350c01",
+    portal: {
+      url: "https://gis.railway-sector.com/portal",
     },
-    // mode: 'relative-to-scene',
-    mode: "relative-to-ground",
-    unit: "millimeters",
   },
+  renderer: new_point_renderer_las,
+  title: sar_points_las_layer_title,
 });
 
 export const sar_points_layer_tile = new TileLayer({
@@ -248,15 +262,22 @@ export const fishnet_3d_layer = new FeatureLayer({
   //     expression: "(Geometry($feature).z) * -1",
   //   },
   // },
-  title: "Magnitude of Land Subsidence",
+  title: sar_points_tile_layer_title,
   renderer: new_polygon_renderer,
 });
 
 export const displacement_groupLayer = new GroupLayer({
-  title: "Land Displacement",
+  title: "Land Subsidence",
   visible: true,
   visibilityMode: "exclusive",
   layers: [hot_spot_layer, sar_points_layer],
+});
+
+export const displacement_grouLayer_magnitude = new GroupLayer({
+  title: "Magnitude of Land Subsidence",
+  visible: true,
+  visibilityMode: "exclusive",
+  layers: [sar_points_las, fishnet_3d_layer],
 });
 
 export const admin_boundary_groupLayer = new GroupLayer({
@@ -356,6 +377,11 @@ export const layerInfos_sar_hotspot = [
   },
   {
     layer: fishnet_3d_layer,
+    title: "Magnitude of Land Subsidence",
+  },
+  {
+    layer: sar_points_las,
+    title: "Magnitude of Land Subsidence",
   },
 ];
 

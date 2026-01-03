@@ -25,6 +25,7 @@ import Graphic from "@arcgis/core/Graphic";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import * as promiseUtils from "@arcgis/core/core/promiseUtils";
 import OpacityVariable from "@arcgis/core/renderers/visualVariables/OpacityVariable";
+import PointCloudStretchRenderer from "@arcgis/core/renderers/PointCloudStretchRenderer";
 
 // total records for checking
 // export async function totalRecords() {
@@ -225,6 +226,26 @@ export async function updateRendererForSymbology(last_date: any) {
 
   return new_point_renderer;
 }
+
+// sar point las symbology
+const values_las = [min_symbology, 0, max_symbology];
+const colorVariable_stops_las = values_las.map((value: any, index: any) => {
+  return Object.assign({
+    value: value,
+    color: point_color[index],
+    label:
+      index === 0 ? "Higher" : index === 1 ? "0" : index === 2 ? "Lower" : "",
+  });
+});
+
+export const new_point_renderer_las = new PointCloudStretchRenderer({
+  field: "ELEVATION",
+  stops: colorVariable_stops_las,
+  pointSizeAlgorithm: {
+    type: "fixed-size",
+    size: 6.5,
+  },
+});
 
 // Fishnet symbology
 const colorVariable_stops = [

@@ -118,20 +118,24 @@ export default function MinMaxRecord() {
             mm
           </span>
         </span>
-        <div>
-          <CalciteButton
-            id="minbutton"
-            onClick={() =>
-              setZoomClickMin(zoomClickMin === false ? true : false)
-            }
-            slot="trigger"
-            kind="inverse"
-            scale="s"
-            icon-start="layer-zoom-to"
-          >
-            <span style={{ color: "#ffffff" }}>Zoom to Min</span>
-          </CalciteButton>
-        </div>
+        {is3D ? (
+          ""
+        ) : (
+          <div>
+            <CalciteButton
+              id="minbutton"
+              onClick={() =>
+                setZoomClickMin(zoomClickMin === false ? true : false)
+              }
+              slot="trigger"
+              kind="inverse"
+              scale="s"
+              icon-start="layer-zoom-to"
+            >
+              <span style={{ color: "#ffffff" }}>Zoom to Min</span>
+            </CalciteButton>
+          </div>
+        )}
       </div>
 
       {/* Maximum Record */}
@@ -158,20 +162,24 @@ export default function MinMaxRecord() {
             mm
           </span>
         </span>
-        <div>
-          <CalciteButton
-            id="maxbutton"
-            onClick={() =>
-              setZoomClickMax(zoomClickMax === false ? true : false)
-            }
-            slot="trigger"
-            kind="inverse"
-            scale="s"
-            icon-start="layer-zoom-to"
-          >
-            <span style={{ color: "#ffffff" }}>Zoom to Max</span>
-          </CalciteButton>
-        </div>
+        {is3D ? (
+          ""
+        ) : (
+          <div>
+            <CalciteButton
+              id="maxbutton"
+              onClick={() =>
+                setZoomClickMax(zoomClickMax === false ? true : false)
+              }
+              slot="trigger"
+              kind="inverse"
+              scale="s"
+              icon-start="layer-zoom-to"
+            >
+              <span style={{ color: "#ffffff" }}>Zoom to Max</span>
+            </CalciteButton>
+          </div>
+        )}
       </div>
     </div>
   );

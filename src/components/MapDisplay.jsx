@@ -18,7 +18,7 @@ import {
   sar_points_layer_tile,
   displacement_groupLayer,
   sar_elevation_layer,
-  fishnet_3d_layer,
+  displacement_grouLayer_magnitude,
 } from "../layers";
 import "@esri/calcite-components/dist/components/calcite-button";
 import { MyContext } from "../contexts/MyContext";
@@ -58,7 +58,7 @@ export default function MapDisplay() {
 
       if (mapView.id === "arcgis-map-id") {
         // Remove layers
-        arcgisMap?.map?.remove(fishnet_3d_layer);
+        arcgisMap?.map?.remove(displacement_grouLayer_magnitude);
 
         // Add layers
         arcgisMap?.map?.add(sar_points_layer_tile);
@@ -76,8 +76,9 @@ export default function MapDisplay() {
       } else {
         arcgisMap?.map?.remove(sar_points_layer_tile);
         arcgisMap?.map?.remove(displacement_groupLayer);
-        arcgisMap?.map?.add(fishnet_3d_layer);
+        arcgisMap?.map?.add(displacement_grouLayer_magnitude);
         arcgisMap?.map?.add(alingment_line_layer);
+
         arcgisOverviewMap?.map.add(overview_alingment_line_layer);
       }
     }

@@ -15,9 +15,9 @@ export default function SelectedPointId() {
   const {
     selectedid,
     updateSelectedid,
+    viewchange,
     updateSelectedkabupaten,
     updateSelectedareforscenario,
-    viewchange,
   } = use(MyContext);
 
   const [layerViewFeaturLayer, setLayerViewFeatureLayer] =
@@ -37,7 +37,6 @@ export default function SelectedPointId() {
               updateSelectedareforscenario(null);
             } else if (title === "Kabupaten") {
               updateSelectedid(null);
-              console.log(result.graphic.layer.title);
               updateSelectedareforscenario(result.graphic.attributes["namobj"]);
 
               // Highlight boundary

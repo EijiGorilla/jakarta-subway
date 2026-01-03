@@ -186,7 +186,8 @@ export async function defineActions(event) {
 
   // Expand the GroupLayer as default
   if (
-    item.title === "Land Displacement" ||
+    item.title === "Magnitude of Land Subsidence" ||
+    item.title === "Land Subsidence" ||
     item.title === "Admin. Boundary Layers"
   ) {
     item.open = true;

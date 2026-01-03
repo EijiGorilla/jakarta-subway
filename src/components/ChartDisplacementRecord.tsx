@@ -1,18 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useRef, useState, useEffect, use } from 'react';
-import * as am5 from '@amcharts/amcharts5';
-import * as am5xy from '@amcharts/amcharts5/xy';
-import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
-import am5themes_Responsive from '@amcharts/amcharts5/themes/Responsive';
-import { generateChartData, getReferencePointValueForSubtraction } from '../Query';
+import { useRef, useState, useEffect, use } from "react";
+import * as am5 from "@amcharts/amcharts5";
+import * as am5xy from "@amcharts/amcharts5/xy";
+import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import am5themes_Responsive from "@amcharts/amcharts5/themes/Responsive";
+import {
+  generateChartData,
+  getReferencePointValueForSubtraction,
+} from "../Query";
 import {
   chart_div_height,
   chart_inside_label_color_down_mmyr,
   chart_inside_label_color_up_mmyr,
   secondary_color,
-} from '../uniqueValues';
-import * as XLSX from 'xlsx';
-import { MyContext } from '../contexts/MyContext';
+} from "../uniqueValues";
+import * as XLSX from "xlsx";
+import { MyContext } from "../contexts/MyContext";
 
 // Dispose function
 function maybeDisposeRoot(divId: any) {
@@ -25,7 +28,8 @@ function maybeDisposeRoot(divId: any) {
 
 // https://www.amcharts.com/docs/v5/tutorials/dynamically-switching-data-set-for-an-xychart/
 export default function ChartDisplacementRecord() {
-  const { newdates, referenceid, selectedid, clickedexportexcel } = use(MyContext);
+  const { newdates, referenceid, selectedid, clickedexportexcel, is3D } =
+    use(MyContext);
 
   const xAxisRef = useRef<unknown | any | undefined>({});
   const yAxisRef = useRef<unknown | any | undefined>({});
@@ -34,7 +38,7 @@ export default function ChartDisplacementRecord() {
   const [displMmyrValue, setDisplMmyrValue] = useState<any>();
   const [referencePointData, setReferencePointData] = useState<any>();
 
-  const chartID = 'lot-progress';
+  const chartID = "lot-progress";
 
   // Get reference point values for subtraction
   useEffect(() => {
@@ -44,10 +48,12 @@ export default function ChartDisplacementRecord() {
   }, [referenceid]);
 
   useEffect(() => {
-    generateChartData(selectedid, newdates, referencePointData).then((response: any) => {
-      setChartData(response[0]);
-      setDisplMmyrValue(response[1]);
-    });
+    generateChartData(selectedid, newdates, referencePointData).then(
+      (response: any) => {
+        setChartData(response[0]);
+        setDisplMmyrValue(response[1]);
+      }
+    );
     // }
   }, [selectedid, newdates]);
 
@@ -58,8 +64,8 @@ export default function ChartDisplacementRecord() {
       const arr1 = chartData.map(({ Date, value }) => ({ Date, value }));
       const worksheet = XLSX.utils.json_to_sheet(arr1);
       const workbook = XLSX.utils.book_new();
-      const file_name = 'Displacement_' + selectedid + '.xlsx';
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Displacement');
+      const file_name = "Displacement_" + selectedid + ".xlsx";
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Displacement");
       XLSX.writeFile(workbook, file_name);
     }
   }, [clickedexportexcel]);
@@ -73,15 +79,19 @@ export default function ChartDisplacementRecord() {
     // Set themesf
     const myTheme = am5.Theme.new(root);
     // https://www.amcharts.com/docs/v5/concepts/themes/
-    root.setThemes([am5themes_Animated.new(root), myTheme, am5themes_Responsive.new(root)]);
+    root.setThemes([
+      am5themes_Animated.new(root),
+      myTheme,
+      am5themes_Responsive.new(root),
+    ]);
 
     // Move minor label a bit down
-    myTheme.rule('AxisLabel', ['minor']).setAll({
+    myTheme.rule("AxisLabel", ["minor"]).setAll({
       dy: 1,
     });
 
     // Tweak minor grid opacity
-    myTheme.rule('Grid', ['minor']).setAll({
+    myTheme.rule("Grid", ["minor"]).setAll({
       strokeOpacity: 0.08,
     });
 
@@ -91,10 +101,10 @@ export default function ChartDisplacementRecord() {
       am5xy.XYChart.new(root, {
         panX: false,
         panY: false,
-        wheelX: 'panX',
-        wheelY: 'zoomX',
+        wheelX: "panX",
+        wheelY: "zoomX",
         paddingLeft: 0,
-      }),
+      })
     );
     chartRef.current = chart;
 
@@ -116,12 +126,12 @@ export default function ChartDisplacementRecord() {
     // Add cursor
     // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
     var cursor = chart.set(
-      'cursor',
+      "cursor",
       am5xy.XYCursor.new(root, {
-        behavior: 'zoomX',
-      }),
+        behavior: "zoomX",
+      })
     );
-    cursor.lineY.set('visible', false);
+    cursor.lineY.set("visible", false);
 
     // Create axes //
     // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
@@ -129,7 +139,7 @@ export default function ChartDisplacementRecord() {
       am5xy.DateAxis.new(root, {
         maxDeviation: 0,
         baseInterval: {
-          timeUnit: 'day',
+          timeUnit: "day",
           count: 1,
         },
         renderer: am5xy.AxisRendererX.new(root, {
@@ -141,26 +151,26 @@ export default function ChartDisplacementRecord() {
           stroke: am5.color(secondary_color),
         }),
         tooltip: am5.Tooltip.new(root, {}),
-      }),
+      })
     );
 
     // Grid line inside the chart
     // Hide grid lines inside the chart
     // yAxis.get('renderer').grid.template.set('forceHidden', true);
-    xAxis.get('renderer').grid.template.setAll({
+    xAxis.get("renderer").grid.template.setAll({
       strokeWidth: 0.5,
       stroke: am5.color(secondary_color),
     });
 
-    xAxis.get('renderer').labels.template.setAll({
-      oversizedBehavior: 'truncate',
+    xAxis.get("renderer").labels.template.setAll({
+      oversizedBehavior: "truncate",
       maxWidth: 150,
       fill: am5.color(secondary_color),
     });
 
-    xAxis.set('minorDateFormats', {
-      day: 'dd',
-      month: 'MM',
+    xAxis.set("minorDateFormats", {
+      day: "dd",
+      month: "MM",
     });
 
     var yAxis = chart.yAxes.push(
@@ -175,19 +185,19 @@ export default function ChartDisplacementRecord() {
           strokeWidth: 2,
           stroke: am5.color(secondary_color),
         }),
-      }),
+      })
     );
 
     // Grid line inside the chart
     // Hide grid lines inside the chart
     // yAxis.get('renderer').grid.template.set('forceHidden', true);
-    yAxis.get('renderer').grid.template.setAll({
+    yAxis.get("renderer").grid.template.setAll({
       strokeWidth: 0.5,
       stroke: am5.color(secondary_color),
     });
 
-    yAxis.get('renderer').labels.template.setAll({
-      oversizedBehavior: 'truncate',
+    yAxis.get("renderer").labels.template.setAll({
+      oversizedBehavior: "truncate",
       maxWidth: 150,
       fill: am5.color(secondary_color),
     });
@@ -199,15 +209,15 @@ export default function ChartDisplacementRecord() {
     // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
     var series = chart.series.push(
       am5xy.LineSeries.new(root, {
-        name: 'Series',
+        name: "Series",
         xAxis: xAxis,
         yAxis: yAxis,
-        valueYField: 'value',
-        valueXField: 'date',
+        valueYField: "value",
+        valueXField: "date",
         tooltip: am5.Tooltip.new(root, {
-          labelText: '{valueY}',
+          labelText: "{valueY}",
         }),
-      }),
+      })
     );
 
     // Main line
@@ -219,7 +229,7 @@ export default function ChartDisplacementRecord() {
     series.bullets.push(function () {
       var bulletCircle = am5.Circle.new(root, {
         radius: 2,
-        fill: series.get('fill'),
+        fill: series.get("fill"),
       });
       return am5.Bullet.new(root, {
         sprite: bulletCircle,
@@ -251,61 +261,67 @@ export default function ChartDisplacementRecord() {
         style={{
           // display: 'flex',
           // border: 'solid 1px gray',
-          marginRight: '10px',
-          marginLeft: '10px',
-          overflow: 'auto',
+          marginRight: "10px",
+          marginLeft: "10px",
+          overflow: "auto",
         }}
       >
         <div
           id={chartID}
           style={{
             height: chart_div_height,
-            width: '99%',
-            backgroundColor: '#2b2b2b',
-            color: 'white',
+            width: "99%",
+            backgroundColor: "#2b2b2b",
+            color: "white",
             bottom: 50,
-            marginLeft: '0.3vw',
-            marginRight: 'auto',
+            marginLeft: "0.3vw",
+            marginRight: "auto",
           }}
         >
           {/* Add label when the chart is empty */}
           {!chartData[0] && (
             <span
               style={{
-                color: 'white',
+                color: "white",
                 // fontSize: informationWidget === true ? "10px" : "14px",
-                position: 'absolute',
-                zIndex: '2',
-                top: '40%',
-                left: '10%',
+                position: "absolute",
+                zIndex: "2",
+                top: "40%",
+                left: "10%",
               }}
             >
-              (Zoom) and click a point feature to show its land subsidence distribution over time.
+              {is3D ? (
+                <span style={{ color: "white", fontSize: "20px" }}>
+                  Chart does not work in 3D. Please return to 2D.
+                </span>
+              ) : (
+                "(Zoom) and click a point feature to show its land subsidence distribution over time."
+              )}
             </span>
           )}
 
           <span
             style={{
-              position: 'fixed',
+              position: "fixed",
               right: 50,
-              marginTop: '10px',
+              marginTop: "10px",
               color:
                 displMmyrValue > 0
                   ? chart_inside_label_color_up_mmyr
                   : displMmyrValue < 0
-                    ? chart_inside_label_color_down_mmyr
-                    : secondary_color,
-              fontWeight: 'bold',
-              fontSize: '20px',
+                  ? chart_inside_label_color_down_mmyr
+                  : secondary_color,
+              fontWeight: "bold",
+              fontSize: "20px",
               //   display: informationWidget === true ? "none" : "block",
             }}
           >
-            {displMmyrValue}{' '}
+            {displMmyrValue}{" "}
             <span
               style={{
-                fontWeight: 'normal',
+                fontWeight: "normal",
                 color: secondary_color,
-                fontSize: '15px',
+                fontSize: "15px",
               }}
             >
               mm/yr
