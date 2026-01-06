@@ -150,12 +150,12 @@ export default function MapDisplay() {
             setMapView(event.target);
           }}
         >
-          {activewidget === "elevation-profile" && (
+          {/* {activewidget === "elevation-profile" && (
             <arcgis-elevation-profile
               slot="bottom-right"
               unit="millimeters"
             ></arcgis-elevation-profile>
-          )}
+          )} */}
           {/* Overview Map */}
           <arcgis-map
             style={{
