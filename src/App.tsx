@@ -50,8 +50,8 @@ function App() {
   }, []);
 
   // createContext
-  const [startyear, setStartYear] = useState<any>(dates_sar[0]);
-  const [endyear, setEndYear] = useState<any>(dates_sar[dates_sar.length - 1]);
+  const [startyear, setStartYear] = useState<number>(20250721);
+  const [endyear, setEndYear] = useState<number>(20251006);
   const [newdates, setNewDates] = useState<any>(dates_sar);
   const [referenceid, setReferenceid] = useState<any>();
   const [selectedid, setSelectedid] = useState<any>();

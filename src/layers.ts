@@ -11,6 +11,8 @@ import {
   color_hotspot,
   iqr_date_field,
   iqr_max_field,
+  iqr_q2_5_field,
+  iqr_q97_5_field,
   kabupaten_name_field,
   label_hotspot,
   values_hotspot,
@@ -224,13 +226,12 @@ export const admin_boundary_desa = new FeatureLayer({
 // Interquartile Range value tables
 export const iqr_table = new FeatureLayer({
   portalItem: {
-    id: "eb361ab895d94c11bb88c26722ceb04d",
+    id: "c9581257bac74980a44f3e65409f758c",
     portal: {
       url: "https://gis.railway-sector.com/portal",
     },
   },
-  layerId: 5,
-  outFields: [iqr_date_field, iqr_max_field],
+  outFields: [iqr_date_field, iqr_max_field, iqr_q2_5_field, iqr_q97_5_field],
   popupEnabled: false,
 });
 

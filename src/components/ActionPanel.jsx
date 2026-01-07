@@ -125,7 +125,7 @@ function ActionPanel() {
       <CalcitePanel
         heading="Main Pane"
         data-panel-id="mainq"
-        style={{ width: "340px" }}
+        style={{ width: "375px" }}
         hidden
       >
         <DatePicker />

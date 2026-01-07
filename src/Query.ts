@@ -13,7 +13,10 @@ import {
   iqr_max_field,
   iqr_min_field,
   iqr_q1_field,
+  iqr_q2_5_field,
   iqr_q3_field,
+  iqr_q97_5_field,
+  latest_date_field,
   max_symbology,
   min_symbology,
   object_id,
@@ -21,12 +24,8 @@ import {
   point_color,
   visualVariable_field,
 } from "./uniqueValues";
-import Graphic from "@arcgis/core/Graphic";
-import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
-import * as promiseUtils from "@arcgis/core/core/promiseUtils";
 import OpacityVariable from "@arcgis/core/renderers/visualVariables/OpacityVariable";
 import PointCloudStretchRenderer from "@arcgis/core/renderers/PointCloudStretchRenderer";
-import * as intersectionOperator from "@arcgis/core/geometry/operators/intersectionOperator";
 import Extent from "@arcgis/core/geometry/Extent";
 import SpatialReference from "@arcgis/core/geometry/SpatialReference";
 
@@ -160,17 +159,14 @@ export async function updateRendererForSymbology(last_date: any) {
     iqr_q1_field,
     iqr_q3_field,
     iqr_min_field,
+    iqr_q2_5_field,
+    iqr_q97_5_field,
   ];
-  // const response = await iqr_table.queryFeatures(query);
-  // var attributes = response.features[0].attributes;
+  const response = await iqr_table.queryFeatures(query);
+  var attributes = response.features[0].attributes;
+  const min_symbology = Math.floor(attributes[iqr_q2_5_field]);
+  const max_symbology = Math.floor(attributes[iqr_q97_5_field]);
 
-  // const max = 8.4; // original: Math.ceil(attributes[iqr_max_field] * 0.8);
-  // const q1 = attributes[iqr_q1_field];
-  // const q3 = attributes[iqr_q3_field];
-  // const min = -7.9; // original: Math.ceil(q1 * 2);
-
-  // object array for visualVariables
-  // const values = [min, q1, q3, 0, max]; //q1 / 3
   const values = [min_symbology, 0, max_symbology];
   const colorVariable_stops = values.map((value: any, index: any) => {
     return Object.assign({
@@ -384,101 +380,3 @@ export const webmercatorExtent = new Extent({
   ymax: 20037508.342787,
   spatialReference: SpatialReference.WebMercator,
 });
-
-// export const webmercatorExtent = new Extent({
-//   xmin: 11876794.22761689,
-//   ymin: -700322.0023380909,
-//   xmax: 11906490.013105642,
-//   ymax: -682741.485832524,
-//   spatialReference: {
-//     wkid: 102100,
-//   },
-// });
-
-// Overview Map constraint
-// export function disableZooming(view: any) {
-// view.popup.dockEnabled = true;
-
-// Removes the zoom action on the popup
-// view.popup.actions = [];
-
-// stops propagation of default behavior when an event fires
-// function stopEvtPropagation(event: any) {
-// event.stopPropagation();
-// }
-
-// exlude the zoom widget from the default UI
-// view.ui.components = [];
-// view.ui.components = [];
-
-// // disable mouse wheel scroll zooming on the overView
-// view?.on("mouse-wheel", stopEvtPropagation);
-
-// // disable zooming via double-click on the overView
-// view.on("double-click", stopEvtPropagation);
-
-// // disable zooming out via double-click + Control on the overView
-// view.on("double-click", ["Control"], stopEvtPropagation);
-
-// // disables pinch-zoom and panning on the overView
-// view.on("drag", stopEvtPropagation);
-
-// // disable the overView's zoom box to prevent the Shift + drag
-// // and Shift + Control + drag zoom gestures.
-// view.on("drag", ["Shift"], stopEvtPropagation);
-// view.on("drag", ["Shift", "Control"], stopEvtPropagation);
-
-// // prevents zooming with the + and - keys
-// view.on("key-down", (event: any) => {
-//   const prohibitedKeys = [
-//     "+",
-//     "-",
-//     "Shift",
-//     "_",
-//     "=",
-//     "ArrowUp",
-//     "ArrowDown",
-//     "ArrowRight",
-//     "ArrowLeft",
-//   ];
-//   const keyPressed = event.key;
-//   if (prohibitedKeys.indexOf(keyPressed) !== -1) {
-//     event.stopPropagation();
-//   }
-// });
-
-// return view;
-// }
-
-// const extentDebouncer = promiseUtils.debounce(
-//   async (extent3Dgraphic: any, extent: any) => {
-//     extent3Dgraphic.geometry = extent;
-//   }
-// );
-
-// export function OverviewExtentsetup(view: any, overview: any) {
-//   let initialGeometry: any = null;
-//   const extent3Dgraphic: any = new Graphic({
-//     geometry: initialGeometry, // default: null
-//     symbol: new SimpleFillSymbol({
-//       color: [0, 0, 0, 0],
-//       outline: {
-//         width: 2,
-//         color: "#d9dc00ff", //[178,34,34]
-//       },
-//     }),
-//   });
-//   overview?.graphics?.add(extent3Dgraphic);
-
-//   reactiveUtils.watch(
-//     () => view?.extent, //view?.visibleArea,
-//     (extent: any) => {
-//       // Sync the overview map location
-//       // whenever the 3d view is stationary
-//       extentDebouncer(extent3Dgraphic, extent);
-//     },
-//     {
-//       initial: true,
-//     }
-//   );
-// }

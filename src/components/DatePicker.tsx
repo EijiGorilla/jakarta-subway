@@ -8,7 +8,6 @@ import {
   margin_bottom_title_item,
   margin_left_pane_title,
   secondary_color,
-  years_dropdown,
 } from "../uniqueValues";
 import "@esri/calcite-components/dist/components/calcite-dropdown";
 import "@esri/calcite-components/dist/components/calcite-dropdown-group";
@@ -30,9 +29,19 @@ export default function DatePicker() {
   const { startyear, endyear, updateStartyear, updateEndyear, updateNewdates } =
     use(MyContext);
 
+  // Prepare the list of dates in the dropdown list
+  const dates_string = dates_sar.map((item) => item?.replace("X", ""));
+  const dates_number = dates_string.map((item) => Number(item));
+  const year = dates_string.map((item) => item?.slice(0, 4));
+  const month = dates_string.map((item) => item?.slice(4, 6));
+  const day = dates_string.map((item) => item?.slice(6, 8));
+  const datesDropdown = year.map(
+    (item, index) => `${item}/${month[index]}/${day[index]}`
+  );
+
   const [startYearsDropdown, setStartYearsDropdown] =
-    useState<any>(years_dropdown);
-  const [endYearsDropdown, setEndYearsDropdown] = useState<any>(years_dropdown);
+    useState<any>(dates_string);
+  const [endYearsDropdown, setEndYearsDropdown] = useState<any>(dates_string);
 
   // Update Date picked
   const handleStartYear = (obj: any) => {
@@ -49,12 +58,8 @@ export default function DatePicker() {
 
   useEffect(() => {
     // update end years list in dropdown list
-    setEndYearsDropdown(
-      years_dropdown.filter((elem: any) => elem >= startyear)
-    );
-    setStartYearsDropdown(
-      years_dropdown.filter((elem: any) => elem <= endyear)
-    );
+    setEndYearsDropdown(dates_number.filter((elem: any) => elem >= startyear));
+    setStartYearsDropdown(dates_number.filter((elem: any) => elem <= endyear));
 
     // identify the first date of the selected year from the date fields array
     // make sure to add 'x' to correctly filter by year
@@ -97,13 +102,13 @@ export default function DatePicker() {
         style={{
           display: "flex",
           fontSize: "20px",
-          marginLeft: "25px",
+          marginLeft: "20px",
           marginRight: "auto",
         }}
       >
         <CalciteDropdown width="m" style={{ marginRight: "4%" }}>
           <CalciteButton slot="trigger" kind="inverse" scale="s">
-            <span style={{ color: "#ffffff" }}>Start Year</span>
+            <span style={{ color: "#ffffff" }}>Start Date</span>
           </CalciteButton>
           <CalciteDropdownGroup group-title="">
             {startYearsDropdown &&
@@ -123,12 +128,13 @@ export default function DatePicker() {
               })}
           </CalciteDropdownGroup>
         </CalciteDropdown>
-        {startyear}
+        <span style={{ fontSize: "1rem", margin: "auto" }}>{startyear}</span>
+
         <div style={{ marginLeft: "3%", marginRight: "3%" }}>{"-"}</div>
-        {endyear}
+        <span style={{ fontSize: "1rem", margin: "auto" }}>{endyear}</span>
         <CalciteDropdown width="m" style={{ marginLeft: "4%" }}>
           <CalciteButton slot="trigger" kind="inverse" scale="s">
-            <span style={{ color: "#ffffff" }}>End Year</span>
+            <span style={{ color: "#ffffff" }}>End Date</span>
           </CalciteButton>
           <CalciteDropdownGroup group-title="">
             {endYearsDropdown &&

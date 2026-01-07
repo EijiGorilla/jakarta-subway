@@ -80,8 +80,10 @@ export const max_symbology = 8.4;
 export const iqr_date_field = "dates";
 export const iqr_min_field = "min_";
 export const iqr_max_field = "max_";
-export const iqr_q1_field = "Q1";
-export const iqr_q3_field = "Q3";
+export const iqr_q1_field = "q1";
+export const iqr_q3_field = "q3";
+export const iqr_q2_5_field = "q2_5";
+export const iqr_q97_5_field = "q97_5";
 
 // Visible layers for segmented control
 export const visible_layer_points = [
@@ -121,6 +123,7 @@ export const dates_sar = [
   "X20250929",
   "X20251006",
 ];
+
 export const latest_date_field = dates_sar[dates_sar.length - 1];
 
 // Font and color
