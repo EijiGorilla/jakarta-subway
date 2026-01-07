@@ -22,7 +22,7 @@ import {
 } from "@esri/calcite-components-react";
 import { sar_points_layer } from "../layers";
 
-import { updateRendererForSymbology } from "../Query";
+import { dateReadableConversion, updateRendererForSymbology } from "../Query";
 import { MyContext } from "../contexts/MyContext";
 
 export default function DatePicker() {
@@ -32,12 +32,6 @@ export default function DatePicker() {
   // Prepare the list of dates in the dropdown list
   const dates_string = dates_sar.map((item) => item?.replace("X", ""));
   const dates_number = dates_string.map((item) => Number(item));
-  const year = dates_string.map((item) => item?.slice(0, 4));
-  const month = dates_string.map((item) => item?.slice(4, 6));
-  const day = dates_string.map((item) => item?.slice(6, 8));
-  const datesDropdown = year.map(
-    (item, index) => `${item}/${month[index]}/${day[index]}`
-  );
 
   const [startYearsDropdown, setStartYearsDropdown] =
     useState<any>(dates_string);

@@ -147,6 +147,18 @@ export async function generateChartData(
   }
 }
 
+export function dateReadableConversion(dates: any) {
+  // dates are array []
+  const dates_string = dates.map((item: any) => item?.replace("X", ""));
+  const year = dates_string.map((item: any) => item?.slice(0, 4));
+  const month = dates_string.map((item: any) => item?.slice(4, 6));
+  const day = dates_string.map((item: any) => item?.slice(6, 8));
+  const datesDropdown = year.map(
+    (item: any, index: any) => `${item}/${month[index]}/${day[index]}`
+  );
+  return datesDropdown;
+}
+
 export async function updateRendererForSymbology(last_date: any) {
   const query = iqr_table.createQuery();
   const last_date_X = last_date.replace("x", "X");
@@ -195,7 +207,7 @@ export async function updateRendererForSymbology(last_date: any) {
       field: last_date_X,
       stops: colorVariable_stops,
       legendOptions: {
-        title: last_date_X.replace(date_sar_suffix, ""),
+        title: dateReadableConversion([last_date_X]),
       },
     }),
     new OpacityVariable({
