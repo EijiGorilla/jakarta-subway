@@ -23,8 +23,23 @@ import {
 import "@esri/calcite-components/dist/components/calcite-button";
 import { MyContext } from "../contexts/MyContext";
 import "@esri/calcite-components/dist/components/calcite-button";
+// import {
+//   disableZooming,
+//   OverviewExtentsetup,
+//   visibleAreaDebouncer,
+// } from "../Query";
 import "@arcgis/map-components/components/arcgis-elevation-profile";
 import Ground from "@arcgis/core/Ground";
+import Graphic from "@arcgis/core/Graphic";
+import { SimpleFillSymbol } from "@arcgis/core/symbols";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
+import * as promiseUtils from "@arcgis/core/core/promiseUtils";
+import * as intersectionOperator from "@arcgis/core/geometry/operators/intersectionOperator";
+import Extent from "@arcgis/core/geometry/Extent";
+import SpatialReference from "@arcgis/core/geometry/SpatialReference";
+import { webmercatorExtent } from "../Query";
+
+import Geometry from "@arcgis/core/geometry/Geometry";
 
 // 2 D <-> 3D
 // https://developers.arcgis.com/javascript/latest/sample-code/views-switch-2d-3d/
@@ -37,6 +52,8 @@ export default function MapDisplay() {
       layers: sar_elevation_layer,
     })
   );
+  const [activeViewpoint, setActiveViewpoint] = useState();
+  const [newCenter, setNewCenter] = useState();
 
   const arcgisMap = document.querySelector(
     is3D === false ? "arcgis-map" : "arcgis-scene"
@@ -51,9 +68,15 @@ export default function MapDisplay() {
     arcgisMap.map.ground.opacity = 0.7;
   }
 
+  function overviewMapViewEnvironment() {
+    arcgisOverviewMap.constraints.rotationEnabled = false;
+    arcgisOverviewMap.view.ui.components = [];
+  }
+
   useEffect(() => {
     if (mapView) {
       arcgisMap && mapViewEnvironment();
+      arcgisOverviewMap && overviewMapViewEnvironment();
 
       if (mapView.id === "arcgis-map-id") {
         // Remove layers
@@ -65,8 +88,6 @@ export default function MapDisplay() {
         arcgisMap?.map?.add(displacement_groupLayer);
         arcgisMap?.map?.add(alingment_line_layer);
         arcgisOverviewMap?.map.add(overview_alingment_line_layer);
-
-        // Overview map
       } else {
         arcgisMap?.map?.remove(sar_points_layer_tile);
         arcgisMap?.map?.remove(displacement_groupLayer);
@@ -77,6 +98,48 @@ export default function MapDisplay() {
       }
     }
   }, [mapView, arcgisMap, arcgisOverviewMap]);
+
+  useEffect(() => {
+    const visibleAreaDebouncer = promiseUtils.debounce(async () => {
+      // if (arcgisMap?.stationary) { // Adding this fails in 2D.
+      const intersection = intersectionOperator.execute(
+        webmercatorExtent,
+        arcgisMap?.visibleArea
+      );
+      await arcgisOverviewMap?.view?.goTo(intersection);
+      // }
+    });
+
+    arcgisMap?.viewOnReady(async () => {
+      await arcgisOverviewMap?.viewOnReady();
+      const visibleAreaGraphic = new Graphic({
+        geometry: null,
+        symbol: new SimpleFillSymbol({
+          color: null,
+          outline: {
+            width: 2,
+            color: "#d9dc00ff",
+          },
+        }),
+      });
+      arcgisOverviewMap?.graphics.add(visibleAreaGraphic);
+
+      reactiveUtils.watch(
+        () => arcgisMap.visibleArea,
+        async (visibleArea) => {
+          try {
+            await visibleAreaDebouncer();
+            visibleAreaGraphic.geometry = visibleArea;
+          } catch (error) {
+            if (error.name === "AbortError") {
+              return;
+            }
+            console.error("Error updating visible area graphic: ", error);
+          }
+        }
+      );
+    });
+  }, [arcgisMap]);
 
   useEffect(() => {
     const elevationProfileElement = document.querySelector(
@@ -111,7 +174,27 @@ export default function MapDisplay() {
           onarcgisViewReadyChange={(event) => {
             setMapView(event.target);
           }}
-        ></arcgis-scene>
+        >
+          <arcgis-map
+            style={{
+              position: "fixed",
+              zIndex: "1",
+              width: "135px",
+              height: "160px",
+              borderStyle: "solid",
+              borderColor: "grey",
+              borderWidth: "1px",
+              overflow: "hidden",
+              top: "10px",
+              right: "10px",
+            }}
+            id="arcgis-overview-scene"
+            basemap="dark-gray-vector" //{customBasemap}
+            // ground="world-elevation"
+            // zoom="9"
+            // center="106.8244387, -6.209296499999998"
+          ></arcgis-map>
+        </arcgis-scene>
       ) : (
         <arcgis-map
           basemap="dark-gray-vector"
@@ -123,7 +206,28 @@ export default function MapDisplay() {
           onarcgisViewReadyChange={(event) => {
             setMapView(event.target);
           }}
-        ></arcgis-map>
+        >
+          {/* Overview Map */}
+          <arcgis-map
+            style={{
+              position: "fixed",
+              zIndex: "1",
+              width: "135px",
+              height: "160px",
+              borderStyle: "solid",
+              borderColor: "grey",
+              borderWidth: "1px",
+              overflow: "hidden",
+              top: "10px",
+              right: "10px",
+            }}
+            id="arcgis-overview-map"
+            basemap="dark-gray-vector" //{customBasemap}
+            zoom="13"
+            center={newCenter}
+            // center="106.8244387, -6.209296499999998"
+          ></arcgis-map>
+        </arcgis-map>
       )}
     </>
   );

@@ -168,14 +168,24 @@ export const color_hotspot = [
   "#4575B5",
 ];
 
+// export const label_hotspot = [
+//   "Downward with 99% Confidence", // significant land subsidence
+//   "Downward with 95% Confidence",
+//   "Downward with 90% Confidence",
+//   "Not Significant",
+//   "Upward with 90% Confidence",
+//   "Upward with 95% Confidence",
+//   "Upward with 99% Confidence",
+// ];
+
 export const label_hotspot = [
-  "Downward with 99% Confidence", // significant land subsidence
-  "Downward with 95% Confidence",
-  "Downward with 90% Confidence",
+  "Subsided with 99% Confidence", // significant land subsidence
+  "Subsided with 95% Confidence",
+  "Subsided with 90% Confidence",
   "Not Significant",
-  "Upward with 90% Confidence",
-  "Upward with 95% Confidence",
-  "Upward with 99% Confidence",
+  "Elevated with 90% Confidence",
+  "Elevated with 95% Confidence",
+  "Elevated with 99% Confidence",
 ];
 
 // Minimum and maximum record

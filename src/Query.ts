@@ -26,6 +26,9 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import * as promiseUtils from "@arcgis/core/core/promiseUtils";
 import OpacityVariable from "@arcgis/core/renderers/visualVariables/OpacityVariable";
 import PointCloudStretchRenderer from "@arcgis/core/renderers/PointCloudStretchRenderer";
+import * as intersectionOperator from "@arcgis/core/geometry/operators/intersectionOperator";
+import Extent from "@arcgis/core/geometry/Extent";
+import SpatialReference from "@arcgis/core/geometry/SpatialReference";
 
 // total records for checking
 // export async function totalRecords() {
@@ -373,3 +376,109 @@ export function thousands_separators(num: any) {
     return num_parts.join(".");
   }
 }
+
+export const webmercatorExtent = new Extent({
+  xmin: -20037508.342787,
+  ymin: -20037508.342787,
+  xmax: 20037508.342787,
+  ymax: 20037508.342787,
+  spatialReference: SpatialReference.WebMercator,
+});
+
+// export const webmercatorExtent = new Extent({
+//   xmin: 11876794.22761689,
+//   ymin: -700322.0023380909,
+//   xmax: 11906490.013105642,
+//   ymax: -682741.485832524,
+//   spatialReference: {
+//     wkid: 102100,
+//   },
+// });
+
+// Overview Map constraint
+// export function disableZooming(view: any) {
+// view.popup.dockEnabled = true;
+
+// Removes the zoom action on the popup
+// view.popup.actions = [];
+
+// stops propagation of default behavior when an event fires
+// function stopEvtPropagation(event: any) {
+// event.stopPropagation();
+// }
+
+// exlude the zoom widget from the default UI
+// view.ui.components = [];
+// view.ui.components = [];
+
+// // disable mouse wheel scroll zooming on the overView
+// view?.on("mouse-wheel", stopEvtPropagation);
+
+// // disable zooming via double-click on the overView
+// view.on("double-click", stopEvtPropagation);
+
+// // disable zooming out via double-click + Control on the overView
+// view.on("double-click", ["Control"], stopEvtPropagation);
+
+// // disables pinch-zoom and panning on the overView
+// view.on("drag", stopEvtPropagation);
+
+// // disable the overView's zoom box to prevent the Shift + drag
+// // and Shift + Control + drag zoom gestures.
+// view.on("drag", ["Shift"], stopEvtPropagation);
+// view.on("drag", ["Shift", "Control"], stopEvtPropagation);
+
+// // prevents zooming with the + and - keys
+// view.on("key-down", (event: any) => {
+//   const prohibitedKeys = [
+//     "+",
+//     "-",
+//     "Shift",
+//     "_",
+//     "=",
+//     "ArrowUp",
+//     "ArrowDown",
+//     "ArrowRight",
+//     "ArrowLeft",
+//   ];
+//   const keyPressed = event.key;
+//   if (prohibitedKeys.indexOf(keyPressed) !== -1) {
+//     event.stopPropagation();
+//   }
+// });
+
+// return view;
+// }
+
+// const extentDebouncer = promiseUtils.debounce(
+//   async (extent3Dgraphic: any, extent: any) => {
+//     extent3Dgraphic.geometry = extent;
+//   }
+// );
+
+// export function OverviewExtentsetup(view: any, overview: any) {
+//   let initialGeometry: any = null;
+//   const extent3Dgraphic: any = new Graphic({
+//     geometry: initialGeometry, // default: null
+//     symbol: new SimpleFillSymbol({
+//       color: [0, 0, 0, 0],
+//       outline: {
+//         width: 2,
+//         color: "#d9dc00ff", //[178,34,34]
+//       },
+//     }),
+//   });
+//   overview?.graphics?.add(extent3Dgraphic);
+
+//   reactiveUtils.watch(
+//     () => view?.extent, //view?.visibleArea,
+//     (extent: any) => {
+//       // Sync the overview map location
+//       // whenever the 3d view is stationary
+//       extentDebouncer(extent3Dgraphic, extent);
+//     },
+//     {
+//       initial: true,
+//     }
+//   );
+// }
