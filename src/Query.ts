@@ -186,11 +186,11 @@ export async function updateRendererForSymbology(last_date: any) {
       color: point_color[index],
       label:
         index === 0
-          ? "< " + value.toString()
+          ? "< " + value.toString() + " mm"
           : index === 1
           ? "0"
           : index === 2
-          ? "> " + max_symbology
+          ? "> " + max_symbology + " mm"
           : "",
     });
   });

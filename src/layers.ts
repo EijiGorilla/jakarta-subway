@@ -15,6 +15,7 @@ import {
   iqr_q97_5_field,
   kabupaten_name_field,
   label_hotspot,
+  latest_date_field,
   values_hotspot,
   view_maxScale,
   view_maxScale_tile,
@@ -26,7 +27,11 @@ import Basemap from "@arcgis/core/Basemap";
 import BasemapStyle from "@arcgis/core/support/BasemapStyle";
 import TileLayer from "@arcgis/core/layers/TileLayer";
 import ElevationLayer from "@arcgis/core/layers/ElevationLayer";
-import { new_point_renderer_las, visualVariables_fishnet } from "./Query";
+import {
+  dateReadableConversion,
+  new_point_renderer_las,
+  visualVariables_fishnet,
+} from "./Query";
 
 import PointCloudLayer from "@arcgis/core/layers/PointCloudLayer";
 
@@ -34,7 +39,11 @@ import PointCloudLayer from "@arcgis/core/layers/PointCloudLayer";
 export const sar_point_layer_title = "Subsidence (mm)";
 export const sar_points_las_layer_title = "Points";
 export const sar_points_tile_layer_title = "Surface";
-export const hot_spot_analysis_layer_title = "Hot Spot Analysis";
+export const hot_spot_analysis_layer_title =
+  "Hot Spot Analysis" +
+  " (" +
+  dateReadableConversion([latest_date_field]) +
+  ")";
 
 // subway alingment line
 const alignmentRenderer = new SimpleRenderer({
@@ -366,7 +375,7 @@ export const sar_elevation_layer = new ElevationLayer({
 export const layerInfos_sar_hotspot = [
   {
     layer: sar_points_layer,
-    title: sar_point_layer_title,
+    title: "",
   },
   {
     layer: hot_spot_layer,
@@ -374,7 +383,7 @@ export const layerInfos_sar_hotspot = [
   },
   {
     layer: sar_points_layer_tile,
-    title: sar_point_layer_title,
+    title: "",
   },
   {
     layer: fishnet_3d_layer,

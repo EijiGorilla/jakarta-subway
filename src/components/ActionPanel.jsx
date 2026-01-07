@@ -23,6 +23,7 @@ import DatePicker from "./DatePicker";
 import MinMaxRecord from "./MinMaxRecord";
 import { layerInfos_sar_hotspot } from "../layers";
 import { MyContext } from "../contexts/MyContext";
+import { transform } from "typescript";
 
 function ActionPanel() {
   const { updateElevprofileready, updateActivewidget, viewchange, is3D } =
@@ -163,16 +164,17 @@ function ActionPanel() {
             color: secondary_color,
             marginBottom: margin_bottom_title_item,
             marginLeft: margin_left_pane_title,
-            marginTop: "1vh",
+            marginTop: "0.5vh",
           }}
         >
           Legend:
-          <div style={{ marginLeft: "15px" }}>
-            <arcgis-legend
-              referenceElement={viewchange}
-              id="arcgis-map-legend"
-            ></arcgis-legend>
-          </div>
+          <arcgis-legend
+            referenceElement={viewchange}
+            id="arcgis-map-legend"
+            style={{
+              marginLeft: "2vw",
+            }}
+          ></arcgis-legend>
         </div>
       </CalcitePanel>
 
