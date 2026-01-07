@@ -23,7 +23,6 @@ import {
 import "@esri/calcite-components/dist/components/calcite-button";
 import { MyContext } from "../contexts/MyContext";
 import "@esri/calcite-components/dist/components/calcite-button";
-import { disableZooming, OverviewExtentsetup } from "../Query";
 import "@arcgis/map-components/components/arcgis-elevation-profile";
 import Ground from "@arcgis/core/Ground";
 
@@ -68,11 +67,6 @@ export default function MapDisplay() {
         arcgisOverviewMap?.map.add(overview_alingment_line_layer);
 
         // Overview map
-        arcgisMap?.viewOnReady(async () => {
-          await arcgisOverviewMap?.viewOnReady();
-          disableZooming(arcgisOverviewMap?.view);
-          OverviewExtentsetup(arcgisMap, arcgisOverviewMap);
-        });
       } else {
         arcgisMap?.map?.remove(sar_points_layer_tile);
         arcgisMap?.map?.remove(displacement_groupLayer);
@@ -117,27 +111,7 @@ export default function MapDisplay() {
           onarcgisViewReadyChange={(event) => {
             setMapView(event.target);
           }}
-        >
-          <arcgis-map
-            style={{
-              position: "fixed",
-              zIndex: "1",
-              width: "135px",
-              height: "160px",
-              borderStyle: "solid",
-              borderColor: "grey",
-              borderWidth: "1px",
-              overflow: "hidden",
-              top: "10px",
-              right: "10px",
-            }}
-            id="arcgis-overview-scene"
-            basemap="dark-gray-vector" //{customBasemap}
-            ground="world-elevation"
-            zoom="9"
-            center="106.8244387, -6.209296499999998"
-          ></arcgis-map>
-        </arcgis-scene>
+        ></arcgis-scene>
       ) : (
         <arcgis-map
           basemap="dark-gray-vector"
@@ -149,34 +123,7 @@ export default function MapDisplay() {
           onarcgisViewReadyChange={(event) => {
             setMapView(event.target);
           }}
-        >
-          {/* {activewidget === "elevation-profile" && (
-            <arcgis-elevation-profile
-              slot="bottom-right"
-              unit="millimeters"
-            ></arcgis-elevation-profile>
-          )} */}
-          {/* Overview Map */}
-          <arcgis-map
-            style={{
-              position: "fixed",
-              zIndex: "1",
-              width: "135px",
-              height: "160px",
-              borderStyle: "solid",
-              borderColor: "grey",
-              borderWidth: "1px",
-              overflow: "hidden",
-              top: "10px",
-              right: "10px",
-            }}
-            id="arcgis-overview-map"
-            basemap="dark-gray-vector" //{customBasemap}
-            ground="world-elevation"
-            zoom="9"
-            center="106.8244387, -6.209296499999998"
-          ></arcgis-map>
-        </arcgis-map>
+        ></arcgis-map>
       )}
     </>
   );

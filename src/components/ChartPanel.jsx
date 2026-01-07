@@ -52,64 +52,63 @@ export default function ChartPanel() {
     );
   };
   return (
-    <>
-      <CalcitePanel
-        collapsible
-        heading={chartPanelName}
-        style={{
-          height:
-            chartPanelHeight === chart_panel_height_collapsed
-              ? chart_panel_height_default
-              : chart_panel_height_collapsed,
-        }}
-        onCalcitePanelToggle={() => {
-          setChartPanelHeight(
-            chartPanelHeight === chart_panel_height_default
-              ? chart_panel_height_collapsed
-              : chart_panel_height_default
-          );
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          {/* <ChartType /> */}
-          <ExportExcel />
-        </div>
-        {elevprofileready === "ready" ? (
-          <>
-            <CalciteChipGroup
-              slot="header-actions-end"
-              style={{
-                "--calcite-chip-background-color": "#0079C1",
-                marginTop: "auto",
-                marginBottom: "auto",
-              }}
-            >
-              {maxElevation && (
-                <CalciteChip icon="maximum-graph" id="max-elevation">
-                  {maxElevation}
-                </CalciteChip>
-              )}
-              {minElevation && (
-                <CalciteChip icon="minimum-graph" id="min-elevation">
-                  {minElevation}
-                </CalciteChip>
-              )}
-            </CalciteChipGroup>
+    <CalcitePanel
+      collapsible
+      heading={chartPanelName}
+      style={{
+        height:
+          chartPanelHeight === chart_panel_height_collapsed
+            ? chart_panel_height_default
+            : chart_panel_height_collapsed,
+        backgroundColor: "#ffffff",
+      }}
+      onCalcitePanelToggle={() => {
+        setChartPanelHeight(
+          chartPanelHeight === chart_panel_height_default
+            ? chart_panel_height_collapsed
+            : chart_panel_height_default
+        );
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        {/* <ChartType /> */}
+        <ExportExcel />
+      </div>
+      {elevprofileready === "ready" ? (
+        <>
+          <CalciteChipGroup
+            slot="header-actions-end"
+            style={{
+              "--calcite-chip-background-color": "#0079C1",
+              marginTop: "auto",
+              marginBottom: "auto",
+            }}
+          >
+            {maxElevation && (
+              <CalciteChip icon="maximum-graph" id="max-elevation">
+                {maxElevation}
+              </CalciteChip>
+            )}
+            {minElevation && (
+              <CalciteChip icon="minimum-graph" id="min-elevation">
+                {minElevation}
+              </CalciteChip>
+            )}
+          </CalciteChipGroup>
 
-            <arcgis-elevation-profile
-              referenceElement="arcgis-map-id"
-              unit="millimeters"
-              hideClearButton
-              hideLegend
-              hideSettingsButton
-              onarcgisPropertyChange={handleElevationProfileChange}
-              style={{ width: "100%", height: "100%" }}
-            ></arcgis-elevation-profile>
-          </>
-        ) : (
-          <ChartDisplacementRecord />
-        )}
-      </CalcitePanel>
-    </>
+          <arcgis-elevation-profile
+            referenceElement="arcgis-map-id"
+            unit="millimeters"
+            hideClearButton
+            hideLegend
+            hideSettingsButton
+            onarcgisPropertyChange={handleElevationProfileChange}
+            style={{ width: "100%", height: "100%", marginTop: "20px" }}
+          ></arcgis-elevation-profile>
+        </>
+      ) : (
+        <ChartDisplacementRecord />
+      )}
+    </CalcitePanel>
   );
 }
