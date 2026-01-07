@@ -13,12 +13,14 @@ import {
 import {
   chart_panel_height_collapsed,
   chart_panel_height_default,
+  latest_date_field,
 } from "../uniqueValues";
 // import ChartType from './ChartType';
 import ExportExcel from "./ExportExcel";
 import ChartDisplacementRecord from "./ChartDisplacementRecord";
 import { MyContext } from "../contexts/MyContext";
 import "@arcgis/map-components/components/arcgis-elevation-profile";
+import { dateReadableConversion } from "../Query";
 
 export default function ChartPanel() {
   const { elevprofileready } = use(MyContext);
@@ -27,9 +29,31 @@ export default function ChartPanel() {
   const [maxElevation, setMaxElevation] = useState(undefined);
   const [chartPanelName, setChartPanelName] = useState("Chart Panel");
 
+  const arcgisElevationProfileElement = document.querySelector(
+    "arcgis-elevation-profile"
+  );
+
   useEffect(() => {
     if (elevprofileready === "ready") {
-      setChartPanelName("Land Subsidence Profile");
+      setChartPanelName(
+        "Land Subsidence Profile" +
+          " (" +
+          dateReadableConversion([latest_date_field]) +
+          ")"
+      );
+
+      // if (arcgisElevationProfileElement) {
+      //   arcgisElevationProfileElement.profiles = [
+      //     {
+      //       type: "ground",
+      //       title: "Subsidence",
+      //     },
+      //   ];
+      //   arcgisElevationProfileElement.unitOptions = {
+      //     distance: "kilometers", // Supported distance units: "meters", "feet", "kilometers", "miles", etc.
+      //     elevation: "meters", // Supported elevation units: "meters", "feet", etc.
+      //   };
+      // }
     } else {
       setChartPanelName("Chart Panel");
     }

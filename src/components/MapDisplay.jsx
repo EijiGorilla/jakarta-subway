@@ -23,11 +23,6 @@ import {
 import "@esri/calcite-components/dist/components/calcite-button";
 import { MyContext } from "../contexts/MyContext";
 import "@esri/calcite-components/dist/components/calcite-button";
-// import {
-//   disableZooming,
-//   OverviewExtentsetup,
-//   visibleAreaDebouncer,
-// } from "../Query";
 import "@arcgis/map-components/components/arcgis-elevation-profile";
 import Ground from "@arcgis/core/Ground";
 import Graphic from "@arcgis/core/Graphic";
@@ -35,12 +30,7 @@ import { SimpleFillSymbol } from "@arcgis/core/symbols";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import * as promiseUtils from "@arcgis/core/core/promiseUtils";
 import * as intersectionOperator from "@arcgis/core/geometry/operators/intersectionOperator";
-import Extent from "@arcgis/core/geometry/Extent";
-import SpatialReference from "@arcgis/core/geometry/SpatialReference";
 import { webmercatorExtent } from "../Query";
-
-import Geometry from "@arcgis/core/geometry/Geometry";
-
 // 2 D <-> 3D
 // https://developers.arcgis.com/javascript/latest/sample-code/views-switch-2d-3d/
 
@@ -52,7 +42,7 @@ export default function MapDisplay() {
       layers: sar_elevation_layer,
     })
   );
-  const [activeViewpoint, setActiveViewpoint] = useState();
+
   const [newCenter, setNewCenter] = useState();
 
   const arcgisMap = document.querySelector(
@@ -152,7 +142,7 @@ export default function MapDisplay() {
       elevationProfileElement.profiles = [
         {
           type: "ground",
-          title: "Subsidence (raw scale)",
+          title: "Subsidence",
         },
       ];
     } else {
