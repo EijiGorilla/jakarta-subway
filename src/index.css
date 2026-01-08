@@ -4,7 +4,7 @@ body {
   margin: 0;
 }
 
-/* arcgis-map {
+arcgis-map {
   display: block;
   height: 100vh;
 }
@@ -12,4 +12,9 @@ body {
 arcgis-scene {
   display: block;
   height: 100vh;
-} */
+}
+
+arcgis-elevation-profile {
+  display: block;
+  height: 100vh;
+}

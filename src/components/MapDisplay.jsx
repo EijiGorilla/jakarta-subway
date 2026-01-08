@@ -31,6 +31,7 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import * as promiseUtils from "@arcgis/core/core/promiseUtils";
 import * as intersectionOperator from "@arcgis/core/geometry/operators/intersectionOperator";
 import { webmercatorExtent } from "../Query";
+import Extent from "@arcgis/core/geometry/Extent";
 // 2 D <-> 3D
 // https://developers.arcgis.com/javascript/latest/sample-code/views-switch-2d-3d/
 
@@ -92,11 +93,31 @@ export default function MapDisplay() {
   useEffect(() => {
     const visibleAreaDebouncer = promiseUtils.debounce(async () => {
       // if (arcgisMap?.stationary) { // Adding this fails in 2D.
-      const intersection = intersectionOperator.execute(
-        webmercatorExtent,
-        arcgisMap?.visibleArea
-      );
-      await arcgisOverviewMap?.view?.goTo(intersection);
+      // const intersection = intersectionOperator.execute(
+      //   webmercatorExtent,
+      //   arcgisMap?.visibleArea
+      // );
+
+      const xmax_va = arcgisMap?.visibleArea.extent.xmax;
+      const xmin_va = arcgisMap?.visibleArea.extent.xmin;
+      const ymin_va = arcgisMap?.visibleArea.extent.ymin;
+      const ymax_va = arcgisMap?.visibleArea.extent.ymax;
+
+      // when each point is expanded to 100m at 45 degrees, we get 70.71m (trigonometry)
+      const new_scale = Math.sin((45 * Math.PI) / 180) * 100;
+
+      const new_extent = new Extent({
+        xmin: xmin_va - new_scale,
+        ymin: ymin_va - new_scale,
+        xmax: xmax_va + new_scale,
+        ymax: ymax_va + new_scale,
+        spatialReference: {
+          // Ensure the spatial reference matches the view's or is well-defined (e.g., WGS84 - wkid: 4326, or Web Mercator - wkid: 3857/102100)
+          wkid: 102100,
+        },
+      });
+      await arcgisOverviewMap?.view?.goTo(new_extent);
+      // await arcgisOverviewMap?.view?.goTo(intersection);
       // }
     });
 
@@ -131,25 +152,6 @@ export default function MapDisplay() {
     });
   }, [arcgisMap]);
 
-  useEffect(() => {
-    const elevationProfileElement = document.querySelector(
-      "arcgis-elevation-profile"
-    );
-
-    // Ensure to use new Ground method
-    if (activewidget === "elevation-profile" && elevationProfileElement) {
-      arcgisMap && mapViewEnvironment();
-      elevationProfileElement.profiles = [
-        {
-          type: "ground",
-          title: "Subsidence",
-        },
-      ];
-    } else {
-      arcgisMap && mapViewEnvironment();
-    }
-  }, [activewidget]);
-
   return (
     <>
       {is3D ? (
@@ -169,8 +171,8 @@ export default function MapDisplay() {
             style={{
               position: "fixed",
               zIndex: "1",
-              width: "135px",
-              height: "160px",
+              width: "170px",
+              height: "190px",
               borderStyle: "solid",
               borderColor: "grey",
               borderWidth: "1px",
@@ -202,8 +204,8 @@ export default function MapDisplay() {
             style={{
               position: "fixed",
               zIndex: "1",
-              width: "135px",
-              height: "160px",
+              width: "170px",
+              height: "190px",
               borderStyle: "solid",
               borderColor: "grey",
               borderWidth: "1px",

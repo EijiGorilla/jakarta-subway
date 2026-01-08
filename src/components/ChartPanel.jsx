@@ -23,17 +23,21 @@ import "@arcgis/map-components/components/arcgis-elevation-profile";
 import { dateReadableConversion } from "../Query";
 
 export default function ChartPanel() {
-  const { elevprofileready } = use(MyContext);
+  const { elevprofileready, activewidget } = use(MyContext);
   const [chartPanelHeight, setChartPanelHeight] = useState("7%");
   const [minElevation, setMinElevation] = useState(undefined);
   const [maxElevation, setMaxElevation] = useState(undefined);
   const [chartPanelName, setChartPanelName] = useState("Chart Panel");
 
-  const arcgisElevationProfileElement = document.querySelector(
-    "arcgis-elevation-profile"
-  );
+  // const elevationProfileElement = document.querySelector(
+  //   "arcgis-elevation-profile"
+  // );
 
   useEffect(() => {
+    const elevationProfileElement = document.querySelector(
+      "arcgis-elevation-profile"
+    );
+
     if (elevprofileready === "ready") {
       setChartPanelName(
         "Land Subsidence Profile" +
@@ -42,28 +46,26 @@ export default function ChartPanel() {
           ")"
       );
 
-      // if (arcgisElevationProfileElement) {
-      //   arcgisElevationProfileElement.profiles = [
-      //     {
-      //       type: "ground",
-      //       title: "Subsidence",
-      //     },
-      //   ];
-      //   arcgisElevationProfileElement.unitOptions = {
-      //     distance: "kilometers", // Supported distance units: "meters", "feet", "kilometers", "miles", etc.
-      //     elevation: "meters", // Supported elevation units: "meters", "feet", etc.
-      //   };
-      // }
+      if (elevationProfileElement) {
+        elevationProfileElement.profiles = [
+          {
+            type: "ground",
+            title: "Subsidence",
+          },
+        ];
+      }
     } else {
       setChartPanelName("Chart Panel");
     }
-  }, [elevprofileready]);
+  }, [elevprofileready, activewidget]);
 
   const handleElevationProfileChange = (event) => {
     if (event.detail.name !== "progress" || event.target.progress !== 1) {
       return;
     }
+
     const profiles = event.target.profiles;
+    console.log(profiles.at(0));
     const statistics = profiles.at(0)?.statistics;
     const minimumElevation = Math.round(statistics?.minElevation);
     const maximumElevation = Math.round(statistics?.maxElevation);
@@ -84,7 +86,7 @@ export default function ChartPanel() {
           chartPanelHeight === chart_panel_height_collapsed
             ? chart_panel_height_default
             : chart_panel_height_collapsed,
-        backgroundColor: "#ffffff",
+        // "--calcite-color-background": "#ffffff",
       }}
       onCalcitePanelToggle={() => {
         setChartPanelHeight(
@@ -127,7 +129,10 @@ export default function ChartPanel() {
             hideLegend
             hideSettingsButton
             onarcgisPropertyChange={handleElevationProfileChange}
-            style={{ width: "100%", height: "100%", marginTop: "20px" }}
+            style={{
+              width: "100%",
+              marginTop: "30px",
+            }}
           ></arcgis-elevation-profile>
         </>
       ) : (

@@ -21,13 +21,6 @@ calcite-action-bar {
   --calcite-color-text-3: #bfbfbf;
 }
 
-calcite-shell {
-  --calcite-color-foreground-1: #2b2b2b;
-  --calcite-color-text-1: #ffffff;
-  --calcite-color-background: #2b2b2b;
-  --calcite-color-border-3: #555555;
-}
-
 calcite-list {
   overflow-y: auto;
   /* --calcite-color-border-3: #555555; */
@@ -55,4 +48,19 @@ calcite-tabs {
 }
 ::-webkit-scrollbar-thumb {
   background: #000;
+}
+
+calcite-shell {
+  --calcite-color-foreground-1: #2b2b2b;
+  --calcite-color-text-1: #ffffff;
+  --calcite-color-background: #2b2b2b;
+  --calcite-color-border-3: #555555;
+}
+
+/* calcite-panel {
+  --calcite-color-foreground-1: #2b2b2b;
+} */
+
+arcgis-legend::part(img) {
+  width: 500px;
 }

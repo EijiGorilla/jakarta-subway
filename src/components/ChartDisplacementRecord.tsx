@@ -273,7 +273,7 @@ export default function ChartDisplacementRecord() {
             width: "99%",
             backgroundColor: "#2b2b2b",
             color: "white",
-            bottom: 50,
+            // bottom: 50,
             marginLeft: "0.3vw",
             marginRight: "auto",
           }}
