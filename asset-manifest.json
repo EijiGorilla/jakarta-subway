@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/jakarta-subway/static/css/main.0791bdd8.css",
-    "main.js": "/jakarta-subway/static/js/main.1f1db257.js",
+    "main.css": "/jakarta-subway/static/css/main.9beb18b0.css",
+    "main.js": "/jakarta-subway/static/js/main.9c3e8c4c.js",
     "static/js/20623.d5ff14c1.chunk.js": "/jakarta-subway/static/js/20623.d5ff14c1.chunk.js",
     "static/js/34429.76340dd7.chunk.js": "/jakarta-subway/static/js/34429.76340dd7.chunk.js",
     "static/js/74965.652b1552.chunk.js": "/jakarta-subway/static/js/74965.652b1552.chunk.js",
@@ -601,8 +601,8 @@
     "static/media/b8b15cdf-85d1-4120-8daa-48863d803939-hebrew.woff2": "/jakarta-subway/static/media/b8b15cdf-85d1-4120-8daa-48863d803939-hebrew.e66cd35520367aca44d7.woff2",
     "static/media/09ab0626-bb45-4650-acc8-0182d693df02-hebrew.woff2": "/jakarta-subway/static/media/09ab0626-bb45-4650-acc8-0182d693df02-hebrew.34f5f4ec364bd2996c4e.woff2",
     "index.html": "/jakarta-subway/index.html",
-    "main.0791bdd8.css.map": "/jakarta-subway/static/css/main.0791bdd8.css.map",
-    "main.1f1db257.js.map": "/jakarta-subway/static/js/main.1f1db257.js.map",
+    "main.9beb18b0.css.map": "/jakarta-subway/static/css/main.9beb18b0.css.map",
+    "main.9c3e8c4c.js.map": "/jakarta-subway/static/js/main.9c3e8c4c.js.map",
     "20623.d5ff14c1.chunk.js.map": "/jakarta-subway/static/js/20623.d5ff14c1.chunk.js.map",
     "34429.76340dd7.chunk.js.map": "/jakarta-subway/static/js/34429.76340dd7.chunk.js.map",
     "74965.652b1552.chunk.js.map": "/jakarta-subway/static/js/74965.652b1552.chunk.js.map",
@@ -1078,7 +1078,7 @@
     "65611.7b5f6913.chunk.js.map": "/jakarta-subway/static/js/65611.7b5f6913.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0791bdd8.css",
-    "static/js/main.1f1db257.js"
+    "static/css/main.9beb18b0.css",
+    "static/js/main.9c3e8c4c.js"
   ]
 }
