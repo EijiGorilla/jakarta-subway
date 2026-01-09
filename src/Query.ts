@@ -118,6 +118,7 @@ function StringToDate(date: any) {
 
 export async function generateChartData(selectedid: any, newdates: any) {
   let mean_diplace: any = [];
+  console.log(selectedid);
 
   // Sort OBJECTID
   selectedid &&
@@ -146,6 +147,7 @@ export async function generateChartData(selectedid: any, newdates: any) {
         return dataCompile;
       });
 
+      console.log(promises);
       // Wait for all promises to resolve and get an array of arrays
       const allResults = await Promise.all(promises);
       return [allResults, mean_diplace];
