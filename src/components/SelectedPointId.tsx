@@ -40,7 +40,7 @@ export default function SelectedPointId() {
               selectedFeatures = [objectId];
             }
             console.log(selectedFeatures);
-            updateSelectedid(selectedFeatures);
+            // updateSelectedid(selectedFeatures);
 
             if (highlight) {
               highlight.remove(); // Remove previous highlight
@@ -57,7 +57,7 @@ export default function SelectedPointId() {
             selectedFeatures = [];
             updateSelectedid(null);
           }
-
+          updateSelectedid(selectedFeatures);
           // if (!title) {
           //   updateSelectedid(null);
           //   updateSelectedareforscenario(null);
