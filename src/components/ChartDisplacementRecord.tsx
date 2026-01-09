@@ -68,15 +68,15 @@ export default function ChartDisplacementRecord() {
 
   // Export to Excel
   useEffect(() => {
-    // if (chartData.length > 0) {
-    //   // Remove numerical date values
-    //   const arr1 = chartData.map(({ Date, value }) => ({ Date, value }));
-    //   const worksheet = XLSX.utils.json_to_sheet(arr1);
-    //   const workbook = XLSX.utils.book_new();
-    //   const file_name = "Displacement_" + selectedid + ".xlsx";
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Displacement");
-    //   XLSX.writeFile(workbook, file_name);
-    // }
+    if (chartData.length > 0) {
+      // Remove numerical date values
+      const arr1 = chartData.map(({ Date, value }) => ({ Date, value }));
+      const worksheet = XLSX.utils.json_to_sheet(arr1);
+      const workbook = XLSX.utils.book_new();
+      const file_name = "Displacement_" + selectedid + ".xlsx";
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Displacement");
+      XLSX.writeFile(workbook, file_name);
+    }
   }, [clickedexportexcel]);
 
   useEffect(() => {
