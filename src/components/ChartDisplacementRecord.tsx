@@ -249,16 +249,8 @@ export default function ChartDisplacementRecord() {
         width: 100,
         paddingLeft: 15,
         height: am5.percent(100),
-      })
-    );
-
-    legend.children.unshift(
-      am5.Label.new(root, {
-        text: "ID",
-        fontWeight: "bold",
-        paddingBottom: 15,
-        x: am5.p50,
-        centerX: am5.p50,
+        label: "TEST",
+        title: "TEST",
       })
     );
 
@@ -288,7 +280,8 @@ export default function ChartDisplacementRecord() {
           });
 
           chartSeries.strokes.template.setAll({
-            strokeWidth: 3,
+            strokeWidth: 2,
+            stroke: "magenta",
           });
         }
       });

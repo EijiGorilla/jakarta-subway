@@ -69,11 +69,13 @@ export default function MapDisplay() {
       arcgisMap && mapViewEnvironment();
       arcgisOverviewMap && overviewMapViewEnvironment();
 
-      arcgisMap.highlights = [
-        { name: "default", color: "cyan" },
-        { name: "temporary", color: "magenta" },
-        { name: "custom", color: "yellow" },
-      ];
+      if (arcgisMap) {
+        arcgisMap.highlights = [
+          { name: "default", color: "cyan" },
+          { name: "temporary", color: "magenta" },
+          { name: "custom", color: "yellow" },
+        ];
+      }
 
       if (mapView.id === "arcgis-map-id") {
         // Remove layers
@@ -104,10 +106,10 @@ export default function MapDisplay() {
       //   arcgisMap?.visibleArea
       // );
 
-      const xmax_va = arcgisMap?.visibleArea.extent.xmax;
-      const xmin_va = arcgisMap?.visibleArea.extent.xmin;
-      const ymin_va = arcgisMap?.visibleArea.extent.ymin;
-      const ymax_va = arcgisMap?.visibleArea.extent.ymax;
+      const xmax_va = arcgisMap?.visibleArea?.extent.xmax;
+      const xmin_va = arcgisMap?.visibleArea?.extent.xmin;
+      const ymin_va = arcgisMap?.visibleArea?.extent.ymin;
+      const ymax_va = arcgisMap?.visibleArea?.extent.ymax;
 
       // when each point is expanded to 100m at 45 degrees, we get 70.71m (trigonometry)
       const new_scale = Math.sin((45 * Math.PI) / 180) * 100;
