@@ -38,9 +38,11 @@ export default function ChartDisplacementRecord() {
     updateLayerviewreset,
     selectedid,
     clickedexportexcel,
+    layerviewreset,
     is3D,
   } = use(MyContext);
 
+  console.log(layerviewreset);
   const arcgisMap = document.querySelector("arcgis-map") as ArcgisMap;
 
   const xAxisRef = useRef<unknown | any | undefined>({});
@@ -65,7 +67,7 @@ export default function ChartDisplacementRecord() {
       setChartData(response[0]);
       setDisplMmyrValue(response[1]);
     });
-  }, [selectedid, newdates]);
+  }, [selectedid]);
 
   // Export to Excel
   useEffect(() => {

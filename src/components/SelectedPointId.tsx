@@ -5,8 +5,13 @@ import { MyContext } from "../contexts/MyContext";
 import { generateChartData } from "../Query";
 
 export default function SelectedPointId() {
-  const { updateSelectedid, layerviewreset, viewchange, newdates } =
-    use(MyContext);
+  const {
+    updateSelectedid,
+    layerviewreset,
+    updateLayerviewreset,
+    viewchange,
+    newdates,
+  } = use(MyContext);
 
   useEffect(() => {
     let highlight: any; // Variable to hold the highlight handle
@@ -63,6 +68,7 @@ export default function SelectedPointId() {
           generateChartData(selectedFeatures, newdates).then(
             (response: any) => {
               console.log(response);
+              updateLayerviewreset(response);
             }
           );
           // if (!title) {
