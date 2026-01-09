@@ -13,11 +13,11 @@ export default function ExportExcel() {
         <div></div>
       ) : (
         <CalciteButton
-          // onClick={() =>
-          //   updateClickedexportexcel(
-          //     clickedexportexcel === false ? true : false
-          //   )
-          // }
+          onClick={() =>
+            updateClickedexportexcel(
+              clickedexportexcel === false ? true : false
+            )
+          }
           slot="trigger"
           scale="s"
           appearance="solid"
