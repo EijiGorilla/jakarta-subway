@@ -61,13 +61,20 @@ export default function ChartDisplacementRecord() {
     });
   }, [referenceid]);
 
+  // useEffect(() => {
+  //   generateChartData(selectedid, newdates).then((response: any) => {
+  //     console.log(response);
+  //     setChartData(response[0]);
+  //     setDisplMmyrValue(response[1]);
+  //   });
+  // }, [selectedid]);
+
   useEffect(() => {
-    generateChartData(selectedid, newdates).then((response: any) => {
-      console.log(response);
-      setChartData(response[0]);
-      setDisplMmyrValue(response[1]);
-    });
-  }, [selectedid]);
+    if (layerviewreset) {
+      setChartData(layerviewreset[0]);
+      setDisplMmyrValue(layerviewreset[1]);
+    }
+  }, [layerviewreset]);
 
   // Export to Excel
   useEffect(() => {
