@@ -32,17 +32,8 @@ function maybeDisposeRoot(divId: any) {
 
 // https://www.amcharts.com/docs/v5/tutorials/dynamically-switching-data-set-for-an-xychart/
 export default function ChartDisplacementRecord() {
-  const {
-    newdates,
-    referenceid,
-    updateLayerviewreset,
-    selectedid,
-    clickedexportexcel,
-    layerviewreset,
-    is3D,
-  } = use(MyContext);
+  const { selectedid, clickedexportexcel, chartdata, is3D } = use(MyContext);
 
-  console.log(layerviewreset);
   const arcgisMap = document.querySelector("arcgis-map") as ArcgisMap;
 
   const xAxisRef = useRef<unknown | any | undefined>({});
@@ -50,31 +41,15 @@ export default function ChartDisplacementRecord() {
   const chartRef = useRef<unknown | any | undefined>({});
   const [chartData, setChartData] = useState([]);
   const [displMmyrValue, setDisplMmyrValue] = useState<any>();
-  const [referencePointData, setReferencePointData] = useState<any>();
 
   const chartID = "lot-progress";
 
-  // Get reference point values for subtraction
   useEffect(() => {
-    getReferencePointValueForSubtraction(referenceid).then((response: any) => {
-      setReferencePointData(response);
-    });
-  }, [referenceid]);
-
-  // useEffect(() => {
-  //   generateChartData(selectedid, newdates).then((response: any) => {
-  //     console.log(response);
-  //     setChartData(response[0]);
-  //     setDisplMmyrValue(response[1]);
-  //   });
-  // }, [selectedid]);
-
-  useEffect(() => {
-    if (layerviewreset) {
-      setChartData(layerviewreset[0]);
-      setDisplMmyrValue(layerviewreset[1]);
+    if (chartdata) {
+      setChartData(chartdata[0]);
+      setDisplMmyrValue(chartdata[1]);
     }
-  }, [layerviewreset]);
+  }, [chartdata]);
 
   // Export to Excel
   useEffect(() => {

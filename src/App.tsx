@@ -63,7 +63,7 @@ function App() {
   const [viewpoint, setViewpoint] = useState(initialViewpoint);
   const [activewidget, setActivewidget] = useState("layers");
   const [elevprofileready, setElevprofileready] = useState(undefined);
-  const [layerviewreset, setLayerviewreset] = useState();
+  const [chartdata, setChartdata] = useState();
 
   const updateStartyear = (newStartyear: any) => {
     setStartYear(newStartyear);
@@ -117,8 +117,8 @@ function App() {
     setElevprofileready(newElev);
   };
 
-  const updateLayerviewreset = (newLayerview: any) => {
-    setLayerviewreset(newLayerview);
+  const updateChartdata = (newData: any) => {
+    setChartdata(newData);
   };
 
   return (
@@ -140,7 +140,7 @@ function App() {
               viewpoint,
               activewidget,
               elevprofileready,
-              layerviewreset,
+              chartdata,
               updateStartyear,
               updateEndyear,
               updateNewdates,
@@ -154,7 +154,7 @@ function App() {
               updateViewpoint,
               updateActivewidget,
               updateElevprofileready,
-              updateLayerviewreset,
+              updateChartdata,
             }}
           >
             <ViewSwitch />

@@ -14,7 +14,7 @@ type MyActionEventContextType = {
   viewpoint: any;
   activewidget: any;
   elevprofileready: any;
-  layerviewreset: any;
+  chartdata: any;
   updateStartyear: any;
   updateEndyear: any;
   updateNewdates: any;
@@ -28,7 +28,7 @@ type MyActionEventContextType = {
   updateViewpoint: any;
   updateActivewidget: any;
   updateElevprofileready: any;
-  updateLayerviewreset: any;
+  updateChartdata: any;
 };
 
 const initialState = {
@@ -45,7 +45,7 @@ const initialState = {
   viewpoint: undefined,
   activewidget: undefined,
   elevprofileready: undefined,
-  layerviewreset: undefined,
+  chartdata: undefined,
   updateStartyear: undefined,
   updateEndyear: undefined,
   updateNewdates: undefined,
@@ -59,7 +59,7 @@ const initialState = {
   updateViewpoint: undefined,
   updateActivewidget: undefined,
   updateElevprofileready: undefined,
-  updateLayerviewreset: undefined,
+  updateChartdata: undefined,
 };
 
 export const MyContext = createContext<MyActionEventContextType>({
