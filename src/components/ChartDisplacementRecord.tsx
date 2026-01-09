@@ -252,6 +252,16 @@ export default function ChartDisplacementRecord() {
       })
     );
 
+    legend.children.unshift(
+      am5.Label.new(root, {
+        text: "ID",
+        fontWeight: "bold",
+        paddingBottom: 15,
+        x: am5.p50,
+        centerX: am5.p50,
+      })
+    );
+
     // When legend item container is hovered, dim all the series except the hovered one
     legend.itemContainers.template.events.on("pointerover", (e: any) => {
       var itemContainer = e.target;

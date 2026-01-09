@@ -11,14 +11,14 @@ export default function SelectedPointId() {
   useEffect(() => {
     let highlight: any; // Variable to hold the highlight handle
     let selectedFeatures: any = []; // Array to store ObjectIDs of selected features
-    let layerView: any;
-    const arcgisMap = document.querySelector(viewchange);
+    var layerView: any;
 
     sar_points_layer.when(() => {
+      const arcgisMap = document.querySelector(viewchange);
       // For higlight
-      // arcgisMap.whenLayerView(sar_points_layer).then((lv: any) => {
-      //   layerView = lv;
-      // });
+      arcgisMap?.whenLayerView(sar_points_layer).then((lv: any) => {
+        layerView = lv;
+      });
 
       arcgisMap?.view.on("click", (event: any) => {
         arcgisMap?.view.hitTest(event).then((response: any) => {
@@ -44,16 +44,15 @@ export default function SelectedPointId() {
               highlight.remove(); // Remove previous highlight
             }
 
-            // highlight = layerView?.highlight(selectedFeatures, {
-            //   name: "default",
-            // });
+            highlight = layerView?.highlight(selectedFeatures, {
+              name: "default",
+            });
           } else if (!event.native.ctrlKey && !event.native.metaKey) {
             // If the user clicks on an empty area without the modifier key, clear selection
-            // if (highlight) {
-            //   highlight.remove();
-            // }
+            if (highlight) {
+              highlight.remove();
+            }
             selectedFeatures = [];
-            // updateSelectedid(null);
           }
           updateSelectedid(selectedFeatures);
           generateChartData(selectedFeatures, newdates).then(
