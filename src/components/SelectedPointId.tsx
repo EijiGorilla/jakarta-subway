@@ -27,6 +27,7 @@ export default function SelectedPointId() {
             const ctrlKey = event.native.ctrlKey || event.native.metakey;
             const objectId = result.graphic.attributes[object_id];
             if (ctrlKey) {
+              console.log("holded ctrKey");
               const index = selectedFeatures.indexOf(objectId);
               if (index > -1) {
                 // Feature is already selected, remove it. When the same point is clicked, index = 0.
@@ -38,6 +39,7 @@ export default function SelectedPointId() {
               // If Ctrl is not held, clear previous selections and select only the new one
               selectedFeatures = [objectId];
             }
+            console.log(selectedFeatures);
 
             if (highlight) {
               highlight.remove(); // Remove previous highlight
