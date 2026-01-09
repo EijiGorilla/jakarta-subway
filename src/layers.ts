@@ -36,7 +36,7 @@ import {
 import PointCloudLayer from "@arcgis/core/layers/PointCloudLayer";
 
 // layer title
-export const sar_point_layer_title = "Subsidence (mm)";
+export const sar_point_layer_title = "Displacement (mm)";
 export const sar_points_las_layer_title = "Points";
 export const sar_points_tile_layer_title = "Surface";
 export const hot_spot_analysis_layer_title =
@@ -277,14 +277,14 @@ export const fishnet_3d_layer = new FeatureLayer({
 });
 
 export const displacement_groupLayer = new GroupLayer({
-  title: "Land Subsidence",
+  title: "Land Displacement",
   visible: true,
   visibilityMode: "exclusive",
   layers: [hot_spot_layer, sar_points_layer],
 });
 
 export const displacement_grouLayer_magnitude = new GroupLayer({
-  title: "Magnitude of Land Subsidence",
+  title: "Magnitude of Land Displacement",
   visible: true,
   visibilityMode: "exclusive",
   layers: [sar_points_las, fishnet_3d_layer],
@@ -387,11 +387,11 @@ export const layerInfos_sar_hotspot = [
   },
   {
     layer: fishnet_3d_layer,
-    title: "Magnitude of Land Subsidence",
+    title: "Magnitude of Land Displacement",
   },
   {
     layer: sar_points_las,
-    title: "Magnitude of Land Subsidence",
+    title: "Magnitude of Land Displacement",
   },
 ];
 

@@ -69,6 +69,12 @@ export default function MapDisplay() {
       arcgisMap && mapViewEnvironment();
       arcgisOverviewMap && overviewMapViewEnvironment();
 
+      arcgisMap.highlights = [
+        { name: "default", color: "cyan" },
+        { name: "temporary", color: "magenta" },
+        { name: "custom", color: "yellow" },
+      ];
+
       if (mapView.id === "arcgis-map-id") {
         // Remove layers
         arcgisMap?.map?.remove(displacement_grouLayer_magnitude);

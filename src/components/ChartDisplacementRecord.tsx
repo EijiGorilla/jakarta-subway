@@ -2,6 +2,7 @@
 import { useRef, useState, useEffect, use } from "react";
 import * as am5 from "@amcharts/amcharts5";
 import * as am5xy from "@amcharts/amcharts5/xy";
+import am5index from "@amcharts/amcharts5/index";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import am5themes_Responsive from "@amcharts/amcharts5/themes/Responsive";
 import {
@@ -12,10 +13,13 @@ import {
   chart_div_height,
   chart_inside_label_color_down_mmyr,
   chart_inside_label_color_up_mmyr,
+  object_id,
   secondary_color,
 } from "../uniqueValues";
 import * as XLSX from "xlsx";
 import { MyContext } from "../contexts/MyContext";
+import { sar_points_layer } from "../layers";
+import { ArcgisMap } from "@arcgis/map-components/dist/components/arcgis-map";
 
 // Dispose function
 function maybeDisposeRoot(divId: any) {
@@ -28,8 +32,16 @@ function maybeDisposeRoot(divId: any) {
 
 // https://www.amcharts.com/docs/v5/tutorials/dynamically-switching-data-set-for-an-xychart/
 export default function ChartDisplacementRecord() {
-  const { newdates, referenceid, selectedid, clickedexportexcel, is3D } =
-    use(MyContext);
+  const {
+    newdates,
+    referenceid,
+    updateLayerviewreset,
+    selectedid,
+    clickedexportexcel,
+    is3D,
+  } = use(MyContext);
+
+  const arcgisMap = document.querySelector("arcgis-map") as ArcgisMap;
 
   const xAxisRef = useRef<unknown | any | undefined>({});
   const yAxisRef = useRef<unknown | any | undefined>({});
@@ -48,13 +60,10 @@ export default function ChartDisplacementRecord() {
   }, [referenceid]);
 
   useEffect(() => {
-    generateChartData(selectedid, newdates, referencePointData).then(
-      (response: any) => {
-        setChartData(response[0]);
-        setDisplMmyrValue(response[1]);
-      }
-    );
-    // }
+    generateChartData(selectedid, newdates).then((response: any) => {
+      setChartData(response[0]);
+      setDisplMmyrValue(response[1]);
+    });
   }, [selectedid, newdates]);
 
   // Export to Excel
@@ -99,11 +108,14 @@ export default function ChartDisplacementRecord() {
     // https://www.amcharts.com/docs/v5/charts/xy-chart/
     var chart = root.container.children.push(
       am5xy.XYChart.new(root, {
-        panX: false,
-        panY: false,
+        // panX: false,
+        // panY: false,
+        panX: true,
+        panY: true,
         wheelX: "panX",
         wheelY: "zoomX",
         paddingLeft: 0,
+        maxTooltipDistance: 0,
       })
     );
     chartRef.current = chart;
@@ -135,7 +147,7 @@ export default function ChartDisplacementRecord() {
 
     // Create axes //
     // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-    var xAxis = chart.xAxes.push(
+    const xAxis = chart.xAxes.push(
       am5xy.DateAxis.new(root, {
         maxDeviation: 0,
         baseInterval: {
@@ -173,7 +185,7 @@ export default function ChartDisplacementRecord() {
       month: "MM",
     });
 
-    var yAxis = chart.yAxes.push(
+    const yAxis: any = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
         // extraMax: 0.0005,
         // max: 0.01,
@@ -207,47 +219,133 @@ export default function ChartDisplacementRecord() {
 
     // Add series
     // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-    var series = chart.series.push(
-      am5xy.LineSeries.new(root, {
-        name: "Series",
-        xAxis: xAxis,
-        yAxis: yAxis,
-        valueYField: "value",
-        valueXField: "date",
-        tooltip: am5.Tooltip.new(root, {
-          labelText: "{valueY}",
-        }),
+    for (var i = 0; i < chartData.length; i++) {
+      var series: any = chart.series.push(
+        am5xy.LineSeries.new(root, {
+          name: selectedid[i],
+          xAxis: xAxis,
+          yAxis: yAxis,
+          valueYField: "value",
+          valueXField: "date",
+          tooltip: am5.Tooltip.new(root, {
+            labelText: "{valueY}",
+          }),
+        })
+      );
+
+      // Main line
+      series.strokes.template.setAll({
+        strokeWidth: 2,
+      });
+
+      // Actual bullet
+      // eslint-disable-next-line no-loop-func
+      series.bullets.push(function () {
+        var bulletCircle: any = am5.Circle.new(root, {
+          radius: 2,
+          fill: series.get("fill"),
+        });
+        return am5.Bullet.new(root, {
+          sprite: bulletCircle,
+        });
+      });
+
+      series.data.setAll(chartData[i]);
+
+      series.appear();
+      // chart.appear(1000, 100);
+    }
+
+    let highlight: any;
+    // Add legend
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+    var legend: any = chart.rightAxesContainer.children.push(
+      am5.Legend.new(root, {
+        width: 100,
+        paddingLeft: 15,
+        height: am5.percent(100),
       })
     );
 
-    // Main line
-    series.strokes.template.setAll({
-      strokeWidth: 2,
+    // When legend item container is hovered, dim all the series except the hovered one
+    legend.itemContainers.template.events.on("pointerover", (e: any) => {
+      var itemContainer = e.target;
+
+      // As series list is data of a legend, dataContext is series
+      var series = itemContainer.dataItem.dataContext;
+
+      if (highlight) {
+        highlight.remove();
+      }
+
+      chart.series.each((chartSeries: any) => {
+        if (chartSeries !== series) {
+          chartSeries.strokes.template.setAll({
+            strokeOpacity: 0.15,
+            stroke: am5.color(0x000000),
+          });
+        } else {
+          // arcgisMap?.highlights =
+
+          const hovered_id = chartSeries.get("name");
+          arcgisMap?.whenLayerView(sar_points_layer).then((layerView: any) => {
+            highlight = layerView?.highlight(hovered_id, { name: "temporary" });
+          });
+
+          chartSeries.strokes.template.setAll({
+            strokeWidth: 3,
+          });
+        }
+      });
     });
 
-    // Actual bullet
-    series.bullets.push(function () {
-      var bulletCircle = am5.Circle.new(root, {
-        radius: 2,
-        fill: series.get("fill"),
-      });
-      return am5.Bullet.new(root, {
-        sprite: bulletCircle,
+    // When legend item container is unhovered, make all series as they are
+    legend.itemContainers.template.events.on("pointerout", (e: any) => {
+      var itemContainer = e.target;
+      var series = itemContainer.dataItem.dataContext;
+
+      if (highlight) {
+        highlight.remove();
+      }
+
+      chart.series.each((chartSeries: any) => {
+        chartSeries.strokes.template.setAll({
+          strokeOpacity: 1,
+          strokeWidth: 1,
+          stroke: chartSeries.get("fill"),
+        });
       });
     });
 
+    legend.itemContainers.template.set("width", am5.p100);
+    legend.valueLabels.template.setAll({
+      width: am5.p100,
+      textAlign: "right",
+    });
+
+    legend.labels.template.setAll({
+      oversizedBehavior: "truncate",
+      fill: am5.color("#ffffff"),
+      //textDecoration: "underline"
+      //width: am5.percent(200)
+      //fontWeight: "300"
+    });
+
+    // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
+    legend.data.setAll(chart.series.values);
+    chart.appear(1000, 100);
     // Add scrollbar
     // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
     // chart.set("scrollbarX", am5.Scrollbar.new(root, {
     //   orientation: "horizontal"
     // }));
 
-    series.data.setAll(chartData);
+    // series.data.setAll(chartData);
 
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
-    series.appear(1000);
-    chart.appear(1000, 100);
+    // series.appear(1000);
+    // chart.appear(1000, 100);
 
     return () => {
       root.dispose();
@@ -299,34 +397,6 @@ export default function ChartDisplacementRecord() {
               )}
             </span>
           )}
-
-          <span
-            style={{
-              position: "fixed",
-              right: 50,
-              marginTop: "10px",
-              color:
-                displMmyrValue > 0
-                  ? chart_inside_label_color_up_mmyr
-                  : displMmyrValue < 0
-                  ? chart_inside_label_color_down_mmyr
-                  : secondary_color,
-              fontWeight: "bold",
-              fontSize: "20px",
-              //   display: informationWidget === true ? "none" : "block",
-            }}
-          >
-            {displMmyrValue}{" "}
-            <span
-              style={{
-                fontWeight: "normal",
-                color: secondary_color,
-                fontSize: "15px",
-              }}
-            >
-              mm/yr
-            </span>
-          </span>
         </div>
       </div>
     </>

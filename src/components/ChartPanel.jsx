@@ -40,7 +40,7 @@ export default function ChartPanel() {
 
     if (elevprofileready === "ready") {
       setChartPanelName(
-        "Land Subsidence Profile" +
+        "Land Displacement Profile" +
           " (" +
           dateReadableConversion([latest_date_field]) +
           ")"
@@ -50,7 +50,7 @@ export default function ChartPanel() {
         elevationProfileElement.profiles = [
           {
             type: "ground",
-            title: "Subsidence",
+            title: "Displacement",
           },
         ];
       }

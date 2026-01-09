@@ -13,17 +13,18 @@ export default function ExportExcel() {
         <div></div>
       ) : (
         <CalciteButton
-          onClick={() =>
-            updateClickedexportexcel(
-              clickedexportexcel === false ? true : false
-            )
-          }
+          // onClick={() =>
+          //   updateClickedexportexcel(
+          //     clickedexportexcel === false ? true : false
+          //   )
+          // }
           slot="trigger"
           scale="s"
           appearance="solid"
           icon-start="file-excel"
           style={{
-            "--calcite-button-background-color": "#0079C1",
+            // "--calcite-button-background-color": "#0079C1",
+            "--calcite-button-background-color": "gray",
             marginLeft: "auto",
             marginRight: "10px",
             marginTop: "5px",

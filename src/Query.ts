@@ -105,43 +105,55 @@ export async function getReferencePointValueForSubtraction(ref_point_id: any) {
   });
 }
 
-export async function generateChartData(
-  selectedid: any,
-  newdates: any,
-  refData: any
-) {
-  if (selectedid) {
-    const query = sar_points_layer.createQuery();
-    query.where = `${object_id} = ` + selectedid;
-    return sar_points_layer.queryFeatures(query).then((results: any) => {
-      var stats = results.features[0].attributes;
-      const map = newdates.map((date: any, index: any) => {
-        const dateString = date.replace(date_sar_suffix, "");
-        const year = dateString.substring(0, 4);
-        const month = dateString.substring(4, 6);
-        const day = dateString.substring(6, 8);
-        const date_label = `${year.toString()}-${month.toString()}-${day.toString()}`;
-        const date_n = new Date(year, month - 1, day);
-        date_n.setHours(0, 0, 0, 0);
+function StringToDate(date: any) {
+  const dateString = date.replace(date_sar_suffix, "");
+  const year = dateString.substring(0, 4);
+  const month = dateString.substring(4, 6);
+  const day = dateString.substring(6, 8);
+  const date_label = `${year.toString()}-${month.toString()}-${day.toString()}`;
+  const date_n = new Date(year, month - 1, day);
+  date_n.setHours(0, 0, 0, 0);
+  return [date_n, date_label];
+}
 
-        // get reference point data
-        const find = refData?.filter(
-          (elem: any) => elem.date === date_n.getTime()
-        );
-        const ref_value = find ? find[0].value : 0;
+export async function generateChartData(selectedid: any, newdates: any) {
+  let mean_diplace: any = [];
 
-        //
-        return Object.assign({
-          Date: date_label,
-          date: date_n.getTime(), //date.replace('f', ''),
-          // value: stats[newdates[index]],
-          value: stats[newdates[index]] - ref_value, // subtract to account for displacement unrelated to subsidence
-        });
-      });
-      const displ_mmyr = stats[point_chart_y_variable];
-      return [map, displ_mmyr];
+  // Sort OBJECTID
+  selectedid &&
+    selectedid.sort((a: number, b: number) => {
+      return a - b;
     });
-  } else {
+
+  try {
+    if (selectedid) {
+      // map returns an array of Promises
+      const promises = selectedid.map(async (result: any) => {
+        const query = sar_points_layer.createQuery();
+        query.where = `${object_id} = ${result}`;
+        const results = await sar_points_layer.queryFeatures(query);
+        const stats = results.features[0].attributes;
+        mean_diplace.push(stats[point_chart_y_variable]);
+
+        const dataCompile = newdates.map((date: any, index: any) => {
+          const dates: any = StringToDate(date);
+          return Object.assign({
+            Date: dates[1],
+            date: dates[0].getTime(),
+            value: stats[newdates[index]],
+          });
+        });
+        return dataCompile;
+      });
+
+      // Wait for all promises to resolve and get an array of arrays
+      const allResults = await Promise.all(promises);
+      return [allResults, mean_diplace];
+    } else {
+      const default_data = [{}];
+      return default_data;
+    }
+  } catch (error) {
     const default_data = [{}];
     return default_data;
   }
