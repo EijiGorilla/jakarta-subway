@@ -14,9 +14,9 @@ export default function SelectedPointId() {
 
     sar_points_layer.when(() => {
       // For higlight
-      arcgisMap.whenLayerView(sar_points_layer).then((lv: any) => {
-        layerView = lv;
-      });
+      // arcgisMap.whenLayerView(sar_points_layer).then((lv: any) => {
+      //   layerView = lv;
+      // });
 
       arcgisMap?.view.on("click", (event: any) => {
         arcgisMap?.view.hitTest(event).then((response: any) => {
@@ -40,20 +40,20 @@ export default function SelectedPointId() {
               selectedFeatures = [objectId];
             }
             console.log(selectedFeatures);
+            updateSelectedid(selectedFeatures);
 
             if (highlight) {
               highlight.remove(); // Remove previous highlight
             }
 
-            highlight = layerView?.highlight(selectedFeatures, {
-              name: "default",
-            });
-            updateSelectedid(selectedFeatures);
+            // highlight = layerView?.highlight(selectedFeatures, {
+            //   name: "default",
+            // });
           } else if (!event.native.ctrlKey && !event.native.metaKey) {
             // If the user clicks on an empty area without the modifier key, clear selection
-            if (highlight) {
-              highlight.remove();
-            }
+            // if (highlight) {
+            //   highlight.remove();
+            // }
             selectedFeatures = [];
             updateSelectedid(null);
           }
