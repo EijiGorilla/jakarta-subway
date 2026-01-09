@@ -61,6 +61,7 @@ export default function ChartDisplacementRecord() {
 
   useEffect(() => {
     generateChartData(selectedid, newdates).then((response: any) => {
+      console.log(response);
       setChartData(response[0]);
       setDisplMmyrValue(response[1]);
     });

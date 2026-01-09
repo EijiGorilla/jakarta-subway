@@ -147,9 +147,9 @@ export async function generateChartData(selectedid: any, newdates: any) {
         return dataCompile;
       });
 
-      console.log(promises);
       // Wait for all promises to resolve and get an array of arrays
       const allResults = await Promise.all(promises);
+      console.log(allResults);
       return [allResults, mean_diplace];
     } else {
       const default_data = [{}];
