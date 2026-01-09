@@ -2,9 +2,11 @@ import { useEffect, use, useState } from "react";
 import { sar_points_layer } from "../layers";
 import { object_id } from "../uniqueValues";
 import { MyContext } from "../contexts/MyContext";
+import { generateChartData } from "../Query";
 
 export default function SelectedPointId() {
-  const { updateSelectedid, layerviewreset, viewchange } = use(MyContext);
+  const { updateSelectedid, layerviewreset, viewchange, newdates } =
+    use(MyContext);
 
   useEffect(() => {
     let highlight: any; // Variable to hold the highlight handle
@@ -58,6 +60,11 @@ export default function SelectedPointId() {
             updateSelectedid(null);
           }
           updateSelectedid(selectedFeatures);
+          generateChartData(selectedFeatures, newdates).then(
+            (response: any) => {
+              console.log(response);
+            }
+          );
           // if (!title) {
           //   updateSelectedid(null);
           //   updateSelectedareforscenario(null);
