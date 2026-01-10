@@ -32,7 +32,7 @@ import {
   new_point_renderer_las,
   visualVariables_fishnet,
 } from "./Query";
-
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import PointCloudLayer from "@arcgis/core/layers/PointCloudLayer";
 
 // layer title
@@ -332,6 +332,9 @@ export const sar_elevation_layer = new ElevationLayer({
     },
   },
 });
+
+export const highlightPointHoverGrapchicsLayer = new GraphicsLayer({});
+highlightPointHoverGrapchicsLayer.listMode = "hide";
 
 /////////////////////////////
 // let colors = [

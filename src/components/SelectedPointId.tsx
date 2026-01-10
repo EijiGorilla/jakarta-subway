@@ -1,5 +1,5 @@
 import { useEffect, use } from "react";
-import { sar_points_layer } from "../layers";
+import { highlightPointHoverGrapchicsLayer, sar_points_layer } from "../layers";
 import { object_id } from "../uniqueValues";
 import { MyContext } from "../contexts/MyContext";
 import { generateChartData } from "../Query";
@@ -16,6 +16,8 @@ export default function SelectedPointId() {
       const arcgisMap = document.querySelector(viewchange);
 
       arcgisMap?.view.on("click", (event: any) => {
+        // Remove highlighted custom points
+        arcgisMap.map.remove(highlightPointHoverGrapchicsLayer);
         arcgisMap?.view.hitTest(event).then((response: any) => {
           const result: any = response.results[0];
           // const title = result?.graphic?.layer?.title;
@@ -35,9 +37,7 @@ export default function SelectedPointId() {
               // If Ctrl is not held, clear previous selections and select only the new one
               selectedFeatures = [objectId];
             }
-            if (highlight) {
-              highlight.remove(); // Remove previous highlight
-            }
+            highlight && highlight.remove();
 
             // For higlight
             arcgisMap
@@ -49,9 +49,7 @@ export default function SelectedPointId() {
               });
           } else if (!event.native.ctrlKey && !event.native.metaKey) {
             // If the user clicks on an empty area without the modifier key, clear selection
-            if (highlight) {
-              highlight.remove();
-            }
+            highlight && highlight.remove();
             selectedFeatures = [];
           }
           // Sort selected point IDs

@@ -19,6 +19,7 @@ import {
   displacement_groupLayer,
   sar_elevation_layer,
   displacement_grouLayer_magnitude,
+  highlightPointHoverGrapchicsLayer,
 } from "../layers";
 import "@esri/calcite-components/dist/components/calcite-button";
 import { MyContext } from "../contexts/MyContext";
@@ -37,6 +38,7 @@ import Extent from "@arcgis/core/geometry/Extent";
 
 export default function MapDisplay() {
   const { activewidget, viewpoint, is3D } = use(MyContext);
+
   const [mapView, setMapView] = useState();
   const [newGround, setNewGround] = useState(
     new Ground({

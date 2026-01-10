@@ -5,27 +5,19 @@ import * as am5xy from "@amcharts/amcharts5/xy";
 import am5index from "@amcharts/amcharts5/index";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import am5themes_Responsive from "@amcharts/amcharts5/themes/Responsive";
-import {
-  generateChartData,
-  getReferencePointValueForSubtraction,
-} from "../Query";
-import {
-  chart_div_height,
-  chart_inside_label_color_down_mmyr,
-  chart_inside_label_color_up_mmyr,
-  object_id,
-  secondary_color,
-} from "../uniqueValues";
+
+import { chart_div_height, object_id, secondary_color } from "../uniqueValues";
 import * as XLSX from "xlsx";
 import { MyContext } from "../contexts/MyContext";
-import { sar_points_layer } from "../layers";
+import { highlightPointHoverGrapchicsLayer, sar_points_layer } from "../layers";
 import { ArcgisMap } from "@arcgis/map-components/dist/components/arcgis-map";
 import Point from "@arcgis/core/geometry/Point";
 import { SimpleMarkerSymbol } from "@arcgis/core/symbols";
 import Graphic from "@arcgis/core/Graphic";
-import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import "@esri/calcite-components/dist/components/calcite-button";
-import { CalciteButton } from "@esri/calcite-components-react";
+import { CalciteChipGroup, CalciteChip } from "@esri/calcite-components-react";
+import "@esri/calcite-components/dist/components/calcite-chip";
+import "@esri/calcite-components/dist/components/calcite-chip-group";
 
 // Dispose function
 function maybeDisposeRoot(divId: any) {
@@ -53,7 +45,6 @@ export default function ChartDisplacementRecord() {
   useEffect(() => {
     if (chartdata) {
       setChartData(chartdata[0]);
-      setDisplMmyrValue(chartdata[1]);
     }
   }, [chartdata]);
 
@@ -208,6 +199,17 @@ export default function ChartDisplacementRecord() {
     xAxisRef.current = xAxis;
     yAxisRef.current = yAxis;
 
+    yAxis.children.unshift(
+      am5.Label.new(root, {
+        rotation: -90,
+        text: "Displacement (mm)",
+        y: am5.p50,
+        centerX: am5.p50,
+        fill: am5.color("#ffffff"),
+        fontSize: 11,
+      })
+    );
+
     // Add series
     // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
     for (var i = 0; i < chartData.length; i++) {
@@ -259,8 +261,15 @@ export default function ChartDisplacementRecord() {
       })
     );
 
-    const highlightPointHoverGrapchicsLayer = new GraphicsLayer({});
-    highlightPointHoverGrapchicsLayer.listMode = "hide";
+    const markerSymbol: any = new SimpleMarkerSymbol({
+      // color: "#FF00FF40",
+      color: "#80808080",
+      size: "20px",
+      outline: {
+        color: "#FF00FF",
+        width: 2,
+      },
+    });
 
     // When legend item container is hovered, dim all the series except the hovered one
     legend.itemContainers.template.events.on("pointerover", (e: any) => {
@@ -290,19 +299,11 @@ export default function ChartDisplacementRecord() {
               const stats = response.features[0].attributes;
               const lat = stats["Lat_deg"];
               const long = stats["Lon_deg"];
+              setDisplMmyrValue(stats["DispR_mmyr"].toFixed(2));
+
               const point = new Point({
                 longitude: long,
                 latitude: lat,
-              });
-
-              const markerSymbol: any = new SimpleMarkerSymbol({
-                // color: "#FF00FF40",
-                color: "#80808080",
-                size: "20px",
-                outline: {
-                  color: "#FF00FF",
-                  width: 2,
-                },
               });
 
               const pointGraphic = new Graphic({
@@ -339,6 +340,8 @@ export default function ChartDisplacementRecord() {
       if (highlight) {
         highlight.remove();
       }
+
+      setDisplMmyrValue(undefined);
 
       chart.series.each((chartSeries: any) => {
         chartSeries.strokes.template.setAll({
@@ -399,6 +402,29 @@ export default function ChartDisplacementRecord() {
 
   return (
     <>
+      {displMmyrValue && (
+        <CalciteChipGroup
+          slot="header-actions-end"
+          style={{
+            "--calcite-chip-background-color": "#0079C1",
+            marginTop: "auto",
+            marginBottom: "auto",
+          }}
+        >
+          <CalciteChip id="max-elevation">
+            <span
+              style={{
+                color: displMmyrValue < 0 ? "#e04635" : "white",
+                fontWeight: displMmyrValue < 0 ? "bold" : "normal",
+              }}
+            >
+              {displMmyrValue}
+            </span>{" "}
+            mm/year
+          </CalciteChip>
+        </CalciteChipGroup>
+      )}
+
       <div
         id="chartAlignDiv"
         style={{

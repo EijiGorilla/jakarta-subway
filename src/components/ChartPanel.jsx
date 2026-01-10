@@ -65,7 +65,6 @@ export default function ChartPanel() {
     }
 
     const profiles = event.target.profiles;
-    console.log(profiles.at(0));
     const statistics = profiles.at(0)?.statistics;
     const minimumElevation = Math.round(statistics?.minElevation);
     const maximumElevation = Math.round(statistics?.maxElevation);
