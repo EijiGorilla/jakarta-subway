@@ -28,6 +28,8 @@ import OpacityVariable from "@arcgis/core/renderers/visualVariables/OpacityVaria
 import PointCloudStretchRenderer from "@arcgis/core/renderers/PointCloudStretchRenderer";
 import Extent from "@arcgis/core/geometry/Extent";
 import SpatialReference from "@arcgis/core/geometry/SpatialReference";
+import { MyContext } from "./contexts/MyContext";
+import { use } from "react";
 
 // total records for checking
 // export async function totalRecords() {
@@ -119,12 +121,6 @@ function StringToDate(date: any) {
 export async function generateChartData(selectedid: any, newdates: any) {
   let mean_diplace: any = [];
 
-  // Sort OBJECTID
-  selectedid &&
-    selectedid.sort((a: number, b: number) => {
-      return a - b;
-    });
-
   try {
     if (selectedid) {
       // map returns an array of Promises
@@ -133,6 +129,8 @@ export async function generateChartData(selectedid: any, newdates: any) {
         query.where = `${object_id} = ${result}`;
         const results = await sar_points_layer.queryFeatures(query);
         const stats = results.features[0].attributes;
+
+        // average displacement per year
         mean_diplace.push(stats[point_chart_y_variable]);
 
         const dataCompile = newdates.map((date: any, index: any) => {

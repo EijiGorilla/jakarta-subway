@@ -15,6 +15,7 @@ type MyActionEventContextType = {
   activewidget: any;
   elevprofileready: any;
   chartdata: any;
+  latlonghighlight: any;
   updateStartyear: any;
   updateEndyear: any;
   updateNewdates: any;
@@ -29,6 +30,7 @@ type MyActionEventContextType = {
   updateActivewidget: any;
   updateElevprofileready: any;
   updateChartdata: any;
+  updateLatlonghighlight: any;
 };
 
 const initialState = {
@@ -46,6 +48,7 @@ const initialState = {
   activewidget: undefined,
   elevprofileready: undefined,
   chartdata: undefined,
+  latlonghighlight: undefined,
   updateStartyear: undefined,
   updateEndyear: undefined,
   updateNewdates: undefined,
@@ -60,6 +63,7 @@ const initialState = {
   updateActivewidget: undefined,
   updateElevprofileready: undefined,
   updateChartdata: undefined,
+  updateLatlonghighlight: undefined,
 };
 
 export const MyContext = createContext<MyActionEventContextType>({

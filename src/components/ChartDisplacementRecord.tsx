@@ -20,6 +20,12 @@ import * as XLSX from "xlsx";
 import { MyContext } from "../contexts/MyContext";
 import { sar_points_layer } from "../layers";
 import { ArcgisMap } from "@arcgis/map-components/dist/components/arcgis-map";
+import Point from "@arcgis/core/geometry/Point";
+import { SimpleMarkerSymbol } from "@arcgis/core/symbols";
+import Graphic from "@arcgis/core/Graphic";
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+import "@esri/calcite-components/dist/components/calcite-button";
+import { CalciteButton } from "@esri/calcite-components-react";
 
 // Dispose function
 function maybeDisposeRoot(divId: any) {
@@ -207,7 +213,7 @@ export default function ChartDisplacementRecord() {
     for (var i = 0; i < chartData.length; i++) {
       var series: any = chart.series.push(
         am5xy.LineSeries.new(root, {
-          name: selectedid[i],
+          name: selectedid[i].toString(),
           xAxis: xAxis,
           yAxis: yAxis,
           valueYField: "value",
@@ -242,6 +248,7 @@ export default function ChartDisplacementRecord() {
     }
 
     let highlight: any;
+
     // Add legend
     // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
     var legend: any = chart.rightAxesContainer.children.push(
@@ -249,10 +256,11 @@ export default function ChartDisplacementRecord() {
         width: 100,
         paddingLeft: 15,
         height: am5.percent(100),
-        label: "TEST",
-        title: "TEST",
       })
     );
+
+    const highlightPointHoverGrapchicsLayer = new GraphicsLayer({});
+    highlightPointHoverGrapchicsLayer.listMode = "hide";
 
     // When legend item container is hovered, dim all the series except the hovered one
     legend.itemContainers.template.events.on("pointerover", (e: any) => {
@@ -272,11 +280,46 @@ export default function ChartDisplacementRecord() {
             stroke: am5.color(0x000000),
           });
         } else {
-          // arcgisMap?.highlights =
+          const hovered_id = Number(chartSeries.get("name"));
 
-          const hovered_id = chartSeries.get("name");
+          // Create a enlarged point for highlight.
+          const query = sar_points_layer.createQuery();
+          query.where = `${object_id} = ${hovered_id}`;
           arcgisMap?.whenLayerView(sar_points_layer).then((layerView: any) => {
-            highlight = layerView?.highlight(hovered_id, { name: "temporary" });
+            sar_points_layer.queryFeatures(query).then((response: any) => {
+              const stats = response.features[0].attributes;
+              const lat = stats["Lat_deg"];
+              const long = stats["Lon_deg"];
+              const point = new Point({
+                longitude: long,
+                latitude: lat,
+              });
+
+              const markerSymbol: any = new SimpleMarkerSymbol({
+                // color: "#FF00FF40",
+                color: "#80808080",
+                size: "20px",
+                outline: {
+                  color: "#FF00FF",
+                  width: 2,
+                },
+              });
+
+              const pointGraphic = new Graphic({
+                geometry: point,
+                symbol: markerSymbol,
+              });
+
+              highlightPointHoverGrapchicsLayer.add(pointGraphic);
+              arcgisMap?.map?.add(highlightPointHoverGrapchicsLayer);
+
+              highlight = layerView?.highlight(
+                highlightPointHoverGrapchicsLayer,
+                {
+                  name: "temporary",
+                }
+              );
+            });
           });
 
           chartSeries.strokes.template.setAll({
@@ -291,6 +334,7 @@ export default function ChartDisplacementRecord() {
     legend.itemContainers.template.events.on("pointerout", (e: any) => {
       var itemContainer = e.target;
       var series = itemContainer.dataItem.dataContext;
+      highlightPointHoverGrapchicsLayer.removeAll();
 
       if (highlight) {
         highlight.remove();
@@ -321,6 +365,19 @@ export default function ChartDisplacementRecord() {
 
     // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
     legend.data.setAll(chart.series.values);
+
+    if (chartData.length > 0) {
+      legend.children.unshift(
+        am5.Label.new(root, {
+          text: "ID Number", // Set the desired title text
+          fontWeight: "500", // Optional: make the title bold
+          textAlign: "center",
+          marginBottom: 5, // Optional: add some space below the title
+          fill: am5.color("#ffffff"),
+        })
+      );
+    }
+
     chart.appear(1000, 100);
     // Add scrollbar
     // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
@@ -381,7 +438,7 @@ export default function ChartDisplacementRecord() {
                   Chart does not work in 3D. Please return to 2D.
                 </span>
               ) : (
-                "(Zoom) and click a point feature to show its land subsidence distribution over time."
+                "(Zoom) and click a point feature(s) to show the temporal distribution of land displacement."
               )}
             </span>
           )}

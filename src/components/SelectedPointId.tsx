@@ -54,6 +54,12 @@ export default function SelectedPointId() {
             }
             selectedFeatures = [];
           }
+          // Sort selected point IDs
+          selectedFeatures &&
+            selectedFeatures.sort((a: number, b: number) => {
+              return a - b;
+            });
+
           updateSelectedid(selectedFeatures);
           generateChartData(selectedFeatures, newdates).then(
             (response: any) => {

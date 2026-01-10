@@ -64,6 +64,7 @@ function App() {
   const [activewidget, setActivewidget] = useState("layers");
   const [elevprofileready, setElevprofileready] = useState(undefined);
   const [chartdata, setChartdata] = useState();
+  const [latlonghighlight, setLatlonghighlight] = useState();
 
   const updateStartyear = (newStartyear: any) => {
     setStartYear(newStartyear);
@@ -121,6 +122,10 @@ function App() {
     setChartdata(newData);
   };
 
+  const updateLatlonghighlight = (newLatlong: any) => {
+    setLatlonghighlight(newLatlong);
+  };
+
   return (
     <>
       {loggedInState === true ? (
@@ -141,6 +146,7 @@ function App() {
               activewidget,
               elevprofileready,
               chartdata,
+              latlonghighlight,
               updateStartyear,
               updateEndyear,
               updateNewdates,
@@ -155,6 +161,7 @@ function App() {
               updateActivewidget,
               updateElevprofileready,
               updateChartdata,
+              updateLatlonghighlight,
             }}
           >
             <ViewSwitch />
