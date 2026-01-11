@@ -61,6 +61,12 @@ calcite-shell {
   --calcite-color-foreground-1: #2b2b2b;
 } */
 
-arcgis-legend::part(img) {
-  width: 500px;
-}
+/* #arcgis-map-legend {
+  scale: 1.2;
+  transform: scaleY(1.2);
+  --calcite-color-foreground-1: #ffffff;
+  padding: auto;
+
+} */
+
+/* https://developers.arcgis.com/calcite-design-system/foundations/tokens/usage/ */

@@ -23,7 +23,7 @@ import "@arcgis/map-components/components/arcgis-elevation-profile";
 import { dateReadableConversion } from "../Query";
 
 export default function ChartPanel() {
-  const { elevprofileready, activewidget } = use(MyContext);
+  const { elevprofileready, activewidget, is3D } = use(MyContext);
   const [chartPanelHeight, setChartPanelHeight] = useState("7%");
   const [minElevation, setMinElevation] = useState(undefined);
   const [maxElevation, setMaxElevation] = useState(undefined);
@@ -77,66 +77,70 @@ export default function ChartPanel() {
     );
   };
   return (
-    <CalcitePanel
-      collapsible
-      heading={chartPanelName}
-      style={{
-        height:
-          chartPanelHeight === chart_panel_height_collapsed
-            ? chart_panel_height_default
-            : chart_panel_height_collapsed,
-        // "--calcite-color-background": "#ffffff",
-      }}
-      onCalcitePanelToggle={() => {
-        setChartPanelHeight(
-          chartPanelHeight === chart_panel_height_default
-            ? chart_panel_height_collapsed
-            : chart_panel_height_default
-        );
-      }}
-    >
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        {/* <ChartType /> */}
-        <ExportExcel />
-      </div>
-      {elevprofileready === "ready" ? (
-        <>
-          <CalciteChipGroup
-            slot="header-actions-end"
-            style={{
-              "--calcite-chip-background-color": "#0079C1",
-              marginTop: "auto",
-              marginBottom: "auto",
-            }}
-          >
-            {maxElevation && (
-              <CalciteChip icon="maximum-graph" id="max-elevation">
-                {maxElevation}
-              </CalciteChip>
-            )}
-            {minElevation && (
-              <CalciteChip icon="minimum-graph" id="min-elevation">
-                {minElevation}
-              </CalciteChip>
-            )}
-          </CalciteChipGroup>
+    <>
+      {!is3D && (
+        <CalcitePanel
+          collapsible
+          heading={chartPanelName}
+          style={{
+            height:
+              chartPanelHeight === chart_panel_height_collapsed
+                ? chart_panel_height_default
+                : chart_panel_height_collapsed,
+            // "--calcite-color-background": "#ffffff",
+          }}
+          onCalcitePanelToggle={() => {
+            setChartPanelHeight(
+              chartPanelHeight === chart_panel_height_default
+                ? chart_panel_height_collapsed
+                : chart_panel_height_default
+            );
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            {/* <ChartType /> */}
+            <ExportExcel />
+          </div>
+          {elevprofileready === "ready" ? (
+            <>
+              <CalciteChipGroup
+                slot="header-actions-end"
+                style={{
+                  "--calcite-chip-background-color": "#0079C1",
+                  marginTop: "auto",
+                  marginBottom: "auto",
+                }}
+              >
+                {maxElevation && (
+                  <CalciteChip icon="maximum-graph" id="max-elevation">
+                    {maxElevation}
+                  </CalciteChip>
+                )}
+                {minElevation && (
+                  <CalciteChip icon="minimum-graph" id="min-elevation">
+                    {minElevation}
+                  </CalciteChip>
+                )}
+              </CalciteChipGroup>
 
-          <arcgis-elevation-profile
-            referenceElement="arcgis-map-id"
-            unit="millimeters"
-            hideClearButton
-            hideLegend
-            hideSettingsButton
-            onarcgisPropertyChange={handleElevationProfileChange}
-            style={{
-              width: "100%",
-              marginTop: "30px",
-            }}
-          ></arcgis-elevation-profile>
-        </>
-      ) : (
-        <ChartDisplacementRecord />
+              <arcgis-elevation-profile
+                referenceElement="arcgis-map-id"
+                unit="millimeters"
+                hideClearButton
+                hideLegend
+                hideSettingsButton
+                onarcgisPropertyChange={handleElevationProfileChange}
+                style={{
+                  width: "100%",
+                  marginTop: "30px",
+                }}
+              ></arcgis-elevation-profile>
+            </>
+          ) : (
+            <ChartDisplacementRecord />
+          )}
+        </CalcitePanel>
       )}
-    </CalcitePanel>
+    </>
   );
 }

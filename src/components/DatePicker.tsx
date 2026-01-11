@@ -22,12 +22,18 @@ import {
 } from "@esri/calcite-components-react";
 import { sar_points_layer } from "../layers";
 
-import { dateReadableConversion, updateRendererForSymbology } from "../Query";
+import { updateRendererForSymbology } from "../Query";
 import { MyContext } from "../contexts/MyContext";
 
 export default function DatePicker() {
-  const { startyear, endyear, updateStartyear, updateEndyear, updateNewdates } =
-    use(MyContext);
+  const {
+    is3D,
+    startyear,
+    endyear,
+    updateStartyear,
+    updateEndyear,
+    updateNewdates,
+  } = use(MyContext);
 
   // Prepare the list of dates in the dropdown list
   const dates_string = dates_sar.map((item) => item?.replace("X", ""));
@@ -81,73 +87,79 @@ export default function DatePicker() {
 
   return (
     <>
-      <div
-        style={{
-          fontSize: action_pane_title_font_size,
-          color: secondary_color,
-          marginBottom: margin_bottom_title_item,
-          marginLeft: margin_left_pane_title,
-          marginTop: "1vh",
-        }}
-      >
-        Time Period:
-      </div>
-      <div
-        style={{
-          display: "flex",
-          fontSize: "20px",
-          marginLeft: "20px",
-          marginRight: "auto",
-        }}
-      >
-        <CalciteDropdown width="m" style={{ marginRight: "4%" }}>
-          <CalciteButton slot="trigger" kind="inverse" scale="s">
-            <span style={{ color: "#ffffff" }}>Start Date</span>
-          </CalciteButton>
-          <CalciteDropdownGroup group-title="">
-            {startYearsDropdown &&
-              startYearsDropdown.map((year: any, index: any) => {
-                return (
-                  <CalciteDropdownItem
-                    key={index}
-                    id={year}
-                    // onCalciteDropdownItemSelect={(event: any) => setStartYear(event.target.id)}
-                    onCalciteDropdownItemSelect={(event: any) =>
-                      handleStartYear(event.target.id)
-                    }
-                  >
-                    {year}
-                  </CalciteDropdownItem>
-                );
-              })}
-          </CalciteDropdownGroup>
-        </CalciteDropdown>
-        <span style={{ fontSize: "1rem", margin: "auto" }}>{startyear}</span>
+      {!is3D && (
+        <>
+          <div
+            style={{
+              fontSize: action_pane_title_font_size,
+              color: secondary_color,
+              marginBottom: margin_bottom_title_item,
+              marginLeft: margin_left_pane_title,
+              marginTop: "1vh",
+            }}
+          >
+            Time Period:
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: "20px",
+              marginLeft: "20px",
+              marginRight: "auto",
+            }}
+          >
+            <CalciteDropdown width="m" style={{ marginRight: "4%" }}>
+              <CalciteButton slot="trigger" kind="inverse" scale="s">
+                <span style={{ color: "#ffffff" }}>Start Date</span>
+              </CalciteButton>
+              <CalciteDropdownGroup group-title="">
+                {startYearsDropdown &&
+                  startYearsDropdown.map((year: any, index: any) => {
+                    return (
+                      <CalciteDropdownItem
+                        key={index}
+                        id={year}
+                        // onCalciteDropdownItemSelect={(event: any) => setStartYear(event.target.id)}
+                        onCalciteDropdownItemSelect={(event: any) =>
+                          handleStartYear(event.target.id)
+                        }
+                      >
+                        {year}
+                      </CalciteDropdownItem>
+                    );
+                  })}
+              </CalciteDropdownGroup>
+            </CalciteDropdown>
+            <span style={{ fontSize: "1rem", margin: "auto" }}>
+              {startyear}
+            </span>
 
-        <div style={{ marginLeft: "3%", marginRight: "3%" }}>{"-"}</div>
-        <span style={{ fontSize: "1rem", margin: "auto" }}>{endyear}</span>
-        <CalciteDropdown width="m" style={{ marginLeft: "4%" }}>
-          <CalciteButton slot="trigger" kind="inverse" scale="s">
-            <span style={{ color: "#ffffff" }}>End Date</span>
-          </CalciteButton>
-          <CalciteDropdownGroup group-title="">
-            {endYearsDropdown &&
-              endYearsDropdown.map((year: any, index: any) => {
-                return (
-                  <CalciteDropdownItem
-                    key={index}
-                    id={year}
-                    onCalciteDropdownItemSelect={(event: any) =>
-                      handleEndYear(event.target.id)
-                    }
-                  >
-                    {year}
-                  </CalciteDropdownItem>
-                );
-              })}
-          </CalciteDropdownGroup>
-        </CalciteDropdown>
-      </div>
+            <div style={{ marginLeft: "3%", marginRight: "3%" }}>{"-"}</div>
+            <span style={{ fontSize: "1rem", margin: "auto" }}>{endyear}</span>
+            <CalciteDropdown width="m" style={{ marginLeft: "4%" }}>
+              <CalciteButton slot="trigger" kind="inverse" scale="s">
+                <span style={{ color: "#ffffff" }}>End Date</span>
+              </CalciteButton>
+              <CalciteDropdownGroup group-title="">
+                {endYearsDropdown &&
+                  endYearsDropdown.map((year: any, index: any) => {
+                    return (
+                      <CalciteDropdownItem
+                        key={index}
+                        id={year}
+                        onCalciteDropdownItemSelect={(event: any) =>
+                          handleEndYear(event.target.id)
+                        }
+                      >
+                        {year}
+                      </CalciteDropdownItem>
+                    );
+                  })}
+              </CalciteDropdownGroup>
+            </CalciteDropdown>
+          </div>
+        </>
+      )}
     </>
   );
 }

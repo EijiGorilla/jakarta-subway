@@ -21,10 +21,8 @@ export default function SelectedPointId() {
     () => sar_points_layer.visible,
     (visible) => {
       if (visible) {
-        console.log("sar point layer is visible");
         setHighlightedLayer(sar_points_layer);
       } else {
-        console.log("sar points layer is NOT visible");
         setHighlightedLayer(hot_spot_layer);
       }
     }

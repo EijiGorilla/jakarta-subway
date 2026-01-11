@@ -1,5 +1,6 @@
 import { use, useEffect, useState } from "react";
 import "../App.css";
+import "../index.css";
 import "@esri/calcite-components/dist/components/calcite-panel";
 import "@esri/calcite-components/dist/components/calcite-list-item";
 import "@esri/calcite-components/dist/components/calcite-shell-panel";
@@ -23,7 +24,6 @@ import DatePicker from "./DatePicker";
 import MinMaxRecord from "./MinMaxRecord";
 import { layerInfos_sar_hotspot } from "../layers";
 import { MyContext } from "../contexts/MyContext";
-import { transform } from "typescript";
 
 function ActionPanel() {
   const { updateElevprofileready, updateActivewidget, viewchange, is3D } =
@@ -152,30 +152,22 @@ function ActionPanel() {
         </div>
 
         {/* Min and Max Record */}
-        <MinMaxRecord />
+        {!is3D && <MinMaxRecord />}
 
         {/* Subtract displacement from the reference point */}
         {/* <ReferencePointSubtraction /> */}
 
         {/* Add Legend */}
-        <div
+
+        <arcgis-legend
+          referenceElement={viewchange}
+          id="arcgis-map-legend"
           style={{
-            fontSize: action_pane_title_font_size,
-            color: secondary_color,
-            marginBottom: margin_bottom_title_item,
-            marginLeft: margin_left_pane_title,
-            marginTop: "0.5vh",
+            margin: "auto",
+            // scale: 1.1,
+            // transform: "scaleY(1.2)",
           }}
-        >
-          Legend:
-          <arcgis-legend
-            referenceElement={viewchange}
-            id="arcgis-map-legend"
-            style={{
-              marginLeft: "2vw",
-            }}
-          ></arcgis-legend>
-        </div>
+        ></arcgis-legend>
       </CalcitePanel>
 
       <CalcitePanel

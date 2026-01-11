@@ -15,6 +15,7 @@ import {
   iqr_q2_5_field,
   iqr_q3_field,
   iqr_q97_5_field,
+  latest_date_field,
   max_symbology,
   min_symbology,
   object_id,
@@ -268,7 +269,7 @@ export const new_point_renderer_las = new PointCloudStretchRenderer({
     size: 6.5,
   },
   legendOptions: {
-    title: "",
+    title: dateReadableConversion([latest_date_field]),
   },
 });
 
@@ -313,7 +314,7 @@ export const visualVariables_fishnet = [
     field: visualVariable_field,
     stops: colorVariable_stops,
     legendOptions: {
-      title: dates_sar[dates_sar.length - 1].replace(date_sar_suffix, ""),
+      title: dateReadableConversion([latest_date_field]),
     },
   }),
   new OpacityVariable({
