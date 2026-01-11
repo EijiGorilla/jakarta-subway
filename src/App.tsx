@@ -133,7 +133,7 @@ function App() {
   };
 
   const updateResethighlight = (newHigh: any) => {
-    setUpdateresetchart(newHigh);
+    setResethighlight(newHigh);
   };
 
   return (

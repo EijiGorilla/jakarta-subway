@@ -83,7 +83,7 @@ export default function DatePicker() {
     updateRendererForSymbology(last_date).then((response: any) => {
       sar_points_layer.renderer = response;
     });
-  }, [startyear, endyear]);
+  }, [startyear, endyear, is3D]);
 
   return (
     <>

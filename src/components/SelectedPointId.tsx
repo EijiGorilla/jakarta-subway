@@ -13,7 +13,7 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 export default function SelectedPointId() {
   const { updateSelectedid, updateChartdata, viewchange, newdates } =
     use(MyContext);
-  const [selected, setSelected] = useState();
+  // const [selected, setSelected] = useState();
   const [highlightedLayer, setHighlightedLayer] =
     useState<FeatureLayer>(sar_points_layer);
 
@@ -46,6 +46,7 @@ export default function SelectedPointId() {
             const objectId = result.graphic.attributes[object_id];
 
             if (ctrlKey) {
+              console.log("ctrkey");
               const index = selectedFeatures.indexOf(objectId);
               if (index > -1) {
                 // Feature is already selected, remove it. When the same point is clicked, index = 0.
@@ -57,6 +58,7 @@ export default function SelectedPointId() {
               // If Ctrl is not held, clear previous selections and select only the new one
               selectedFeatures = [objectId];
             }
+            console.log(selectedFeatures);
 
             highlight && highlight.remove();
 
@@ -73,7 +75,7 @@ export default function SelectedPointId() {
             highlight && highlight.remove();
             selectedFeatures = [];
           }
-
+          console.log(selectedFeatures);
           // Sort selected point IDs
           selectedFeatures &&
             selectedFeatures.sort((a: number, b: number) => {
@@ -81,17 +83,23 @@ export default function SelectedPointId() {
             });
 
           updateSelectedid(selectedFeatures);
-          setSelected(selectedFeatures);
+          // setSelected(selectedFeatures);
+          generateChartData(selectedFeatures, newdates).then(
+            (response: any) => {
+              updateChartdata(response);
+            }
+          );
         });
       });
     });
   }, [newdates, highlightedLayer]);
 
-  useEffect(() => {
-    // Update chart when time period is changed.
-    generateChartData(selected, newdates).then((response: any) => {
-      updateChartdata(response);
-    });
-  }, [newdates, selected]);
+  // useEffect(() => {
+  //   // Update chart when time period is changed.
+  //   console.log(selected);
+  //   generateChartData(selected, newdates).then((response: any) => {
+  //     updateChartdata(response);
+  //   });
+  // }, [newdates, selected]);
   return <></>;
 }
