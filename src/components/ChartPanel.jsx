@@ -4,11 +4,15 @@ import "../App.css";
 import "@esri/calcite-components/dist/components/calcite-panel";
 import "@esri/calcite-components/dist/components/calcite-chip";
 import "@esri/calcite-components/dist/components/calcite-chip-group";
+import "@esri/calcite-components/dist/components/calcite-button";
+import "@esri/calcite-components/dist/components/calcite-notice";
 import "@esri/calcite-components/dist/calcite/calcite.css";
 import {
   CalcitePanel,
   CalciteChipGroup,
   CalciteChip,
+  CalciteButton,
+  CalciteNotice,
 } from "@esri/calcite-components-react";
 import {
   chart_panel_height_collapsed,
@@ -23,15 +27,22 @@ import "@arcgis/map-components/components/arcgis-elevation-profile";
 import { dateReadableConversion } from "../Query";
 
 export default function ChartPanel() {
-  const { elevprofileready, activewidget, is3D } = use(MyContext);
+  const { elevprofileready, activewidget, is3D, chartdata } = use(MyContext);
   const [chartPanelHeight, setChartPanelHeight] = useState("7%");
   const [minElevation, setMinElevation] = useState(undefined);
   const [maxElevation, setMaxElevation] = useState(undefined);
   const [chartPanelName, setChartPanelName] = useState("Chart Panel");
+  const [chartData, setChartData] = useState([]);
 
   // const elevationProfileElement = document.querySelector(
   //   "arcgis-elevation-profile"
   // );
+
+  useEffect(() => {
+    if (chartdata) {
+      setChartData(chartdata[0]);
+    }
+  }, [chartdata]);
 
   useEffect(() => {
     const elevationProfileElement = document.querySelector(
@@ -97,10 +108,26 @@ export default function ChartPanel() {
             );
           }}
         >
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            {/* <ChartType /> */}
-            <ExportExcel />
-          </div>
+          {chartData.length > 0 && (
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <CalciteNotice
+                open
+                icon="exclamation-point-f"
+                scale="s"
+                style={{ display: "block", marginLeft: 0, marginRight: "auto" }}
+              >
+                {/* <div slot="title">Important Note</div> */}
+                <div slot="message">
+                  Reset charts by clicking anywhere on the map.
+                </div>
+              </CalciteNotice>
+              <div>
+                {/* <ChartType /> */}
+                <ExportExcel />
+              </div>
+            </div>
+          )}
+
           {elevprofileready === "ready" ? (
             <>
               <CalciteChipGroup

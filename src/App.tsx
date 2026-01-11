@@ -65,6 +65,8 @@ function App() {
   const [elevprofileready, setElevprofileready] = useState(undefined);
   const [chartdata, setChartdata] = useState();
   const [latlonghighlight, setLatlonghighlight] = useState();
+  const [resetchart, setUpdateresetchart] = useState<boolean>(false);
+  const [resethighlight, setResethighlight] = useState();
 
   const updateStartyear = (newStartyear: any) => {
     setStartYear(newStartyear);
@@ -126,6 +128,14 @@ function App() {
     setLatlonghighlight(newLatlong);
   };
 
+  const updateResetchart = (newChart: any) => {
+    setUpdateresetchart(newChart);
+  };
+
+  const updateResethighlight = (newHigh: any) => {
+    setUpdateresetchart(newHigh);
+  };
+
   return (
     <>
       {loggedInState === true ? (
@@ -147,6 +157,8 @@ function App() {
               elevprofileready,
               chartdata,
               latlonghighlight,
+              resetchart,
+              resethighlight,
               updateStartyear,
               updateEndyear,
               updateNewdates,
@@ -162,6 +174,8 @@ function App() {
               updateElevprofileready,
               updateChartdata,
               updateLatlonghighlight,
+              updateResetchart,
+              updateResethighlight,
             }}
           >
             <ViewSwitch />

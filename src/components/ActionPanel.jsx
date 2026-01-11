@@ -161,14 +161,14 @@ function ActionPanel() {
 
         {/* Note for 3D */}
         {is3D && (
-          <calcite-notice open icon="exclamation-point-f">
+          <CalciteNotice open icon="exclamation-point-f">
             <div slot="title">Important Note</div>
             <div slot="message">
               To aid in the visual interpretation of displaced lands, points or
               surfaces are exaggerated x 1,000 times of the original scale (mm)
               in 3D view.
             </div>
-          </calcite-notice>
+          </CalciteNotice>
         )}
 
         {/* Add Legend */}

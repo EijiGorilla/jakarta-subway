@@ -14,10 +14,16 @@ import { ArcgisMap } from "@arcgis/map-components/dist/components/arcgis-map";
 import Point from "@arcgis/core/geometry/Point";
 import { SimpleMarkerSymbol } from "@arcgis/core/symbols";
 import Graphic from "@arcgis/core/Graphic";
-import "@esri/calcite-components/dist/components/calcite-button";
-import { CalciteChipGroup, CalciteChip } from "@esri/calcite-components-react";
+import {
+  CalciteChipGroup,
+  CalciteChip,
+  CalciteButton,
+  CalciteNotice,
+} from "@esri/calcite-components-react";
 import "@esri/calcite-components/dist/components/calcite-chip";
 import "@esri/calcite-components/dist/components/calcite-chip-group";
+import "@esri/calcite-components/dist/components/calcite-button";
+import "@esri/calcite-components/dist/components/calcite-notice";
 
 // Dispose function
 function maybeDisposeRoot(divId: any) {
@@ -30,7 +36,14 @@ function maybeDisposeRoot(divId: any) {
 
 // https://www.amcharts.com/docs/v5/tutorials/dynamically-switching-data-set-for-an-xychart/
 export default function ChartDisplacementRecord() {
-  const { selectedid, clickedexportexcel, chartdata, is3D } = use(MyContext);
+  const {
+    selectedid,
+    clickedexportexcel,
+    chartdata,
+    is3D,
+    updateResetchart,
+    resetchart,
+  } = use(MyContext);
 
   const arcgisMap = document.querySelector("arcgis-map") as ArcgisMap;
 
@@ -47,6 +60,12 @@ export default function ChartDisplacementRecord() {
       setChartData(chartdata[0]);
     }
   }, [chartdata]);
+
+  useEffect(() => {
+    if (resetchart) {
+      highlightPointHoverGrapchicsLayer.removeAll();
+    }
+  }, [resetchart]);
 
   // Export to Excel
   useEffect(() => {
@@ -473,6 +492,42 @@ export default function ChartDisplacementRecord() {
               )}
             </span>
           )}
+          {/* {chartData.length > 0 && (
+            <CalciteNotice
+              open
+              icon="exclamation-point-f"
+              scale="s"
+              style={{
+                "--calcite-button-background-color": "#0079C1",
+                position: "fixed",
+                zIndex: 10,
+                bottom: 10,
+                right: 10,
+                width: "7.3%",
+              }}
+            >
+              <div slot="message">Hover the legend</div>
+            </CalciteNotice>
+          )} */}
+
+          {/* <CalciteButton
+            onClick={() =>
+              updateResetchart(resetchart === false ? true : false)
+            }
+            slot="trigger"
+            scale="s"
+            appearance="solid"
+            icon-start="reset"
+            style={{
+              "--calcite-button-background-color": "#0079C1",
+              position: "fixed",
+              zIndex: 10,
+              bottom: 10,
+              right: 10,
+            }}
+          >
+            <span style={{ color: "white" }}>Reset All</span>
+          </CalciteButton> */}
         </div>
       </div>
     </>
