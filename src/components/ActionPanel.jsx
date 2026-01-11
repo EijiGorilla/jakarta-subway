@@ -6,12 +6,14 @@ import "@esri/calcite-components/dist/components/calcite-list-item";
 import "@esri/calcite-components/dist/components/calcite-shell-panel";
 import "@esri/calcite-components/dist/components/calcite-action";
 import "@esri/calcite-components/dist/components/calcite-action-bar";
+import "@esri/calcite-components/dist/components/calcite-notice";
 import "@arcgis/map-components/components/arcgis-legend";
 import {
   CalciteShellPanel,
   CalciteActionBar,
   CalciteAction,
   CalcitePanel,
+  CalciteNotice,
 } from "@esri/calcite-components-react";
 import {
   secondary_color,
@@ -157,8 +159,19 @@ function ActionPanel() {
         {/* Subtract displacement from the reference point */}
         {/* <ReferencePointSubtraction /> */}
 
-        {/* Add Legend */}
+        {/* Note for 3D */}
+        {is3D && (
+          <calcite-notice open icon="exclamation-point-f">
+            <div slot="title">Important Note</div>
+            <div slot="message">
+              To aid in the visual interpretation of displaced lands, points or
+              surfaces are exaggerated x 1,000 times of the original scale (mm)
+              in 3D view.
+            </div>
+          </calcite-notice>
+        )}
 
+        {/* Add Legend */}
         <arcgis-legend
           referenceElement={viewchange}
           id="arcgis-map-legend"
