@@ -5,7 +5,6 @@ import { SimpleMarkerSymbol } from "@arcgis/core/symbols";
 import StatisticDefinition from "@arcgis/core/rest/support/StatisticDefinition";
 import Query from "@arcgis/core/rest/support/Query";
 import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter";
-import { SimpleFillSymbol } from "@arcgis/core/symbols";
 import {
   date_sar_suffix,
   dates_sar,
@@ -16,7 +15,6 @@ import {
   iqr_q2_5_field,
   iqr_q3_field,
   iqr_q97_5_field,
-  latest_date_field,
   max_symbology,
   min_symbology,
   object_id,
@@ -28,8 +26,6 @@ import OpacityVariable from "@arcgis/core/renderers/visualVariables/OpacityVaria
 import PointCloudStretchRenderer from "@arcgis/core/renderers/PointCloudStretchRenderer";
 import Extent from "@arcgis/core/geometry/Extent";
 import SpatialReference from "@arcgis/core/geometry/SpatialReference";
-import { MyContext } from "./contexts/MyContext";
-import { use } from "react";
 
 // total records for checking
 // export async function totalRecords() {
@@ -270,6 +266,9 @@ export const new_point_renderer_las = new PointCloudStretchRenderer({
   pointSizeAlgorithm: {
     type: "fixed-size",
     size: 6.5,
+  },
+  legendOptions: {
+    title: "",
   },
 });
 
