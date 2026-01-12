@@ -527,7 +527,7 @@ export default function ChartDisplacementRecord() {
             }}
           >
             <span style={{ color: "white" }}>Reset All</span>
-          </CalciteButton> */}
+          </CalciteButton>*/}
         </div>
       </div>
     </>

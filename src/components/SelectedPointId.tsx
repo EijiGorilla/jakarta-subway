@@ -13,7 +13,7 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 export default function SelectedPointId() {
   const { updateSelectedid, updateChartdata, viewchange, newdates } =
     use(MyContext);
-  // const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState();
   const [highlightedLayer, setHighlightedLayer] =
     useState<FeatureLayer>(sar_points_layer);
 
@@ -58,7 +58,6 @@ export default function SelectedPointId() {
               // If Ctrl is not held, clear previous selections and select only the new one
               selectedFeatures = [objectId];
             }
-            console.log(selectedFeatures);
 
             highlight && highlight.remove();
 
@@ -75,7 +74,6 @@ export default function SelectedPointId() {
             highlight && highlight.remove();
             selectedFeatures = [];
           }
-          console.log(selectedFeatures);
           // Sort selected point IDs
           selectedFeatures &&
             selectedFeatures.sort((a: number, b: number) => {
@@ -83,7 +81,7 @@ export default function SelectedPointId() {
             });
 
           updateSelectedid(selectedFeatures);
-          // setSelected(selectedFeatures);
+          setSelected(selectedFeatures);
           generateChartData(selectedFeatures, newdates).then(
             (response: any) => {
               updateChartdata(response);
@@ -94,12 +92,12 @@ export default function SelectedPointId() {
     });
   }, [newdates, highlightedLayer]);
 
-  // useEffect(() => {
-  //   // Update chart when time period is changed.
-  //   console.log(selected);
-  //   generateChartData(selected, newdates).then((response: any) => {
-  //     updateChartdata(response);
-  //   });
-  // }, [newdates, selected]);
+  useEffect(() => {
+    // Update chart when time period is changed.
+    console.log(selected);
+    generateChartData(selected, newdates).then((response: any) => {
+      updateChartdata(response);
+    });
+  }, [newdates, selected]);
   return <></>;
 }
