@@ -38,6 +38,7 @@ export default function SelectedPointId() {
       arcgisMap?.view.on("click", (event: any) => {
         // Remove highlighted custom points
         arcgisMap.map.remove(highlightPointHoverGrapchicsLayer);
+
         arcgisMap?.view.hitTest(event).then((response: any) => {
           const result: any = response.results[0];
 
