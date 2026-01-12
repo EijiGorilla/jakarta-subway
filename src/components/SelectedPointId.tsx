@@ -46,7 +46,6 @@ export default function SelectedPointId() {
             const objectId = result.graphic.attributes[object_id];
 
             if (ctrlKey) {
-              console.log("ctrkey");
               const index = selectedFeatures.indexOf(objectId);
               if (index > -1) {
                 // Feature is already selected, remove it. When the same point is clicked, index = 0.
@@ -93,8 +92,6 @@ export default function SelectedPointId() {
   }, [newdates, highlightedLayer]);
 
   useEffect(() => {
-    // Update chart when time period is changed.
-    console.log(selected);
     generateChartData(selected, newdates).then((response: any) => {
       updateChartdata(response);
     });

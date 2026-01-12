@@ -298,7 +298,7 @@ export default function ChartDisplacementRecord() {
     // When legend item container is hovered, dim all the series except the hovered one
     legend.itemContainers.template.events.on("pointerover", (e: any) => {
       var itemContainer = e.target;
-
+      console.log("Hover");
       // As series list is data of a legend, dataContext is series
       var series = itemContainer.dataItem.dataContext;
 
@@ -335,15 +335,14 @@ export default function ChartDisplacementRecord() {
                 symbol: markerSymbol,
               });
 
-              highlightPointHoverGrapchicsLayer.add(pointGraphic);
-              arcgisMap?.map?.add(highlightPointHoverGrapchicsLayer);
-
               highlight = layerView?.highlight(
                 highlightPointHoverGrapchicsLayer,
                 {
                   name: "temporary",
                 }
               );
+              highlightPointHoverGrapchicsLayer.add(pointGraphic);
+              arcgisMap?.map?.add(highlightPointHoverGrapchicsLayer);
             });
           });
 
@@ -422,7 +421,7 @@ export default function ChartDisplacementRecord() {
     return () => {
       root.dispose();
     };
-  }, [chartID, chartData]);
+  }, [chartID, chartData, is3D]);
 
   return (
     <>
