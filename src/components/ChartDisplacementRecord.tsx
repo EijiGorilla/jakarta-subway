@@ -298,7 +298,7 @@ export default function ChartDisplacementRecord() {
     // When legend item container is hovered, dim all the series except the hovered one
     legend.itemContainers.template.events.on("pointerover", (e: any) => {
       var itemContainer = e.target;
-      console.log("Hover");
+
       // As series list is data of a legend, dataContext is series
       var series = itemContainer.dataItem.dataContext;
 
