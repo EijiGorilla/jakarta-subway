@@ -19,7 +19,6 @@ import {
   displacement_groupLayer,
   sar_elevation_layer,
   displacement_grouLayer_magnitude,
-  highlightPointHoverGrapchicsLayer,
 } from "../layers";
 import "@esri/calcite-components/dist/components/calcite-button";
 import { MyContext } from "../contexts/MyContext";
@@ -70,7 +69,6 @@ export default function MapDisplay() {
     if (mapView) {
       arcgisMap && mapViewEnvironment();
       arcgisOverviewMap && overviewMapViewEnvironment();
-      arcgisMap?.map?.add(highlightPointHoverGrapchicsLayer);
 
       if (arcgisMap) {
         arcgisMap.highlights = [
