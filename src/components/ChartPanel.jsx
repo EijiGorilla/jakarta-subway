@@ -34,10 +34,6 @@ export default function ChartPanel() {
   const [chartPanelName, setChartPanelName] = useState("Chart Panel");
   const [chartData, setChartData] = useState([]);
 
-  // const elevationProfileElement = document.querySelector(
-  //   "arcgis-elevation-profile"
-  // );
-
   useEffect(() => {
     if (chartdata) {
       setChartData(chartdata[0]);

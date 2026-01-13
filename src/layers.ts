@@ -333,7 +333,9 @@ export const sar_elevation_layer = new ElevationLayer({
   },
 });
 
-export const highlightPointHoverGrapchicsLayer = new GraphicsLayer({});
+export const highlightPointHoverGrapchicsLayer = new GraphicsLayer({
+  title: "pointerover",
+});
 highlightPointHoverGrapchicsLayer.listMode = "hide";
 
 /////////////////////////////

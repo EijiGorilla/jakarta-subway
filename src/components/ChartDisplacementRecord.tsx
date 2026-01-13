@@ -24,6 +24,7 @@ import "@esri/calcite-components/dist/components/calcite-chip";
 import "@esri/calcite-components/dist/components/calcite-chip-group";
 import "@esri/calcite-components/dist/components/calcite-button";
 import "@esri/calcite-components/dist/components/calcite-notice";
+import { generateChartData } from "../Query";
 
 // Dispose function
 function maybeDisposeRoot(divId: any) {
@@ -43,6 +44,8 @@ export default function ChartDisplacementRecord() {
     is3D,
     updateResetchart,
     resetchart,
+    updateChartdata,
+    newdates,
   } = use(MyContext);
 
   const arcgisMap = document.querySelector("arcgis-map") as ArcgisMap;
@@ -60,12 +63,6 @@ export default function ChartDisplacementRecord() {
       setChartData(chartdata[0]);
     }
   }, [chartdata]);
-
-  useEffect(() => {
-    if (resetchart) {
-      highlightPointHoverGrapchicsLayer.removeAll();
-    }
-  }, [resetchart]);
 
   // Export to Excel
   useEffect(() => {
@@ -318,6 +315,7 @@ export default function ChartDisplacementRecord() {
           // Create a enlarged point for highlight.
           const query = sar_points_layer.createQuery();
           query.where = `${object_id} = ${hovered_id}`;
+
           arcgisMap?.whenLayerView(sar_points_layer).then((layerView: any) => {
             sar_points_layer.queryFeatures(query).then((response: any) => {
               const stats = response.features[0].attributes;
@@ -342,9 +340,11 @@ export default function ChartDisplacementRecord() {
                 }
               );
               highlightPointHoverGrapchicsLayer.add(pointGraphic);
+
               arcgisMap?.map?.add(highlightPointHoverGrapchicsLayer);
             });
           });
+          arcgisMap?.map?.add(highlightPointHoverGrapchicsLayer);
 
           chartSeries.strokes.template.setAll({
             strokeWidth: 2,
