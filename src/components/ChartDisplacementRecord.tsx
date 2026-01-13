@@ -344,7 +344,6 @@ export default function ChartDisplacementRecord() {
               arcgisMap?.map?.add(highlightPointHoverGrapchicsLayer);
             });
           });
-          arcgisMap?.map?.add(highlightPointHoverGrapchicsLayer);
 
           chartSeries.strokes.template.setAll({
             strokeWidth: 2,
