@@ -1,4 +1,4 @@
-import { useEffect, use, useState } from "react";
+import { useEffect, use, useState, useRef } from "react";
 import {
   highlightPointHoverGrapchicsLayer,
   hot_spot_layer,
@@ -11,25 +11,42 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 
 export default function SelectedPointId() {
-  const { updateSelectedid, updateChartdata, viewchange, newdates } =
-    use(MyContext);
+  const {
+    updateSelectedid,
+    updateChartdata,
+    viewchange,
+    newdates,
+    resetchart,
+  } = use(MyContext);
   const [selected, setSelected] = useState();
-  const [highlightedLayer, setHighlightedLayer] =
-    useState<FeatureLayer>(sar_points_layer);
+
+  // layerview.highlight is non-serializable object (i.e., untranslatable into another format)
+  // In this case, useState hook fails, so use useRef instead to store the non-serializable object.
+  const highlightLayerHandle = useRef<any>(sar_points_layer);
+  const highlightHandle = useRef<FeatureLayer | any>(null);
+
+  const resetChartAll = () => {
+    highlightHandle.current && highlightHandle.current.remove();
+    setSelected(undefined);
+    highlightPointHoverGrapchicsLayer &&
+      highlightPointHoverGrapchicsLayer.removeAll();
+  };
 
   reactiveUtils.watch(
     () => sar_points_layer.visible,
     (visible) => {
+      resetChartAll();
       if (visible) {
-        setHighlightedLayer(sar_points_layer);
+        highlightLayerHandle.current = sar_points_layer;
+        resetChartAll();
       } else {
-        setHighlightedLayer(hot_spot_layer);
+        highlightLayerHandle.current = hot_spot_layer;
+        resetChartAll();
       }
     }
   );
 
   useEffect(() => {
-    let highlight: any; // Variable to hold the highlight handle
     let selectedFeatures: any = []; // Array to store ObjectIDs of selected features
 
     sar_points_layer.when(() => {
@@ -42,7 +59,9 @@ export default function SelectedPointId() {
         arcgisMap?.view.hitTest(event).then((response: any) => {
           const result: any = response.results[0];
 
-          if (result) {
+          if (!result?.graphic?.layer) {
+            return; // do nothing
+          } else if (result) {
             const ctrlKey = event.native.ctrlKey || event.native.metakey;
             const objectId = result.graphic.attributes[object_id];
 
@@ -58,39 +77,44 @@ export default function SelectedPointId() {
               // If Ctrl is not held, clear previous selections and select only the new one
               selectedFeatures = [objectId];
             }
-
-            highlight && highlight.remove();
+            highlightHandle.current && highlightHandle.current.remove();
 
             // For higlight
             arcgisMap
-              ?.whenLayerView(highlightedLayer)
+              ?.whenLayerView(highlightLayerHandle.current)
               .then((layerView: any) => {
-                highlight = layerView?.highlight(selectedFeatures, {
-                  name: "default",
-                });
+                highlightHandle.current = layerView?.highlight(
+                  selectedFeatures,
+                  {
+                    name: "default",
+                  }
+                );
               });
-          } else if (!event.native.ctrlKey && !event.native.metaKey) {
-            // If the user clicks on an empty area without the modifier key, clear selection
-            highlight && highlight.remove();
-            selectedFeatures = [];
-          }
-          // Sort selected point IDs
-          selectedFeatures &&
-            selectedFeatures.sort((a: number, b: number) => {
-              return a - b;
-            });
 
-          updateSelectedid(selectedFeatures);
-          setSelected(selectedFeatures);
-          generateChartData(selectedFeatures, newdates).then(
-            (response: any) => {
-              updateChartdata(response);
-            }
-          );
+            highlightHandle.current && highlightHandle.current.remove();
+
+            // Sort selected point IDs
+            selectedFeatures &&
+              selectedFeatures.sort((a: number, b: number) => {
+                return a - b;
+              });
+
+            updateSelectedid(selectedFeatures);
+            setSelected(selectedFeatures);
+            generateChartData(selectedFeatures, newdates).then(
+              (response: any) => {
+                updateChartdata(response);
+              }
+            );
+          }
         });
       });
     });
-  }, [newdates, highlightedLayer]);
+  }, [newdates, highlightHandle]);
+
+  useEffect(() => {
+    resetChartAll();
+  }, [resetchart]);
 
   useEffect(() => {
     generateChartData(selected, newdates).then((response: any) => {

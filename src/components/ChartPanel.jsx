@@ -105,6 +105,11 @@ export default function ChartPanel() {
           }}
         >
           {chartData.length > 0 && (
+            <div style={{ marginLeft: "auto" }}>
+              <ExportExcel />
+            </div>
+          )}
+          {/* {chartData.length > 0 && (
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <CalciteNotice
                 open
@@ -112,17 +117,15 @@ export default function ChartPanel() {
                 scale="s"
                 style={{ display: "block", marginLeft: 0, marginRight: "auto" }}
               >
-                {/* <div slot="title">Important Note</div> */}
                 <div slot="message">
                   Reset charts by clicking anywhere on the map.
                 </div>
               </CalciteNotice>
               <div>
-                {/* <ChartType /> */}
                 <ExportExcel />
               </div>
             </div>
-          )}
+          )} */}
 
           {elevprofileready === "ready" ? (
             <>

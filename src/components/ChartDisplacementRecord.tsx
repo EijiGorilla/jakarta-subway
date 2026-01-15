@@ -316,33 +316,30 @@ export default function ChartDisplacementRecord() {
           const query = sar_points_layer.createQuery();
           query.where = `${object_id} = ${hovered_id}`;
 
-          arcgisMap?.whenLayerView(sar_points_layer).then((layerView: any) => {
-            sar_points_layer.queryFeatures(query).then((response: any) => {
-              const stats = response.features[0].attributes;
-              const lat = stats["Lat_deg"];
-              const long = stats["Lon_deg"];
-              setDisplMmyrValue(stats["DispR_mmyr"].toFixed(2));
+          sar_points_layer.queryFeatures(query).then((response: any) => {
+            const stats = response.features[0].attributes;
+            const lat = stats["Lat_deg"];
+            const long = stats["Lon_deg"];
+            setDisplMmyrValue(stats["DispR_mmyr"].toFixed(2));
 
-              const point = new Point({
-                longitude: long,
-                latitude: lat,
-              });
-
-              const pointGraphic = new Graphic({
-                geometry: point,
-                symbol: markerSymbol,
-              });
-
-              highlight = layerView?.highlight(
-                highlightPointHoverGrapchicsLayer,
-                {
-                  name: "temporary",
-                }
-              );
-              highlightPointHoverGrapchicsLayer.add(pointGraphic);
-
-              arcgisMap?.map?.add(highlightPointHoverGrapchicsLayer);
+            const point = new Point({
+              longitude: long,
+              latitude: lat,
             });
+
+            const pointGraphic = new Graphic({
+              geometry: point,
+              symbol: markerSymbol,
+            });
+
+            // highlight = layerView?.highlight(
+            //   highlightPointHoverGrapchicsLayer,
+            //   {
+            //     name: "temporary",
+            //   }
+            // );
+            highlightPointHoverGrapchicsLayer.add(pointGraphic);
+            arcgisMap?.map?.add(highlightPointHoverGrapchicsLayer);
           });
 
           chartSeries.strokes.template.setAll({
@@ -359,9 +356,9 @@ export default function ChartDisplacementRecord() {
       var series = itemContainer.dataItem.dataContext;
       highlightPointHoverGrapchicsLayer.removeAll();
 
-      if (highlight) {
-        highlight.remove();
-      }
+      // if (highlight) {
+      //   highlight.remove();
+      // }
 
       setDisplMmyrValue(undefined);
 
@@ -508,24 +505,26 @@ export default function ChartDisplacementRecord() {
             </CalciteNotice>
           )} */}
 
-          {/* <CalciteButton
-            onClick={() =>
-              updateResetchart(resetchart === false ? true : false)
-            }
-            slot="trigger"
-            scale="s"
-            appearance="solid"
-            icon-start="reset"
-            style={{
-              "--calcite-button-background-color": "#0079C1",
-              position: "fixed",
-              zIndex: 10,
-              bottom: 10,
-              right: 10,
-            }}
-          >
-            <span style={{ color: "white" }}>Reset All</span>
-          </CalciteButton>*/}
+          {chartData.length > 0 && (
+            <CalciteButton
+              onClick={() =>
+                updateResetchart(resetchart === false ? true : false)
+              }
+              slot="trigger"
+              scale="s"
+              appearance="solid"
+              icon-start="reset"
+              style={{
+                "--calcite-button-background-color": "#0079C1",
+                position: "fixed",
+                zIndex: 10,
+                bottom: 10,
+                right: 10,
+              }}
+            >
+              <span style={{ color: "white" }}>Reset All</span>
+            </CalciteButton>
+          )}
         </div>
       </div>
     </>
