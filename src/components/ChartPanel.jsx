@@ -42,7 +42,7 @@ export default function ChartPanel() {
 
   useEffect(() => {
     const elevationProfileElement = document.querySelector(
-      "arcgis-elevation-profile"
+      "arcgis-elevation-profile",
     );
 
     if (elevprofileready === "ready") {
@@ -50,7 +50,7 @@ export default function ChartPanel() {
         "Land Displacement Profile" +
           " (" +
           dateReadableConversion([latest_date_field]) +
-          ")"
+          ")",
       );
 
       if (elevationProfileElement) {
@@ -77,10 +77,10 @@ export default function ChartPanel() {
     const maximumElevation = Math.round(statistics?.maxElevation);
 
     setMinElevation(
-      `${minimumElevation} ${event.target.effectiveUnits.elevation}`
+      `${minimumElevation} ${event.target.effectiveUnits.elevation}`,
     );
     setMaxElevation(
-      `${maximumElevation} ${event.target.effectiveUnits.distance}`
+      `${maximumElevation} ${event.target.effectiveUnits.distance}`,
     );
   };
   return (
@@ -94,13 +94,15 @@ export default function ChartPanel() {
               chartPanelHeight === chart_panel_height_collapsed
                 ? chart_panel_height_default
                 : chart_panel_height_collapsed,
+            scrollbarWidth: "thin",
+            scrollbarColor: "#888 #555",
             // "--calcite-color-background": "#ffffff",
           }}
           onCalcitePanelToggle={() => {
             setChartPanelHeight(
               chartPanelHeight === chart_panel_height_default
                 ? chart_panel_height_collapsed
-                : chart_panel_height_default
+                : chart_panel_height_default,
             );
           }}
         >

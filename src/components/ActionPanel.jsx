@@ -51,20 +51,20 @@ function ActionPanel() {
     updateActivewidget(nextWidget);
     if (activeWidget) {
       const actionActiveWidget = document.querySelector(
-        `[data-panel-id=${activeWidget}]`
+        `[data-panel-id=${activeWidget}]`,
       );
       actionActiveWidget.hidden = true;
     }
 
     if (nextWidget !== activeWidget) {
       const actionNextWidget = document.querySelector(
-        `[data-panel-id=${nextWidget}]`
+        `[data-panel-id=${nextWidget}]`,
       );
       actionNextWidget.hidden = false;
     }
 
     updateElevprofileready(
-      nextWidget === "elevation-profile" ? "ready" : undefined
+      nextWidget === "elevation-profile" ? "ready" : undefined,
     );
   });
 
@@ -75,6 +75,10 @@ function ActionPanel() {
       slot="panel-start"
       position="start"
       id="left-shell-panel"
+      style={{
+        scrollbarWidth: "thin",
+        scrollbarColor: "#888 #555",
+      }}
     >
       <CalciteActionBar slot="action-bar">
         <CalciteAction

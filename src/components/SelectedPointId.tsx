@@ -25,8 +25,8 @@ export default function SelectedPointId() {
   const highlightLayerHandle = useRef<any>(sar_points_layer);
   const highlightHandle = useRef<FeatureLayer | any>(null);
 
-  const resetChartAll = () => {
-    highlightHandle.current && highlightHandle.current.remove();
+  const resetChartAll = async () => {
+    (await highlightHandle.current) && highlightHandle.current.remove();
     setSelected(undefined);
     highlightPointHoverGrapchicsLayer &&
       highlightPointHoverGrapchicsLayer.removeAll();
