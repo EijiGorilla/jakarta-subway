@@ -33,6 +33,7 @@ import * as promiseUtils from "@arcgis/core/core/promiseUtils";
 import * as intersectionOperator from "@arcgis/core/geometry/operators/intersectionOperator";
 import { webmercatorExtent } from "../Query";
 import Extent from "@arcgis/core/geometry/Extent";
+import { Color } from "@amcharts/amcharts5";
 // 2 D <-> 3D
 // https://developers.arcgis.com/javascript/latest/sample-code/views-switch-2d-3d/
 
@@ -43,23 +44,28 @@ export default function MapDisplay() {
   const [newGround, setNewGround] = useState(
     new Ground({
       layers: sar_elevation_layer,
-    })
+    }),
   );
 
   // console.log(is3D);
   const [newCenter, setNewCenter] = useState();
 
   const arcgisMap = document.querySelector(
-    is3D === false ? "arcgis-map" : "arcgis-scene"
+    is3D === false ? "arcgis-map" : "arcgis-scene",
   );
   const arcgisOverviewMap = document.querySelector(
-    is3D === false ? "#arcgis-overview-map" : "#arcgis-overview-scene"
+    is3D === false ? "#arcgis-overview-map" : "#arcgis-overview-scene",
   );
 
   function mapViewEnvironment() {
     arcgisMap.view.ui.components = [];
     arcgisMap.map.ground.navigationConstraint = "none";
-    arcgisMap.map.ground.opacity = 0.7;
+    arcgisMap.map.ground.opacity = 0.0;
+    // arcgisMap.map.surface = new Color("#f0f0f0");
+    if (arcgisMap.view.environment) {
+      arcgisMap.view.environment.atmosphereEnabled = false;
+      arcgisMap.view.environment.starsEnabled = false;
+    }
   }
 
   function overviewMapViewEnvironment() {
@@ -96,7 +102,6 @@ export default function MapDisplay() {
         arcgisMap?.map?.remove(displacement_groupLayer);
         arcgisMap?.map?.add(displacement_grouLayer_magnitude);
         arcgisMap?.map?.add(alingment_line_layer);
-
         arcgisOverviewMap?.map.add(overview_alingment_line_layer);
       }
     }
@@ -159,7 +164,7 @@ export default function MapDisplay() {
             }
             console.error("Error updating visible area graphic: ", error);
           }
-        }
+        },
       );
     });
   }, [arcgisMap]);
