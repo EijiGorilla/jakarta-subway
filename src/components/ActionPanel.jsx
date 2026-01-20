@@ -8,6 +8,7 @@ import "@esri/calcite-components/dist/components/calcite-action";
 import "@esri/calcite-components/dist/components/calcite-action-bar";
 import "@esri/calcite-components/dist/components/calcite-notice";
 import "@arcgis/map-components/components/arcgis-legend";
+import "@arcgis/map-components/dist/components/arcgis-compass";
 import {
   CalciteShellPanel,
   CalciteActionBar,

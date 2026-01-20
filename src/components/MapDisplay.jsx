@@ -203,6 +203,10 @@ export default function MapDisplay() {
             // zoom="9"
             // center="106.8244387, -6.209296499999998"
           ></arcgis-map>
+          <arcgis-compass
+            slot="top-left"
+            style={{ marginTop: "95%", marginLeft: "-20%" }}
+          ></arcgis-compass>
         </arcgis-scene>
       ) : (
         <arcgis-map
@@ -236,6 +240,10 @@ export default function MapDisplay() {
             center={newCenter}
             // center="106.8244387, -6.209296499999998"
           ></arcgis-map>
+          <arcgis-compass
+            slot="top-left"
+            style={{ marginTop: "95%", marginLeft: "-20%" }}
+          ></arcgis-compass>
         </arcgis-map>
       )}
     </>

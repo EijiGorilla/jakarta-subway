@@ -15,7 +15,7 @@ export default function ViewSwitch() {
 
   const [labelViewtype, setLabelViewtype] = useState("2D");
   const arcgisMap = document.querySelector(
-    is3D === false ? "arcgis-map" : "arcgis-scene"
+    is3D === false ? "arcgis-map" : "arcgis-scene",
   );
 
   const switchView = () => {
