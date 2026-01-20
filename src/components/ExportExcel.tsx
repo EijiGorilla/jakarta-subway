@@ -15,7 +15,7 @@ export default function ExportExcel() {
         <CalciteButton
           onClick={() =>
             updateClickedexportexcel(
-              clickedexportexcel === false ? true : false
+              clickedexportexcel === false ? true : false,
             )
           }
           slot="trigger"
@@ -25,8 +25,8 @@ export default function ExportExcel() {
           style={{
             "--calcite-button-background-color": "#0079C1",
             // "--calcite-button-background-color": "gray",
-            marginLeft: "auto",
-            marginRight: "10px",
+            // marginLeft: "10px",
+            // marginRight: "auto",
             marginTop: "5px",
           }}
         >

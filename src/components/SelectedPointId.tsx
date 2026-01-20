@@ -22,7 +22,7 @@ export default function SelectedPointId() {
 
   // layerview.highlight is non-serializable object (i.e., untranslatable into another format)
   // In this case, useState hook fails, so use useRef instead to store the non-serializable object.
-  const highlightLayerHandle = useRef<any>(sar_points_layer);
+  const highlightLayerHandle = useRef<FeatureLayer | any>(sar_points_layer);
   const highlightHandle = useRef<FeatureLayer | any>(null);
 
   const resetChartAll = async () => {
@@ -43,7 +43,7 @@ export default function SelectedPointId() {
         highlightLayerHandle.current = hot_spot_layer;
         resetChartAll();
       }
-    }
+    },
   );
 
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function SelectedPointId() {
                   selectedFeatures,
                   {
                     name: "default",
-                  }
+                  },
                 );
               });
 
@@ -104,7 +104,7 @@ export default function SelectedPointId() {
             generateChartData(selectedFeatures, newdates).then(
               (response: any) => {
                 updateChartdata(response);
-              }
+              },
             );
           }
         });

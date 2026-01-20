@@ -119,7 +119,7 @@ export default function ChartDisplacementRecord() {
         wheelY: "zoomX",
         paddingLeft: 0,
         maxTooltipDistance: 0,
-      })
+      }),
     );
     chartRef.current = chart;
 
@@ -144,7 +144,7 @@ export default function ChartDisplacementRecord() {
       "cursor",
       am5xy.XYCursor.new(root, {
         behavior: "zoomX",
-      })
+      }),
     );
     cursor.lineY.set("visible", false);
 
@@ -166,7 +166,7 @@ export default function ChartDisplacementRecord() {
           stroke: am5.color(secondary_color),
         }),
         tooltip: am5.Tooltip.new(root, {}),
-      })
+      }),
     );
 
     // Grid line inside the chart
@@ -200,7 +200,7 @@ export default function ChartDisplacementRecord() {
           strokeWidth: 2,
           stroke: am5.color(secondary_color),
         }),
-      })
+      }),
     );
 
     // Grid line inside the chart
@@ -228,7 +228,7 @@ export default function ChartDisplacementRecord() {
         centerX: am5.p50,
         fill: am5.color("#ffffff"),
         fontSize: 11,
-      })
+      }),
     );
 
     // Add series
@@ -244,7 +244,7 @@ export default function ChartDisplacementRecord() {
           tooltip: am5.Tooltip.new(root, {
             labelText: "{valueY}",
           }),
-        })
+        }),
       );
 
       // Main line
@@ -279,7 +279,7 @@ export default function ChartDisplacementRecord() {
         width: 100,
         paddingLeft: 15,
         height: am5.percent(100),
-      })
+      }),
     );
 
     const markerSymbol: any = new SimpleMarkerSymbol({
@@ -396,7 +396,7 @@ export default function ChartDisplacementRecord() {
           textAlign: "center",
           marginBottom: 5, // Optional: add some space below the title
           fill: am5.color("#ffffff"),
-        })
+        }),
       );
     }
 
@@ -511,15 +511,15 @@ export default function ChartDisplacementRecord() {
                 updateResetchart(resetchart === false ? true : false)
               }
               slot="trigger"
-              scale="s"
+              scale="m"
               appearance="solid"
               icon-start="reset"
               style={{
                 "--calcite-button-background-color": "#0079C1",
                 position: "fixed",
                 zIndex: 10,
-                bottom: 10,
-                right: 10,
+                bottom: 15,
+                right: 15,
               }}
             >
               <span style={{ color: "white" }}>Reset All</span>

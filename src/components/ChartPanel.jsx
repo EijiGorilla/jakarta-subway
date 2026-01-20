@@ -107,7 +107,7 @@ export default function ChartPanel() {
           }}
         >
           {chartData.length > 0 && (
-            <div style={{ marginLeft: "auto" }}>
+            <div style={{ marginRight: "auto", marginLeft: "10px" }}>
               <ExportExcel />
             </div>
           )}
