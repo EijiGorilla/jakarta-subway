@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkjakarta_subway=self.webpackChunkjakarta_subway||[]).push([[33477],{33477(e,t,r){r.d(t,{execute:()=>u});r(18690);var a=r(95870),o=r(48045);function u(e,t){const r=(0,o.fromGeometry)(e),u=r.getSpatialReference();return(0,o.toGeometry)((0,a.g7)(r.getGeometry(),(0,o.fromGeometryToGXGeometry)(t),u),u)}}}]);
-//# sourceMappingURL=33477.c2612ad6.chunk.js.map
