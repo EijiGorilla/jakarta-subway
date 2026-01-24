@@ -144,7 +144,7 @@ const uniqueValueInfos_hotspot = values_hotspot.map(
         size: "6.5px",
       }),
     });
-  }
+  },
 );
 
 export const hot_spot_renderer = new UniqueValueRenderer({

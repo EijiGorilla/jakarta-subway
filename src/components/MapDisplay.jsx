@@ -30,10 +30,11 @@ import Graphic from "@arcgis/core/Graphic";
 import { SimpleFillSymbol } from "@arcgis/core/symbols";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import * as promiseUtils from "@arcgis/core/core/promiseUtils";
-import * as intersectionOperator from "@arcgis/core/geometry/operators/intersectionOperator";
-import { webmercatorExtent } from "../Query";
+// import * as intersectionOperator from "@arcgis/core/geometry/operators/intersectionOperator";
+// import { webmercatorExtent } from "../Query";
 import Extent from "@arcgis/core/geometry/Extent";
-import { Color } from "@amcharts/amcharts5";
+// import { Color } from "@amcharts/amcharts5";
+
 // 2 D <-> 3D
 // https://developers.arcgis.com/javascript/latest/sample-code/views-switch-2d-3d/
 
@@ -41,14 +42,9 @@ export default function MapDisplay() {
   const { activewidget, viewpoint, is3D } = use(MyContext);
 
   const [mapView, setMapView] = useState();
-  const [newGround, setNewGround] = useState(
-    new Ground({
-      layers: sar_elevation_layer,
-    }),
-  );
-
-  // console.log(is3D);
-  const [newCenter, setNewCenter] = useState();
+  const newGround = new Ground({
+    layers: sar_elevation_layer,
+  });
 
   const arcgisMap = document.querySelector(
     is3D === false ? "arcgis-map" : "arcgis-scene",
@@ -176,9 +172,7 @@ export default function MapDisplay() {
           basemap="dark-gray-vector"
           viewingMode="local"
           viewpoint={viewpoint}
-          ground={
-            activewidget === "elevation-profile" ? newGround : "world-elevation"
-          }
+          ground="world-elevation"
           id="arcgis-scene-id"
           onarcgisViewReadyChange={(event) => {
             setMapView(event.target);
@@ -237,7 +231,6 @@ export default function MapDisplay() {
             id="arcgis-overview-map"
             basemap="dark-gray-vector" //{customBasemap}
             zoom="13"
-            center={newCenter}
             // center="106.8244387, -6.209296499999998"
           ></arcgis-map>
           <arcgis-compass

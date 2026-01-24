@@ -25,8 +25,8 @@ export default function SelectedPointId() {
   const highlightLayerHandle = useRef<FeatureLayer | any>(sar_points_layer);
   const highlightHandle = useRef<FeatureLayer | any>(null);
 
-  const resetChartAll = async () => {
-    (await highlightHandle.current) && highlightHandle.current.remove();
+  const resetChartAll = () => {
+    highlightHandle.current && highlightHandle.current.remove();
     setSelected(undefined);
     highlightPointHoverGrapchicsLayer &&
       highlightPointHoverGrapchicsLayer.removeAll();
@@ -49,7 +49,7 @@ export default function SelectedPointId() {
   useEffect(() => {
     let selectedFeatures: any = []; // Array to store ObjectIDs of selected features
 
-    sar_points_layer.when(() => {
+    highlightLayerHandle.current.when(() => {
       const arcgisMap = document.querySelector(viewchange);
 
       arcgisMap?.view.on("click", (event: any) => {
@@ -91,7 +91,7 @@ export default function SelectedPointId() {
                 );
               });
 
-            highlightHandle.current && highlightHandle.current.remove();
+            // highlightHandle.current && highlightHandle.current.remove();
 
             // Sort selected point IDs
             selectedFeatures &&

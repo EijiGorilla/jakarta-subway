@@ -11,8 +11,6 @@ import {
   CalcitePanel,
   CalciteChipGroup,
   CalciteChip,
-  CalciteButton,
-  CalciteNotice,
 } from "@esri/calcite-components-react";
 import {
   chart_panel_height_collapsed,

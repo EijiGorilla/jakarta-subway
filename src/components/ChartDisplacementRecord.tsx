@@ -18,13 +18,11 @@ import {
   CalciteChipGroup,
   CalciteChip,
   CalciteButton,
-  CalciteNotice,
 } from "@esri/calcite-components-react";
 import "@esri/calcite-components/dist/components/calcite-chip";
 import "@esri/calcite-components/dist/components/calcite-chip-group";
 import "@esri/calcite-components/dist/components/calcite-button";
 import "@esri/calcite-components/dist/components/calcite-notice";
-import { generateChartData } from "../Query";
 
 // Dispose function
 function maybeDisposeRoot(divId: any) {
@@ -37,16 +35,8 @@ function maybeDisposeRoot(divId: any) {
 
 // https://www.amcharts.com/docs/v5/tutorials/dynamically-switching-data-set-for-an-xychart/
 export default function ChartDisplacementRecord() {
-  const {
-    selectedid,
-    clickedexportexcel,
-    chartdata,
-    is3D,
-    updateResetchart,
-    resetchart,
-    updateChartdata,
-    newdates,
-  } = use(MyContext);
+  const { selectedid, clickedexportexcel, chartdata, is3D, updateResetchart } =
+    use(MyContext);
 
   const arcgisMap = document.querySelector("arcgis-map") as ArcgisMap;
 
@@ -507,9 +497,7 @@ export default function ChartDisplacementRecord() {
 
           {chartData.length > 0 && (
             <CalciteButton
-              onClick={() =>
-                updateResetchart(resetchart === false ? true : false)
-              }
+              onClick={() => updateResetchart((prev: any) => !prev)}
               slot="trigger"
               scale="m"
               appearance="solid"

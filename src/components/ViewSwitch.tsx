@@ -9,6 +9,8 @@ export default function ViewSwitch() {
     updateViewchange,
     updateIs3D,
     updateViewpoint,
+    updateResetchart,
+    resetchart,
     is3D,
     elevprofileready,
   } = use(MyContext);
@@ -61,6 +63,7 @@ export default function ViewSwitch() {
 
   useEffect(() => {
     updateViewchange(is3D === false ? "arcgis-map" : "arcgis-scene");
+    updateResetchart((prev: any) => !prev);
   }, [is3D]);
 
   return (

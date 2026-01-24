@@ -18,7 +18,7 @@ import { MyContext } from "../contexts/MyContext";
 export default function MinMaxRecord() {
   const { newdates, referenceid, is3D } = use(MyContext);
   const arcgisMap = document.querySelector(
-    is3D === false ? "arcgis-map" : "arcgis-scene"
+    is3D === false ? "arcgis-map" : "arcgis-scene",
   );
 
   const [referencePointData, setReferencePointData] = useState<any>();
@@ -43,7 +43,7 @@ export default function MinMaxRecord() {
     // Update a reference point value with new end-year-date
     const dateString = newdates[newdates.length - 1].replace(
       date_sar_suffix,
-      ""
+      "",
     );
     const year = dateString.substring(0, 4);
     const month = dateString.substring(4, 6);
@@ -55,7 +55,7 @@ export default function MinMaxRecord() {
 
     // console.log(referencePointData);
     const find = referencePointData?.filter(
-      (elem: any) => elem.date === ref_new_date
+      (elem: any) => elem.date === ref_new_date,
     );
     const ref_value = find ? find[0].value : 0;
 
@@ -67,10 +67,10 @@ export default function MinMaxRecord() {
       setOriginalMinRecordForZoom(response.min_value);
       setOriginalMaxRecordForZoom(response.max_value);
       const minimum = thousands_separators(
-        (response.min_value - ref_value).toFixed(2)
+        (response.min_value - ref_value).toFixed(2),
       );
       const maximum = thousands_separators(
-        (response.max_value - ref_value).toFixed(2)
+        (response.max_value - ref_value).toFixed(2),
       );
       setMinRecord(minimum);
       setMaxRecord(maximum);
